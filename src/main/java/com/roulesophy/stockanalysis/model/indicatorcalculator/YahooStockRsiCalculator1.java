@@ -1,4 +1,4 @@
-package com.roulesophy.stockanalysis.model.stock;
+package com.roulesophy.stockanalysis.model.indicatorcalculator;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.roulesophy.stockanalysis.model.stock.YahooStock;
 
 import yahoofinance.histquotes.HistoricalQuote;
 

@@ -1,9 +1,11 @@
-package com.roulesophy.stockanalysis.model.stock;
+package com.roulesophy.stockanalysis.model.indicatorcalculator;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
+
+import com.roulesophy.stockanalysis.model.stock.YahooStock;
 
 public class YahooStockSmaCalculator1 extends YahooStockEmaCalculator {
 

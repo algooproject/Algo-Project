@@ -1,7 +1,9 @@
-package com.roulesophy.stockanalysis.model.stock;
+package com.roulesophy.stockanalysis.model.indicatorcalculator;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.roulesophy.stockanalysis.model.stock.YahooStock;
 
 public abstract class YahooStockRsiCalculator implements IRsiCalculator{
 

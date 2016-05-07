@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.roulesophy.stockanalysis.model.indicatorcalculator.YahooStockEmaCalculator;
+import com.roulesophy.stockanalysis.model.indicatorcalculator.YahooStockEmaCalculator1;
+import com.roulesophy.stockanalysis.model.indicatorcalculator.YahooStockRsiCalculator1;
+import com.roulesophy.stockanalysis.model.indicatorcalculator.YahooStockSmaCalculator1;
+
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
