@@ -2,9 +2,7 @@ package com.roulesophy.stockanalysis.model.stock;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +19,7 @@ public class YahooStock implements IStock {
 	private Stock stock;
 	private static YahooStockPool stockPool = new YahooStockPool();
 	private Map<String, HistoricalQuote> stockHistory;
-	private String DATE_FORMAT = "yyyyMMdd";
+	public static String DATE_FORMAT = "yyyyMMdd";
 	
 	public YahooStock(String ticker) {
 		if (stockPool.stockExist(ticker)) {
@@ -44,6 +42,10 @@ public class YahooStock implements IStock {
 		}
 	}
 	
+	public Map<String, HistoricalQuote> getStockHistory() {
+		return stockHistory;
+	}
+
 	public BigDecimal high(Date date) {
 		HistoricalQuote historicalQuote = getHistoricalPrice(date);
 		return historicalQuote != null ? historicalQuote.getHigh() : null;
@@ -76,94 +78,17 @@ public class YahooStock implements IStock {
 		return historicalQuote;
 	}
 
-	public BigDecimal RSI(Date date, int scale) {		
-		List<Double> rsiU = rsiUD(date, true);
-		List<Double> rsiD = rsiUD(date, false);
-		double rs = (EMA(rsiU, scale).doubleValue())/(EMA(rsiD, scale).doubleValue());
-		double rsiRaw = 100/(1 + rs);
-		return new BigDecimal(100 - rsiRaw);
-	}
-
-	private List<Double> rsiUD(Date date, boolean isU) {
-		List<Double> rsiClose = new ArrayList<>();
-		boolean ignoreFirst = true;
-		String lastKey = "";
-		for(String key : stockHistory.keySet()) {
-			if(ignoreFirst) {
-				ignoreFirst = false;
-				lastKey = key;
-			} else {
-				if(key.compareTo(new SimpleDateFormat(DATE_FORMAT).format(date)) > 0) continue;
-				HistoricalQuote todayQuote = stockHistory.get(key);
-				HistoricalQuote lastDayQuote = stockHistory.get(lastKey);
-				if (todayQuote == null) continue;
-				if (isU) {
-					if(todayQuote.getClose().compareTo(lastDayQuote.getClose()) > 0) {
-						rsiClose.add(todayQuote.getClose().doubleValue() - lastDayQuote.getClose().doubleValue());
-					} else {
-						rsiClose.add(0.0);
-					}
-				} else {
-					if(lastDayQuote.getClose().compareTo(todayQuote.getClose()) > 0) {
-						rsiClose.add(lastDayQuote.getClose().doubleValue() - todayQuote.getClose().doubleValue());
-					} else {
-						rsiClose.add(0.0);
-					}
-				}
-				lastKey = key;
-			}
-		}
-		return rsiClose;
+	public BigDecimal RSI(Date date, int scale) {	
+		YahooStockEmaCalculator emaCalculator = new YahooStockEmaCalculator1(this);
+		return new YahooStockRsiCalculator1(this, emaCalculator).calculate(date, scale);
 	}
 
 	public BigDecimal EMA(Date date, int scale) {
-		List<Double> historicClose = new ArrayList<>();
-		for(String key : stockHistory.keySet()) {
-			if(key.compareTo(new SimpleDateFormat(DATE_FORMAT).format(date)) <= 0) {
-				HistoricalQuote quote = stockHistory.get(key);
-				if (quote != null) {
-					historicClose.add(quote.getClose().doubleValue());
-				}
-			}
-		}
-		return EMA(historicClose, scale);
-	}
-
-	private BigDecimal EMA(List<Double> historicClose, int scale) {
-		List<Double> emaHistory = new ArrayList<>();
-		double smaRaw = 0;
-		double firstSma = 0;
-		for (int i = 0; i < scale; i++) {
-			smaRaw = smaRaw + historicClose.get(i);
-		}
-		firstSma = smaRaw/scale;
-		emaHistory.add(firstSma);
-		
-		double multiplicand = 2.0/(scale + 1);
-		for(int i = scale; i < historicClose.size(); i++) {
-			double price = historicClose.get(i);
-			double ema1 = price * multiplicand;
-			double ema2 = emaHistory.get(emaHistory.size() - 1) * (1-multiplicand);
-			double ema = ema1 + ema2;
-			emaHistory.add(ema);
-		}
-		return new BigDecimal(emaHistory.get(emaHistory.size() - 1));
+		return new YahooStockEmaCalculator1(this).calculate(date, scale);
 	}
 
 	public BigDecimal SMA(Date date, int scale) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		BigDecimal sum = BigDecimal.ZERO;
-		for (int i = 0; i < scale; ) {
-			cal.add(Calendar.DATE, -1);
-			if (close(cal.getTime()) == null) {
-				cal.add(Calendar.DATE, -1);
-			} else {
-				sum = sum.add(close(cal.getTime()));
-				i++;
-			}
-		}
-		return sum.divide(new BigDecimal(scale), RoundingMode.HALF_UP);
+		return new YahooStockSmaCalculator1(this).calculate(date, scale);
 	}
 
 	public String currency() {
