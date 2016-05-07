@@ -173,4 +173,10 @@ public class MockStock implements IStock {
 		return null;
 	}
 
+	@Override
+	public void exportHistoryFile() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

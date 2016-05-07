@@ -33,4 +33,5 @@ public interface IStock {
 	public Date exDate();
 	public BigDecimal dividendYield();
 	public BigDecimal dividendYieldPercentage();
+	void exportHistoryFile();
 }

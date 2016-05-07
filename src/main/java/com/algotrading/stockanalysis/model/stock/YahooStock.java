@@ -1,13 +1,22 @@
 package com.algotrading.stockanalysis.model.stock;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 import com.algotrading.stockanalysis.model.indicatorcalculator.YahooStockEmaCalculator;
 import com.algotrading.stockanalysis.model.indicatorcalculator.YahooStockEmaCalculator1;
@@ -15,7 +24,9 @@ import com.algotrading.stockanalysis.model.indicatorcalculator.YahooStockRsiCalc
 import com.algotrading.stockanalysis.model.indicatorcalculator.YahooStockSmaCalculator1;
 
 import yahoofinance.Stock;
+import yahoofinance.Utils;
 import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.HistQuotesRequest;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
@@ -25,25 +36,85 @@ public class YahooStock implements IStock {
 	private static YahooStockPool stockPool = new YahooStockPool();
 	private Map<String, HistoricalQuote> stockHistory;
 	public static String DATE_FORMAT = "yyyyMMdd";
+	Calendar to;
+    Calendar from; 
 	
 	public YahooStock(String ticker) {
 		if (stockPool.stockExist(ticker)) {
 			stock = stockPool.getStock(ticker);
+			stockHistory = stockPool.getStockHistory(ticker);
+			from = stockPool.getFrom(ticker);
+			to = stockPool.getTo(ticker);
 		} else {
 			try {
 				stock = YahooFinance.get(ticker, true);
 				Calendar cal = Calendar.getInstance();
 				cal.add(Calendar.YEAR, -100);
+				to = HistQuotesRequest.DEFAULT_TO;
+				from = cal;
 				List<HistoricalQuote> historticalQuoteList = stock.getHistory(cal, Interval.DAILY);
 				stockHistory = new TreeMap<String, HistoricalQuote>();
 				for(HistoricalQuote quote : historticalQuoteList) {
 					stockHistory.put(new SimpleDateFormat(DATE_FORMAT).format(quote.getDate().getTime()), quote);
 				}
-				
-				stockPool.put(ticker, stock, stockHistory);
+				stockPool.put(ticker, stock, stockHistory, from, to);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	@Override
+	public void exportHistoryFile() {
+		OutputStream os = null;
+		InputStream is = null;
+		try {
+	        Map<String, String> params = new LinkedHashMap<String, String>();
+	        params.put("s", this.ticker());
+	
+	        params.put("a", String.valueOf(this.from.get(Calendar.MONTH)));
+	        params.put("b", String.valueOf(this.from.get(Calendar.DAY_OF_MONTH)));
+	        params.put("c", String.valueOf(this.from.get(Calendar.YEAR)));
+	
+	        params.put("d", String.valueOf(this.to.get(Calendar.MONTH)));
+	        params.put("e", String.valueOf(this.to.get(Calendar.DAY_OF_MONTH)));
+	        params.put("f", String.valueOf(this.to.get(Calendar.YEAR)));
+	
+	        params.put("g", Interval.DAILY.getTag());
+	
+	        params.put("ignore", ".csv");
+	
+	        String url = YahooFinance.HISTQUOTES_BASE_URL + "?" + Utils.getURLParameters(params);
+	
+	        // Get CSV from Yahoo
+	        YahooFinance.logger.log(Level.INFO, ("Sending request: " + url));
+	
+	        URL request = new URL(url);
+	        URLConnection connection = request.openConnection();
+	        connection.setConnectTimeout(YahooFinance.CONNECTION_TIMEOUT);
+	        connection.setReadTimeout(YahooFinance.CONNECTION_TIMEOUT);
+	        is = connection.getInputStream();
+			os = new FileOutputStream(new File("src/main/resources/" + this.ticker() + ".csv"));
+			int read = 0;
+			byte[] bytes = new byte[1024];
+		
+			while ((read = is.read(bytes)) != -1) {
+				os.write(bytes, 0, read);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			closeFile(os, is);
+		}
+	
+	}
+
+	private void closeFile(OutputStream os, InputStream is) {
+		try {
+			if (os != null) os.close();
+			if (is != null) is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
