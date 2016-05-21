@@ -23,4 +23,15 @@ public class InterperterTest {
 		assertEquals(expected, actual);
 	}
 	
+	@Test
+	public void testSimpleInterperter() throws ParseException {
+		String expected = "SE[ 012 ]";
+		Node node = new Expr();
+		String input = "SE[ 012 ]";
+		node.parse(new StringContext(input));
+		IStockPattern pattern = node.execute();
+		String actual = pattern.toString();
+		assertEquals(expected, actual);
+	}
+	
 }
