@@ -1,4 +1,4 @@
-package com.algotrading.backtesting;
+package com.algotrading.backtesting.playground;
 
 public class Test {
 	public static void main(String args[]) {

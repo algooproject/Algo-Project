@@ -1,4 +1,4 @@
-package com.algotrading.backtesting;
+package com.algotrading.backtesting.playground;
 
 import java.io.IOException;
 import java.math.BigDecimal;

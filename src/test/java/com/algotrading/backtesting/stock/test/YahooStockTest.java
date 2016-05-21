@@ -13,7 +13,7 @@ import com.algotrading.backtesting.stock.YahooStock;
 
 public class YahooStockTest {
 	
-	@Test
+//	@Test
 	public void testYahooStockTest() throws ParseException {
 		IStock hk1382 = new YahooStock("1382.HK");
 		System.out.println("Currency:			" + hk1382.currency());
