@@ -27,4 +27,24 @@ public class PortfolioComponent {
 		return stock;
 	}
 
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public double getUnitPrice() {
+		return unitPrice;
+	}
+
+	public PortfolioComponent add(int addQuantity, double addUnitPrice) {
+		int newQuantity = quantity + addQuantity;
+		double newUnitPrice = (cost() + addQuantity * addUnitPrice) / (newQuantity);
+		return new PortfolioComponent(stock, newQuantity, newUnitPrice);
+	}
+
+	public PortfolioComponent add(PortfolioComponent pc) {
+		if (pc.getStock().getTicker().equals(getStock().getTicker())) {
+			return add(pc.getQuantity(), pc.getUnitPrice());
+		}
+		return new PortfolioComponent(stock, quantity, unitPrice);
+	}
 }
