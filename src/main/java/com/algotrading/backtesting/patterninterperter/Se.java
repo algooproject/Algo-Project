@@ -3,8 +3,8 @@ package com.algotrading.backtesting.patterninterperter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.algotrading.backtesting.pattern.IStockPattern;
-import com.algotrading.backtesting.pattern.SePattern;
+import com.algotrading.backtesting.pattern.StockSignal;
+import com.algotrading.backtesting.pattern.SeSignal;
 
 public class Se implements Node {
 	private String name;
@@ -27,7 +27,7 @@ public class Se implements Node {
 		}
 	}
 
-	public IStockPattern execute() {
+	public StockSignal execute() {
 //		StringBuffer sb = new StringBuffer(50);
 //		sb.append("SE[ ");
 //		for (String l : list) {
@@ -36,6 +36,6 @@ public class Se implements Node {
 //		sb.append("]");
 //		return sb.toString();
 //		return null;
-		return new SePattern(name);
+		return new SeSignal(name);
 	}
 }

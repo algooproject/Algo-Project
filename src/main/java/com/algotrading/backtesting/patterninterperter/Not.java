@@ -1,7 +1,7 @@
 package com.algotrading.backtesting.patterninterperter;
 
-import com.algotrading.backtesting.pattern.IStockPattern;
-import com.algotrading.backtesting.pattern.NotPattern;
+import com.algotrading.backtesting.pattern.StockSignal;
+import com.algotrading.backtesting.pattern.NotSignal;
 
 public class Not implements Node {
 	private Node node;
@@ -27,7 +27,7 @@ public class Not implements Node {
 		}
 	}
 
-	public IStockPattern execute() {
-		return new NotPattern(node.execute());
+	public StockSignal execute() {
+		return new NotSignal(node.execute());
 	}
 }

@@ -1,6 +1,6 @@
 package com.algotrading.backtesting.patterninterperter;
 
-import com.algotrading.backtesting.pattern.IStockPattern;
+import com.algotrading.backtesting.pattern.StockSignal;
 
 public class Expr implements Node {
 	private Node node;
@@ -23,7 +23,7 @@ public class Expr implements Node {
 		}
 	}
 
-	public IStockPattern execute() {
+	public StockSignal execute() {
 		return node.execute();
 	}
 }

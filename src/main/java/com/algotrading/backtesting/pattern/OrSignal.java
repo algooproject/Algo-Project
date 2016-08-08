@@ -4,12 +4,12 @@ import java.util.Date;
 
 import com.algotrading.backtesting.stock.Stock;
 
-public class OrPattern implements IStockPattern {
+public class OrSignal implements StockSignal {
 
-	private IStockPattern left;
-	private IStockPattern right;
+	private StockSignal left;
+	private StockSignal right;
 
-	public OrPattern(IStockPattern left, IStockPattern right) {
+	public OrSignal(StockSignal left, StockSignal right) {
 		this.left = left;
 		this.right = right;
 	}

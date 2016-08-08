@@ -1,7 +1,7 @@
 package com.algotrading.backtesting.patterninterperter;
 
-import com.algotrading.backtesting.pattern.IStockPattern;
-import com.algotrading.backtesting.pattern.OrPattern;
+import com.algotrading.backtesting.pattern.StockSignal;
+import com.algotrading.backtesting.pattern.OrSignal;
 
 public class Or implements Node {
 	private Node left;
@@ -36,7 +36,7 @@ public class Or implements Node {
 		}
 	}
 
-	public IStockPattern execute() {
-		return new OrPattern(left.execute(), right.execute());
+	public StockSignal execute() {
+		return new OrSignal(left.execute(), right.execute());
 	}
 }

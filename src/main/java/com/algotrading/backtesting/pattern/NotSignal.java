@@ -4,22 +4,22 @@ import java.util.Date;
 
 import com.algotrading.backtesting.stock.Stock;
 
-public class SePattern implements IStockPattern {
+public class NotSignal implements StockSignal {
 
-	private String name;
+	private StockSignal pattern;
 
-	public SePattern(String name) {
-		this.name = name;
+	public NotSignal(StockSignal pattern) {
+		this.pattern = pattern;
 	}
 
 	@Override
 	public boolean signal(Stock stock, Date date) {
-		return false;
+		return !pattern.signal(stock, date);
 	}
 
 	@Override
 	public String toString() {
-		return "SE[ " + name + " ]";
+		return "NOT( " + pattern.toString() + " )";
 	}
 
 }

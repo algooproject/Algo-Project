@@ -1,11 +1,11 @@
 package com.algotrading.backtesting.patterninterperter;
 
-import com.algotrading.backtesting.pattern.IStockPattern;
+import com.algotrading.backtesting.pattern.StockSignal;
 
 public interface Node {
 	void parse(Context context) throws ParseException;
 
-	IStockPattern execute();
+	StockSignal execute();
 }
 
 //<expr> ::= <and> | <or> | <not> | <se>
