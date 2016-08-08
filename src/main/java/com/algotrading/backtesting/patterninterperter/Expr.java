@@ -1,10 +1,13 @@
 package com.algotrading.backtesting.patterninterperter;
 
+import java.text.ParseException;
+
 import com.algotrading.backtesting.pattern.StockSignal;
 
 public class Expr implements Node {
 	private Node node;
 
+	@Override
 	public void parse(Context context) throws ParseException {
 		if (context.currentToken().equals("AND(")) {
 			node = new And();
@@ -19,10 +22,11 @@ public class Expr implements Node {
 			node = new Se();
 			node.parse(context);
 		} else {
-			throw new ParseException();
+			throw new ParseException("", 0);
 		}
 	}
 
+	@Override
 	public StockSignal execute() {
 		return node.execute();
 	}
