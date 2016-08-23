@@ -12,6 +12,16 @@ public class StockHistory {
 	private double adjClose;
 	private double volume;
 
+	public StockHistory(Date date, double open, double close, double high, double low, double adjClose, double volume) {
+		this.date = date;
+		this.high = high;
+		this.low = low;
+		this.open = open;
+		this.close = close;
+		this.adjClose = adjClose;
+		this.volume = volume;
+	}
+
 	public Date getDate() {
 		return date;
 	}
