@@ -11,15 +11,16 @@ import com.algotrading.backtesting.patterninterperter.ParseException;
 import com.algotrading.backtesting.patterninterperter.StringContext;
 
 public class InterperterTest {
-	
+
 	@Test
 	public void test001_SeInterperter() throws ParseException {
 		String expected = "SE[ 012 ]";
 		String input = "SE[ 012 ]";
+		System.out.println("Expected");
 		IStockPattern pattern = interpertToPattern(input);
 		assertEquals(expected, pattern.toString());
 	}
-	
+
 	@Test
 	public void test002_andInterperter() throws ParseException {
 		String expected = "AND( SE[ 012 ] , SE[ 234 ] )";
@@ -27,7 +28,7 @@ public class InterperterTest {
 		IStockPattern pattern = interpertToPattern(input);
 		assertEquals(expected, pattern.toString());
 	}
-	
+
 	@Test
 	public void test003_orInterperter() throws ParseException {
 		String expected = "OR( SE[ 012 ] , SE[ 234 ] )";
@@ -35,7 +36,7 @@ public class InterperterTest {
 		IStockPattern pattern = interpertToPattern(input);
 		assertEquals(expected, pattern.toString());
 	}
-	
+
 	@Test
 	public void test004_notInterperter() throws ParseException {
 		String expected = "NOT( SE[ 012 ] )";
@@ -43,7 +44,7 @@ public class InterperterTest {
 		IStockPattern pattern = interpertToPattern(input);
 		assertEquals(expected, pattern.toString());
 	}
-	
+
 	@Test
 	public void test005_ComplexInterperter() throws ParseException {
 		String expected = "AND( OR( SE[ 123 ] , NOT( SE[ 456 ] ) ) , SE[ 012 ] )";
@@ -51,7 +52,6 @@ public class InterperterTest {
 		IStockPattern pattern = interpertToPattern(input);
 		assertEquals(expected, pattern.toString());
 	}
-	
 
 	private IStockPattern interpertToPattern(String input) throws ParseException {
 		Node node = new Expr();
@@ -59,5 +59,5 @@ public class InterperterTest {
 		IStockPattern pattern = node.execute();
 		return pattern;
 	}
-	
+
 }
