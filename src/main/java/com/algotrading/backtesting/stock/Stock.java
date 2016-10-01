@@ -22,7 +22,7 @@ public class Stock {
 
 	public void read() {
 		// TODO read files from ticker
-		String strCsvFile = Stock.FILEPATH + "/" + this.ticker;
+		String strCsvFile = Stock.FILEPATH + "/" + this.ticker + ".csv";
 		String strLine = "";
 		String strCvsSplitBy = ",";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
