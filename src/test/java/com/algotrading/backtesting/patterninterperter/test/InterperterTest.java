@@ -59,5 +59,5 @@ public class InterperterTest {
 		StockSignal pattern = node.execute();
 		return pattern;
 	}
-
+ 
 }
