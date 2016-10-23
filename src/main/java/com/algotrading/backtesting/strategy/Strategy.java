@@ -21,7 +21,9 @@ public class Strategy {
 	}
 
 	public PortfolioComponent buySellAmount(Stock stock, Date date) {
-		double unitPrice = stock.getHistory().get(date).getClose();
+		double unitPrice = stock.getHistory()
+				.get(date)
+				.getClose();
 		return new PortfolioComponent(stock, (int) (buyCostIfMatch / unitPrice), unitPrice);
 	}
 }

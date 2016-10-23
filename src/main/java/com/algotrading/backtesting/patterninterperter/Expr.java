@@ -9,17 +9,25 @@ public class Expr implements Node {
 
 	@Override
 	public void parse(Context context) throws ParseException {
-		if (context.currentToken().equals("AND(")) {
+		if (context.currentToken()
+				.equals("AND(")) {
 			node = new And();
 			node.parse(context);
-		} else if (context.currentToken().equals("OR(")) {
+		} else if (context.currentToken()
+				.equals("OR(")) {
 			node = new Or();
 			node.parse(context);
-		} else if (context.currentToken().equals("NOT(")) {
+		} else if (context.currentToken()
+				.equals("NOT(")) {
 			node = new Not();
 			node.parse(context);
-		} else if (context.currentToken().equals("SE[")) {
+		} else if (context.currentToken()
+				.equals("SE[")) {
 			node = new Se();
+			node.parse(context);
+		} else if (context.currentToken()
+				.equals("SMAHigher[")) {
+			node = new SmaHigherThanInterperter();
 			node.parse(context);
 		} else {
 			throw new ParseException("", 0);

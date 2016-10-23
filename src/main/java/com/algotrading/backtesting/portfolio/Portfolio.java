@@ -1,5 +1,6 @@
 package com.algotrading.backtesting.portfolio;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
@@ -30,15 +31,29 @@ public class Portfolio {
 	}
 
 	public double marketValue() {
-		return portfolioComponents.values().stream()
-				.mapToDouble(pc -> pc.getQuantity() * pc.getStock().getHistory().get(date).getClose()).sum();
+		return portfolioComponents.values()
+				.stream()
+				.mapToDouble(pc -> pc.getQuantity() * pc.getStock()
+						.getHistory()
+						.get(date)
+						.getClose())
+				.sum();
 	}
 
 	public double cost() {
-		return portfolioComponents.values().stream().mapToDouble(pc -> pc.getQuantity() * pc.getUnitPrice()).sum();
+		return portfolioComponents.values()
+				.stream()
+				.mapToDouble(pc -> pc.getQuantity() * pc.getUnitPrice())
+				.sum();
 	}
 
 	private String getTickerFromPortfolioComponent(PortfolioComponent portfolioComponent) {
-		return portfolioComponent.getStock().getTicker();
+		return portfolioComponent.getStock()
+				.getTicker();
+	}
+
+	@Override
+	public String toString() {
+		return "" + "Date: " + new SimpleDateFormat("yyyy-MM-dd").format(date) + ", portfolio: " + portfolioComponents;
 	}
 }

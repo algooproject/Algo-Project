@@ -25,21 +25,26 @@ public class Stock {
 		String strCsvFile = Stock.FILEPATH + "/" + this.ticker + ".csv";
 		String strLine = "";
 		String strCvsSplitBy = ",";
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		boolean isFirstLine = true;
 
 		try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
 			while ((strLine = br.readLine()) != null) {
-				// use comma as separator
-				String[] strStockHistory = strLine.split(strCvsSplitBy);
-				Date dtStockHistoryDate = sdf.parse(strStockHistory[0]);
-				Double dbOpen = Double.parseDouble(strStockHistory[1]);
-				Double dbClose = Double.parseDouble(strStockHistory[2]);
-				Double dbHigh = Double.parseDouble(strStockHistory[3]);
-				Double dbLow = Double.parseDouble(strStockHistory[4]);
-				Double dbAdjClose = Double.parseDouble(strStockHistory[5]);
-				Double dbVolume = Double.parseDouble(strStockHistory[6]);
-				history.put(dtStockHistoryDate,
-						new StockHistory(dtStockHistoryDate, dbOpen, dbClose, dbHigh, dbLow, dbAdjClose, dbVolume));
+				if (isFirstLine) {
+					isFirstLine = false;
+				} else {
+					// use comma as separator
+					String[] strStockHistory = strLine.split(strCvsSplitBy);
+					Date dtStockHistoryDate = sdf.parse(strStockHistory[0]);
+					Double dbOpen = Double.parseDouble(strStockHistory[1]);
+					Double dbClose = Double.parseDouble(strStockHistory[2]);
+					Double dbHigh = Double.parseDouble(strStockHistory[3]);
+					Double dbLow = Double.parseDouble(strStockHistory[4]);
+					Double dbAdjClose = Double.parseDouble(strStockHistory[5]);
+					Double dbVolume = Double.parseDouble(strStockHistory[6]);
+					history.put(dtStockHistoryDate,
+							new StockHistory(dtStockHistoryDate, dbOpen, dbClose, dbHigh, dbLow, dbAdjClose, dbVolume));
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

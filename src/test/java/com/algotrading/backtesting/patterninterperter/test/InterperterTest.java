@@ -1,15 +1,17 @@
 package com.algotrading.backtesting.patterninterperter.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.text.ParseException;
 
 import org.junit.Test;
 
+import com.algotrading.backtesting.pattern.SmaHigherThanSignal;
 import com.algotrading.backtesting.pattern.StockSignal;
 import com.algotrading.backtesting.patterninterperter.Expr;
 import com.algotrading.backtesting.patterninterperter.Node;
 import com.algotrading.backtesting.patterninterperter.StringContext;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class InterperterTest {
 
@@ -53,11 +55,21 @@ public class InterperterTest {
 		assertEquals(expected, pattern.toString());
 	}
 
+	@Test
+	public void test006_SMAHigherInterperter() throws ParseException {
+		String expected = "SMAHigher[ magnitude=10 expectedValue=30 ]";
+		StockSignal pattern = interpertToPattern(expected);
+		assertTrue(pattern instanceof SmaHigherThanSignal);
+		SmaHigherThanSignal smaHigherThanSignal = (SmaHigherThanSignal) pattern;
+		assertEquals(10, smaHigherThanSignal.getMagnitude());
+		assertEquals(30, smaHigherThanSignal.getExpectedValue(), 0.01);
+	}
+
 	private StockSignal interpertToPattern(String input) throws ParseException {
 		Node node = new Expr();
 		node.parse(new StringContext(input));
 		StockSignal pattern = node.execute();
 		return pattern;
 	}
- 
+
 }

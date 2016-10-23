@@ -42,9 +42,16 @@ public class PortfolioComponent {
 	}
 
 	public PortfolioComponent add(PortfolioComponent pc) {
-		if (pc.getStock().getTicker().equals(getStock().getTicker())) {
+		if (pc.getStock()
+				.getTicker()
+				.equals(getStock().getTicker())) {
 			return add(pc.getQuantity(), pc.getUnitPrice());
 		}
 		return new PortfolioComponent(stock, quantity, unitPrice);
+	}
+
+	@Override
+	public String toString() {
+		return stock + ":" + unitPrice + "@" + quantity;
 	}
 }
