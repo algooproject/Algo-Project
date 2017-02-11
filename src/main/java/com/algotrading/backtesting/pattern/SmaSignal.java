@@ -11,20 +11,22 @@ import com.algotrading.backtesting.stock.StockHistory;
 public abstract class SmaSignal implements StockSignal {
 
 	protected int magnitude;
-	protected double expectedValue;
-
-	public SmaSignal(int magnitude, double expectedValue) {
+//	protected double expectedValue;
+	protected Map<Date, Double> closingPrices;
+	protected Date date;	
+	
+	public SmaSignal(int magnitude) {
 		this.magnitude = magnitude;
-		this.expectedValue = expectedValue;
+//		this.expectedValue = expectedValue;
 	}
 
 	public int getMagnitude() {
 		return magnitude;
 	}
 
-	public double getExpectedValue() {
-		return expectedValue;
-	}
+//	public double getExpectedValue() {
+//		return expectedValue;
+//	}
 
 	@Override
 	public boolean signal(Stock stock, Date date) {

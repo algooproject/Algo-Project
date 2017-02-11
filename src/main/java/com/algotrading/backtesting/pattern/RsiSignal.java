@@ -11,13 +11,15 @@ import com.algotrading.backtesting.stock.StockHistory;
 public abstract class RsiSignal implements StockSignal {
 
 	protected int magnitude;
-	protected double expectedValue;
+//	protected double expectedValue;
 	protected int sma_magnitude;
+	protected Map<Date, Double> closingPrices;
+	protected Date date;
 
-	public RsiSignal(int magnitude, int sma_magnitude, double expectedValue) {
+	public RsiSignal(int magnitude, int sma_magnitude) {
 		this.magnitude = magnitude;
 		this.sma_magnitude = sma_magnitude;
-		this.expectedValue = expectedValue;
+//		this.expectedValue = expectedValue;
 	}
 
 	public int getMagnitude() {
@@ -29,9 +31,9 @@ public abstract class RsiSignal implements StockSignal {
 	}
 
 	
-	public double getExpectedValue() {
-		return expectedValue;
-	}
+//	public double getExpectedValue() {
+//		return expectedValue;
+//	}
 
 	@Override
 	public boolean signal(Stock stock, Date date) {
@@ -41,6 +43,8 @@ public abstract class RsiSignal implements StockSignal {
 			closingHistory.put(entry.getKey(), entry.getValue()
 					.getClose());
 		}
+		closingPrices = closingHistory;
+		this.date = date;
 		try {
 			RSI test = new RSI(closingHistory, date, magnitude, sma_magnitude);
 			double value = test.getValue();
