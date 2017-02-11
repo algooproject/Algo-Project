@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.algotrading.backtesting.stock.Stock;
+
 public class Portfolio {
 
 	private Map<String, PortfolioComponent> portfolioComponents;
@@ -13,6 +15,19 @@ public class Portfolio {
 	public Portfolio(Date date) {
 		this.date = date;
 		portfolioComponents = new TreeMap<>();
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public boolean containsStock(Stock stock) {
+		for (String key : portfolioComponents.keySet()) {
+			if (key.equals(stock.getTicker())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void put(PortfolioComponent portfolioComponent) {
@@ -55,5 +70,15 @@ public class Portfolio {
 	@Override
 	public String toString() {
 		return "" + "Date: " + new SimpleDateFormat("yyyy-MM-dd").format(date) + ", portfolio: " + portfolioComponents;
+	}
+
+	@Override
+	public Portfolio clone() {
+		Portfolio portfolio = new Portfolio(date);
+		for (String key : portfolioComponents.keySet()) {
+			PortfolioComponent portfolioComponent = portfolioComponents.get(key);
+			portfolio.put(portfolioComponent.clone());
+		}
+		return portfolio;
 	}
 }

@@ -54,4 +54,9 @@ public class PortfolioComponent {
 	public String toString() {
 		return stock + ":" + unitPrice + "@" + quantity;
 	}
+
+	@Override
+	public PortfolioComponent clone() {
+		return new PortfolioComponent(stock, quantity, unitPrice);
+	}
 }

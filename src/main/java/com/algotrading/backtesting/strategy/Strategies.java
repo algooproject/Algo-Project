@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.algotrading.backtesting.pattern.StockSignal;
 import com.algotrading.backtesting.patterninterperter.Interperter;
+import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
 import com.algotrading.backtesting.stock.Stock;
 
@@ -41,16 +42,16 @@ public class Strategies {
 		return strategies;
 	}
 
-	public PortfolioComponent buySellAmount(Stock stock, Date date) {
+	public PortfolioComponent buySellAmount(Stock stock, Date date, Portfolio portfolio) {
 		PortfolioComponent component = new PortfolioComponent(stock, 0, 0);
 		for (Strategy strategy : buySignal) {
-			if (strategy.shouldPutOrder(stock, date)) {
+			if (strategy.shouldPutOrder(stock, date) && !portfolio.containsStock(stock)) {
 				component.add(strategy.buySellAmount(stock, date));
 				break;
 			}
 		}
 		for (Strategy strategy : sellSignal) {
-			if (strategy.shouldPutOrder(stock, date)) {
+			if (strategy.shouldPutOrder(stock, date) && portfolio.containsStock(stock)) {
 				component.add(strategy.buySellAmount(stock, date));
 				break;
 			}

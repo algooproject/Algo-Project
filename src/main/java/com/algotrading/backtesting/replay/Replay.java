@@ -29,17 +29,19 @@ public class Replay {
 	public void simulate() {
 		Date currentDate = startDate;
 		tradingDate.setCurrentDate(currentDate);
+		Portfolio portfolio = new Portfolio(currentDate);
 		while (!tradingDate.isLastDate() && tradingDate.currentDate()
 				.compareTo(endDate) < 0) {
 			currentDate = tradingDate.currentDate();
-			Portfolio portfolio = new Portfolio(currentDate);
+			portfolio.setDate(currentDate);
 			for (Stock stock : availableStocks.get()) {
-				PortfolioComponent component = strategies.buySellAmount(stock, currentDate);
+				PortfolioComponent component = strategies.buySellAmount(stock, currentDate, portfolio);
 				if (component.getQuantity() != 0) {
 					portfolio.add(component);
 				}
 			}
 			portfolioHistory.put(currentDate, portfolio);
+			portfolio = portfolio.clone();
 			tradingDate.rollDay();
 		}
 	}
