@@ -1,5 +1,9 @@
 package com.algotrading.backtesting.pattern;
 
+//next step: -implement in a way that SMA of the same stock does not need to be created every time;
+//           -may want to modify the way to get an element particular field (eg. Volume) using date. 
+
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,35 +14,58 @@ import com.algotrading.backtesting.stock.StockHistory;
 
 public abstract class SmaSignal implements StockSignal {
 
-	protected int magnitude;
-//	protected double expectedValue;
-	protected Map<Date, Double> closingPrices;
-	protected Date date;	
+	protected int magnitude = 10;
+	protected String expectedValueType = "number";
+	protected String expectedValue = "10";
+	protected double multiplier = 1;
+	protected double testValue;
+	protected Map<Date, Double> closingHistory;
+	protected SMA sma;	
 	
-	public SmaSignal(int magnitude) {
+	public SmaSignal(int magnitude, String expectedValueType, String expectedValue, double multiplier ){
 		this.magnitude = magnitude;
-//		this.expectedValue = expectedValue;
+		this.expectedValueType = expectedValueType;
+		this.expectedValue = expectedValue;
+		// settestValue();
 	}
 
 	public int getMagnitude() {
 		return magnitude;
 	}
 
-//	public double getExpectedValue() {
-//		return expectedValue;
-//	}
+	public String getExpectedValueType() {
+		return expectedValueType;
+	}
+	
+	public String getExpectedValue() {
+		return expectedValue;
+	}	
+
+	public double getMultiplier() {
+		return multiplier;
+	}
 
 	@Override
-	public boolean signal(Stock stock, Date date) {
-		Map<Date, StockHistory> history = stock.getHistory();
-		Map<Date, Double> closingHistory = new TreeMap<>();
-		for (Map.Entry<Date, StockHistory> entry : history.entrySet()) {
-			closingHistory.put(entry.getKey(), entry.getValue()
-					.getClose());
+	public boolean signal(Stock stock, Date date) throws ParseException{
+		if (closingHistory == null) {
+			Map<Date, StockHistory> history = stock.getHistory();
+			// Map<Date, Double> closingHistory = new TreeMap<>();
+			for (Map.Entry<Date, StockHistory> entry : history.entrySet()) {
+				closingHistory.put(entry.getKey(), entry.getValue()
+						.getClose());
+			}				
+			try {
+				sma = new SMA(closingHistory, date, magnitude);
+			}catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+			}
 		}
+		sma.setRecent(date);
+		settestValue(date);
 		try {
-			SMA test = new SMA(closingHistory, date, magnitude);
-			double value = test.getValue();
+			double value = sma.getValue();
 			return determine(value);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -48,4 +75,15 @@ public abstract class SmaSignal implements StockSignal {
 	}
 
 	protected abstract boolean determine(double value);
+
+	private void settestValue(Date date) throws ParseException{
+		switch (expectedValueType){
+		case "number": testValue = Double.parseDouble(this.expectedValue);
+		case "variable": switch(expectedValue){
+		                 case "closing": testValue = closingHistory.get(date); // should depend on expectedValue
+		                 default: throw new ParseException("Invalid ExpectedvalueType -- " + expectedValue + ": no field match", 0);
+		}
+		default: throw new ParseException("Invalid ExpectedvalueType -- " + expectedValue + ": no field match", 0);
+		}
+	}
 }
