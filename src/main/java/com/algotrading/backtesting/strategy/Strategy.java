@@ -20,10 +20,17 @@ public class Strategy {
 		return pattern.signal(stock, date);
 	}
 
-	public PortfolioComponent buySellAmount(Stock stock, Date date) {
+	public PortfolioComponent buyAmount(Stock stock, Date date) {
 		double unitPrice = stock.getHistory()
 				.get(date)
 				.getClose();
 		return new PortfolioComponent(stock, (int) (buyCostIfMatch / unitPrice), unitPrice);
+	}
+
+	public PortfolioComponent sellAmount(Stock stock, Date date) {
+		double unitPrice = stock.getHistory()
+				.get(date)
+				.getClose();
+		return new PortfolioComponent(stock, 0 - (int) (buyCostIfMatch / unitPrice), unitPrice);
 	}
 }

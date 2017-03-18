@@ -11,6 +11,7 @@ public class PortfolioComponent {
 	private Stock stock;
 	private int quantity;
 	private double unitPrice;
+	private double profit = 0;
 
 	public PortfolioComponent(Stock stock, int quantity, double unitPrice) {
 		super();
@@ -35,24 +36,36 @@ public class PortfolioComponent {
 		return unitPrice;
 	}
 
-	public PortfolioComponent add(int addQuantity, double addUnitPrice) {
-		int newQuantity = quantity + addQuantity;
-		double newUnitPrice = (cost() + addQuantity * addUnitPrice) / (newQuantity);
-		return new PortfolioComponent(stock, newQuantity, newUnitPrice);
+	public double getProfit() {
+		return profit;
 	}
 
-	public PortfolioComponent add(PortfolioComponent pc) {
+	public void add(int addQuantity, double addUnitPrice) {
+		if (quantity + addQuantity <= 0) {
+			profit = (addUnitPrice - unitPrice) * quantity;
+			quantity = 0;
+			unitPrice = 0;
+		} else {
+			int newQuantity = quantity + addQuantity;
+			double newUnitPrice = newQuantity != 0 ? (cost() + addQuantity * addUnitPrice) / (newQuantity) : 0;
+			quantity = newQuantity;
+			unitPrice = newUnitPrice;
+		}
+	}
+
+	public void add(PortfolioComponent pc) {
 		if (pc.getStock()
 				.getTicker()
 				.equals(getStock().getTicker())) {
-			return add(pc.getQuantity(), pc.getUnitPrice());
+			add(pc.getQuantity(), pc.getUnitPrice());
+		} else {
+			throw new RuntimeException("not the same portfolio component");
 		}
-		return new PortfolioComponent(stock, quantity, unitPrice);
 	}
 
 	@Override
 	public String toString() {
-		return stock + ":" + unitPrice + "@" + quantity;
+		return stock + ":" + quantity + "@" + unitPrice + ", profit=" + profit;
 	}
 
 	@Override

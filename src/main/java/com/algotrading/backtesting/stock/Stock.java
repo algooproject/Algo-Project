@@ -15,6 +15,11 @@ public class Stock {
 	private String ticker;
 	private Map<Date, StockHistory> history;
 
+	public Stock(String ticker, Map<Date, StockHistory> history) {
+		this.ticker = ticker;
+		this.history = history;
+	}
+
 	public Stock(String ticker) {
 		this.ticker = ticker;
 		history = new TreeMap<>();
@@ -59,6 +64,11 @@ public class Stock {
 
 	public Map<Date, StockHistory> getHistory() {
 		return history;
+	}
+
+	@Override
+	public String toString() {
+		return ticker;
 	}
 
 }

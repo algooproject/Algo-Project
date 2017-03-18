@@ -11,6 +11,7 @@ public class Portfolio {
 
 	private Map<String, PortfolioComponent> portfolioComponents;
 	private Date date;
+	private double profit;
 
 	public Portfolio(Date date) {
 		this.date = date;
@@ -23,7 +24,8 @@ public class Portfolio {
 
 	public boolean containsStock(Stock stock) {
 		for (String key : portfolioComponents.keySet()) {
-			if (key.equals(stock.getTicker())) {
+			if (key.equals(stock.getTicker()) && portfolioComponents.get(key)
+					.getQuantity() != 0) {
 				return true;
 			}
 		}
@@ -39,7 +41,12 @@ public class Portfolio {
 		PortfolioComponent component = portfolioComponents.get(tickerName);
 		if (component != null) {
 			component.add(newComponent.getQuantity(), newComponent.getUnitPrice());
-			portfolioComponents.put(tickerName, newComponent);
+			portfolioComponents.put(tickerName, component);
+			profit += component.getProfit();
+			if (component.getQuantity() == 0) {
+				portfolioComponents.remove(component.getStock()
+						.getTicker());
+			}
 		} else {
 			portfolioComponents.put(tickerName, newComponent);
 		}
@@ -69,7 +76,8 @@ public class Portfolio {
 
 	@Override
 	public String toString() {
-		return "" + "Date: " + new SimpleDateFormat("yyyy-MM-dd").format(date) + ", portfolio: " + portfolioComponents;
+		return "" + "Date: " + new SimpleDateFormat("yyyy-MM-dd").format(date) + ", portfolio: " + portfolioComponents
+				+ ", profit: " + profit;
 	}
 
 	@Override

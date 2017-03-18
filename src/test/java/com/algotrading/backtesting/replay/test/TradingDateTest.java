@@ -13,8 +13,9 @@ public class TradingDateTest {
 	public void testDate() throws IOException, ParseException {
 		TradingDate tradingDate = new TradingDate("src/test/resources/tradingDate.txt");
 		tradingDate.read();
-		while (!tradingDate.isLastDate()) {
-			System.out.println(tradingDate.rollDay());
+		while (!tradingDate.isNotLastDate()) {
+			tradingDate.rollDay();
+			System.out.println(tradingDate.currentDate());
 		}
 	}
 

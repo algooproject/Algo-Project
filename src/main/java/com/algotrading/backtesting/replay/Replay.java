@@ -30,8 +30,8 @@ public class Replay {
 		Date currentDate = startDate;
 		tradingDate.setCurrentDate(currentDate);
 		Portfolio portfolio = new Portfolio(currentDate);
-		while (!tradingDate.isLastDate() && tradingDate.currentDate()
-				.compareTo(endDate) < 0) {
+		while (tradingDate.isNotLastDate() && tradingDate.currentDate()
+				.compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
 			portfolio.setDate(currentDate);
 			for (Stock stock : availableStocks.get()) {

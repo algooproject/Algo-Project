@@ -19,6 +19,10 @@ public class AvailableStocks {
 		read(fileList);
 	}
 
+	public AvailableStocks() {
+		stocks = new ArrayList<>();
+	}
+
 	public void read(String filePath) throws IOException, ParseException {
 		Path file = new File(filePath).toPath();
 		Charset charset = Charset.defaultCharset();
@@ -33,6 +37,10 @@ public class AvailableStocks {
 
 	public List<Stock> get() {
 		return stocks;
+	}
+
+	public void add(Stock stock) {
+		stocks.add(stock);
 	}
 
 }

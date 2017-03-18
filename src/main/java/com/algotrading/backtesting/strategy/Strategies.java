@@ -20,9 +20,22 @@ public class Strategies {
 	private List<Strategy> buySignal;
 	private List<Strategy> sellSignal;
 
+	public Strategies() {
+		buySignal = new ArrayList<>();
+		sellSignal = new ArrayList<>();
+	}
+
 	public Strategies(String buyStrategiesFilePath, String sellStrategiesFilePath) throws IOException, ParseException {
 		buySignal = read(buyStrategiesFilePath);
 		sellSignal = read(sellStrategiesFilePath);
+	}
+
+	public void addBuySignal(Strategy strategy) {
+		buySignal.add(strategy);
+	}
+
+	public void addSellSignal(Strategy strategy) {
+		sellSignal.add(strategy);
 	}
 
 	public List<Strategy> read(String strategiesFilePath) throws IOException, ParseException {
@@ -43,19 +56,22 @@ public class Strategies {
 	}
 
 	public PortfolioComponent buySellAmount(Stock stock, Date date, Portfolio portfolio) {
-		PortfolioComponent component = new PortfolioComponent(stock, 0, 0);
 		for (Strategy strategy : buySignal) {
 			if (strategy.shouldPutOrder(stock, date) && !portfolio.containsStock(stock)) {
-				component.add(strategy.buySellAmount(stock, date));
-				break;
+				PortfolioComponent buyAmount = strategy.buyAmount(stock, date);
+				return buyAmount;
+				// component.add(buyAmount);
+				// break;
 			}
 		}
 		for (Strategy strategy : sellSignal) {
 			if (strategy.shouldPutOrder(stock, date) && portfolio.containsStock(stock)) {
-				component.add(strategy.buySellAmount(stock, date));
-				break;
+				PortfolioComponent sellAmount = strategy.sellAmount(stock, date);
+				return sellAmount;
+				// component.add(sellAmount);
+				// break;
 			}
 		}
-		return component;
+		return new PortfolioComponent(stock, 0, 0);
 	}
 }

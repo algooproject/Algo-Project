@@ -19,11 +19,20 @@ public class TradingDate {
 	private String file;
 	private List<Date> tradingDates;
 	private int currentTradingDateIndex;
+	private boolean isLastDay = false;
+
+	public TradingDate() {
+		tradingDates = new ArrayList<>();
+	}
 
 	public TradingDate(String file) throws IOException, ParseException {
 		this.file = file;
 		tradingDates = new ArrayList<>();
 		read();
+	}
+
+	public void add(Date date) {
+		tradingDates.add(date);
 	}
 
 	public void setCurrentDate(Date date) {
@@ -40,13 +49,12 @@ public class TradingDate {
 		return tradingDates.get(currentTradingDateIndex);
 	}
 
-	public Date rollDay() {
+	public void rollDay() {
 		currentTradingDateIndex++;
-		return tradingDates.get(currentTradingDateIndex);
 	}
 
-	public boolean isLastDate() {
-		return currentTradingDateIndex + 1 == tradingDates.size();
+	public boolean isNotLastDate() {
+		return currentTradingDateIndex < tradingDates.size();
 	}
 
 	public void read() throws IOException, ParseException {
