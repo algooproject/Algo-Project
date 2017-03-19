@@ -57,7 +57,7 @@ public class Strategies {
 
 	public PortfolioComponent buySellAmount(Stock stock, Date date, Portfolio portfolio) {
 		for (Strategy strategy : buySignal) {
-			if (strategy.shouldPutOrder(stock, date) && !portfolio.containsStock(stock)) {
+			if (strategy.shouldPutOrder(stock, date, portfolio) && !portfolio.containsStock(stock)) {
 				PortfolioComponent buyAmount = strategy.buyAmount(stock, date);
 				return buyAmount;
 				// component.add(buyAmount);
@@ -65,7 +65,7 @@ public class Strategies {
 			}
 		}
 		for (Strategy strategy : sellSignal) {
-			if (strategy.shouldPutOrder(stock, date) && portfolio.containsStock(stock)) {
+			if (strategy.shouldPutOrder(stock, date, portfolio) && portfolio.containsStock(stock)) {
 				PortfolioComponent sellAmount = strategy.sellAmount(stock, date);
 				return sellAmount;
 				// component.add(sellAmount);

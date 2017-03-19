@@ -3,6 +3,7 @@ package com.algotrading.backtesting.strategy;
 import java.util.Date;
 
 import com.algotrading.backtesting.pattern.StockSignal;
+import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
 import com.algotrading.backtesting.stock.Stock;
 
@@ -16,8 +17,8 @@ public class Strategy {
 		this.buyCostIfMatch = buyCostIfMatch;
 	}
 
-	public boolean shouldPutOrder(Stock stock, Date date) {
-		return pattern.signal(stock, date);
+	public boolean shouldPutOrder(Stock stock, Date date, Portfolio portfolio) {
+		return pattern.signal(stock, date, portfolio);
 	}
 
 	public PortfolioComponent buyAmount(Stock stock, Date date) {

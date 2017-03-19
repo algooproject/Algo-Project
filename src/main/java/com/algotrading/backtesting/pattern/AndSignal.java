@@ -2,6 +2,7 @@ package com.algotrading.backtesting.pattern;
 
 import java.util.Date;
 
+import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.stock.Stock;
 
 public class AndSignal implements StockSignal {
@@ -15,8 +16,8 @@ public class AndSignal implements StockSignal {
 	}
 
 	@Override
-	public boolean signal(Stock stock, Date date) {
-		return left.signal(stock, date) && right.signal(stock, date);
+	public boolean signal(Stock stock, Date date, Portfolio portfolio) {
+		return left.signal(stock, date, portfolio) && right.signal(stock, date, portfolio);
 	}
 
 	@Override

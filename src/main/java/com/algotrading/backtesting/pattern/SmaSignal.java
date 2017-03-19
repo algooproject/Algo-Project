@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.algotrading.backtesting.indicatorcalculator.SMA;
+import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
 
@@ -27,7 +28,7 @@ public abstract class SmaSignal implements StockSignal {
 	}
 
 	@Override
-	public boolean signal(Stock stock, Date date) {
+	public boolean signal(Stock stock, Date date, Portfolio portfolio) {
 		Map<Date, StockHistory> history = stock.getHistory();
 		Map<Date, Double> closingHistory = new TreeMap<>();
 		for (Map.Entry<Date, StockHistory> entry : history.entrySet()) {
