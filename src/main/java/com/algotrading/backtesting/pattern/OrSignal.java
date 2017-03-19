@@ -1,5 +1,6 @@
 package com.algotrading.backtesting.pattern;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import com.algotrading.backtesting.portfolio.Portfolio;
@@ -16,7 +17,7 @@ public class OrSignal implements StockSignal {
 	}
 
 	@Override
-	public boolean signal(Stock stock, Date date, Portfolio portfolio) {
+	public boolean signal(Stock stock, Date date, Portfolio portfolio) throws ParseException {
 		return left.signal(stock, date, portfolio) || right.signal(stock, date, portfolio);
 	}
 

@@ -1,5 +1,6 @@
 package com.algotrading.backtesting.replay;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import com.algotrading.backtesting.portfolio.Portfolio;
@@ -26,7 +27,7 @@ public class Replay {
 		this.tradingDate = tradingDate;
 	}
 
-	public void simulate() {
+	public void simulate() throws ParseException {
 		Date currentDate = startDate;
 		tradingDate.setCurrentDate(currentDate);
 		Portfolio portfolio = new Portfolio(currentDate);

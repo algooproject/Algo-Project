@@ -7,7 +7,7 @@ import com.algotrading.backtesting.pattern.StockSignal;
 public interface Node {
 	void parse(Context context) throws ParseException;
 
-	StockSignal execute();
+	StockSignal execute ();
 }
 
 // <expr> ::= <and> | <or> | <not> | <se>

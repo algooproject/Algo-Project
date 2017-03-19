@@ -1,5 +1,6 @@
 package com.algotrading.backtesting.strategy;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import com.algotrading.backtesting.pattern.StockSignal;
@@ -17,7 +18,7 @@ public class Strategy {
 		this.buyCostIfMatch = buyCostIfMatch;
 	}
 
-	public boolean shouldPutOrder(Stock stock, Date date, Portfolio portfolio) {
+	public boolean shouldPutOrder(Stock stock, Date date, Portfolio portfolio) throws ParseException {
 		return pattern.signal(stock, date, portfolio);
 	}
 

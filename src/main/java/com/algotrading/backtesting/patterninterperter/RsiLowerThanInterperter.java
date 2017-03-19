@@ -2,12 +2,13 @@ package com.algotrading.backtesting.patterninterperter;
 
 import java.text.ParseException;
 
-import com.algotrading.backtesting.pattern.SmaHigherThanSignal;
+import com.algotrading.backtesting.pattern.RsiLowerThanSignal;
 import com.algotrading.backtesting.pattern.StockSignal;
 
-public class SmaHigherThanInterperter implements Node {
-	private static String name = "SmaLarger";
-	private int magnitude;
+public class RsiLowerThanInterperter implements Node {
+	private static String name = "RsiLower";
+	private int magnitude = 10;
+	private int sma_magnitude = 10;
 	private String expectedValueType="number";
 	private String expectedValue;
 	private double multiplier=1;
@@ -18,8 +19,8 @@ public class SmaHigherThanInterperter implements Node {
 			if (context.currentToken() == null) {
 				throw new ParseException(name, 0);
 			} else if (context.currentToken()
-					.equals("SMAHigher[")) {
-				context.skipToken("SMAHigher[");
+					.equals("RSILower[")) {
+				context.skipToken("RSILower[");
 			} else if (context.currentToken()
 					.equals("]")) {
 				context.skipToken("]");
@@ -34,28 +35,30 @@ public class SmaHigherThanInterperter implements Node {
 
 				if ("magnitude".equals(key)) {
 					magnitude = Integer.parseInt(value);
+				} else if ("sma_magnitude".equals(key)) {
+					sma_magnitude = Integer.parseInt(value);
 				} else if ("expectedValueType".equals(key)) {
 					expectedValueType = value;
 				} else if ("expectedValue".equals(key)) {
 					expectedValue = value;
+//					expectedValue = Double.parseDouble(value);
 				} else if ("multiplier".equals(key)) {
 					multiplier = Double.parseDouble(value);
 				} else {
-					throw new ParseException(name + " no field match", 0);				
+					throw new ParseException(name + " no field match", 0);
 				}
 			}
 		}
 	}
 
 	@Override
-	public StockSignal execute() {
+	public StockSignal execute(){
 		try {
-			return new SmaHigherThanSignal(magnitude, expectedValueType, expectedValue, multiplier);
+			return new RsiLowerThanSignal(magnitude, sma_magnitude, expectedValueType, expectedValue, multiplier);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
-		
 	}
 }

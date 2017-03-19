@@ -1,36 +1,47 @@
 package com.algotrading.backtesting.pattern;
 
-//next step: -implement in a way that SMA of the same stock does not need to be created every time;
-//           -may want to modify the way to get an element particular field (eg. Volume) using date. 
+// next step: -implement in a way that RSI of the same stock does not need to be created every time. 
+//            -may want to modify the way to get an element particular field (eg. Volume) using date.
+// find the index of an element of a list: List.indexOf(elm)
+// Not = !
+// How should we write in buyStrategies.txt
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 
-import com.algotrading.backtesting.indicatorcalculator.SMA;
+import com.algotrading.backtesting.indicatorcalculator.RSI;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
 
-public abstract class SmaSignal implements StockSignal {
+public abstract class RsiSignal implements StockSignal {
 
 	protected int magnitude = 10;
+	protected int sma_magnitude = 10;
 	protected String expectedValueType = "number";
 	protected String expectedValue = "10";
 	protected double multiplier = 1;
 	protected double testValue;
+	protected RSI rsi;
 	protected Map<Date, Double> closingHistory;
-	protected SMA sma;
 
-	public SmaSignal(int magnitude, String expectedValueType, String expectedValue, double multiplier) {
+	public RsiSignal(int magnitude, int sma_magnitude, String expectedValueType, String expectedValue,
+			double multiplier) throws ParseException {
 		this.magnitude = magnitude;
-		this.expectedValueType = expectedValueType;
+		this.sma_magnitude = sma_magnitude;
+		this.expectedValueType = expectedValue;
 		this.expectedValue = expectedValue;
+		this.multiplier = multiplier;
 		// settestValue();
 	}
 
 	public int getMagnitude() {
 		return magnitude;
+	}
+
+	public int getSMA_Magnitude() {
+		return sma_magnitude;
 	}
 
 	public String getExpectedValueType() {
@@ -55,17 +66,19 @@ public abstract class SmaSignal implements StockSignal {
 						.getClose());
 			}
 			try {
-				sma = new SMA(closingHistory, date, magnitude);
+				rsi = new RSI(closingHistory, date, magnitude, sma_magnitude);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return false;
 			}
 		}
-		sma.setRecent(date);
+
+		rsi.setRecent(date);
 		settestValue(date);
 		try {
-			double value = sma.getValue();
+			RSI rsi = new RSI(closingHistory, date, magnitude, sma_magnitude);
+			double value = rsi.getValue();
 			return determine(value);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

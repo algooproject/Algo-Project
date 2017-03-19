@@ -55,7 +55,7 @@ public class Strategies {
 		return strategies;
 	}
 
-	public PortfolioComponent buySellAmount(Stock stock, Date date, Portfolio portfolio) {
+	public PortfolioComponent buySellAmount(Stock stock, Date date, Portfolio portfolio) throws ParseException {
 		for (Strategy strategy : buySignal) {
 			if (strategy.shouldPutOrder(stock, date, portfolio) && !portfolio.containsStock(stock)) {
 				PortfolioComponent buyAmount = strategy.buyAmount(stock, date);
