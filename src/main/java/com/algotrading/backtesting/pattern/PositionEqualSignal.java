@@ -11,7 +11,7 @@ public class PositionEqualSignal extends PositionSignal {
 
 	@Override
 	protected boolean determine(double value) {
-		if (value > testValue * multiplier) {
+		if (value == testValue * multiplier) {
 			return true;
 		} else {
 			return false;
