@@ -17,11 +17,11 @@ import com.algotrading.backtesting.stock.StockHistory;
 
 public abstract class RsiSignal implements StockSignal {
 
-	protected int magnitude = 10;
-	protected int sma_magnitude = 10;
-	protected String expectedValueType = "number";
-	protected String expectedValue = "10";
-	protected double multiplier = 1;
+	protected int magnitude;
+	protected int sma_magnitude;
+	protected String expectedValueType;
+	protected String expectedValue;
+	protected double multiplier;
 	protected double testValue;
 	protected RSI rsi;
 	protected Map<Date, Double> closingHistory;

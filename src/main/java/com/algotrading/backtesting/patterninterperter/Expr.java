@@ -33,6 +33,10 @@ public class Expr implements Node {
 				.equals("RSILower[")) {
 			node = new RsiLowerThanInterperter();
 			node.parse(context);
+		} else if (context.currentToken()
+				.equals("PosEqual[")) {
+			node = new PositionEqualInterpreter();
+			node.parse(context);
 		} else {
 			throw new ParseException("", 0);
 		}

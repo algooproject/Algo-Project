@@ -73,6 +73,14 @@ public class Portfolio {
 		return portfolioComponent.getStock()
 				.getTicker();
 	}
+	
+	public int getStockQuantity(Stock stock){
+		if (containsStock(stock)){
+			return portfolioComponents.get(stock.getTicker()).getQuantity();
+		}else{
+			return 0;
+		}
+	}
 
 	@Override
 	public String toString() {

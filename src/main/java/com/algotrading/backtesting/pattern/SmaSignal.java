@@ -15,9 +15,9 @@ import com.algotrading.backtesting.stock.StockHistory;
 public abstract class SmaSignal implements StockSignal {
 
 	protected int magnitude = 10;
-	protected String expectedValueType = "number";
-	protected String expectedValue = "10";
-	protected double multiplier = 1;
+	protected String expectedValueType;
+	protected String expectedValue;
+	protected double multiplier;
 	protected double testValue;
 	protected Map<Date, Double> closingHistory;
 	protected SMA sma;
@@ -26,6 +26,7 @@ public abstract class SmaSignal implements StockSignal {
 		this.magnitude = magnitude;
 		this.expectedValueType = expectedValueType;
 		this.expectedValue = expectedValue;
+		this.multiplier = multiplier;
 		// settestValue();
 	}
 
