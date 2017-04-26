@@ -40,7 +40,7 @@ public abstract class PositionSignal implements StockSignal {
 	public boolean signal(Stock stock, Date date, Portfolio portfolio) throws ParseException {
 
 		int value = portfolio.getStockQuantity(stock);
-		settestValue(date);
+		settestValue();
 		try {
 			return determine(value);
 		} catch (Exception e) {
@@ -53,7 +53,7 @@ public abstract class PositionSignal implements StockSignal {
 
 	protected abstract boolean determine(double value);
 
-	private void settestValue(Date date) throws ParseException {
+	private void settestValue() throws ParseException {
 		switch (expectedValueType) {
 		case "number":
 			testValue = Double.parseDouble(this.expectedValue);
