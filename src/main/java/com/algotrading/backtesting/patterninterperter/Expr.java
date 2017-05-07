@@ -27,14 +27,14 @@ public class Expr implements Node {
 			node.parse(context);
 		} else if (context.currentToken()
 				.equals("SMAHigher[")) {
-			node = new SmaHigherThanInterperter();
+			node = new SmaHigherThanInterpreter();
 			node.parse(context);
 		} else if (context.currentToken()
 				.equals("RSILower[")) {
 			node = new RsiLowerThanInterperter();
 			node.parse(context);
 		} else if (context.currentToken()
-				.equals("PosEqual[")) {
+				.equals("PositionEqual[")) {
 			node = new PositionEqualInterpreter();
 			node.parse(context);
 		} else {

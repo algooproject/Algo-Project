@@ -17,8 +17,8 @@ public class PositionEqualInterpreter implements Node {
 			if (context.currentToken() == null) {
 				throw new ParseException(name, 0);
 			} else if (context.currentToken()
-					.equals("PosEqual[")) {
-				context.skipToken("PosEqual[");
+					.equals("PositionEqual[")) {
+				context.skipToken("PositionEqual[");
 			} else if (context.currentToken()
 					.equals("]")) {
 				context.skipToken("]");
@@ -38,7 +38,7 @@ public class PositionEqualInterpreter implements Node {
 				} else if ("multiplier".equals(key)) {
 					multiplier = Double.parseDouble(value);
 				} else {
-					throw new ParseException(name + " no field match", 0);				
+					throw new ParseException(name + " no field match: " + key, 0);				
 				}
 			}
 		}

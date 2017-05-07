@@ -10,8 +10,7 @@ import org.junit.Test;
 
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.pattern.SmaHigherThanSignal;
-import com.algotrading.backtesting.portfolio.Portfolio;
-import com.algotrading.backtesting.portfolio.PortfolioComponent;
+
 
 public class SmaHigherThanSignalTest {
 
@@ -19,7 +18,7 @@ public class SmaHigherThanSignalTest {
 	public void test001_higherthan99() throws Exception {
 		// Test case: Use SEHK_0001.csv, Average = (100 * 4 + 2 * 99) / 6 > 99, should return true
 		
-		Stock CK = new Stock("SEHK_0001.HK");
+		Stock CK = new Stock("SEHK_0001");
 		CK.read();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = sdf.parse("20160930");
@@ -32,7 +31,7 @@ public class SmaHigherThanSignalTest {
 	public void test002_lessthan100() throws Exception {
 		// Test case: Use SEHK_0001.csv, Average = (100 * 4 + 2 * 99) / 6 < 100, should return false
 		
-		Stock CK = new Stock("SEHK_0001.HK");
+		Stock CK = new Stock("SEHK_0001");
 		CK.read();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = sdf.parse("20160930");
@@ -40,10 +39,11 @@ public class SmaHigherThanSignalTest {
 		assertEquals(testSignal.signal(CK, date, null), false);
 	}
 	
+	@Test
 	public void test003_multiplier() throws Exception {
 		// Test case: Use SEHK_0001.csv, Average = (100 * 4 + 2 * 99) / 6 * 6 > 597, should return true
 		
-		Stock CK = new Stock("SEHK_0001.HK");
+		Stock CK = new Stock("SEHK_0001");
 		CK.read();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = sdf.parse("20160930");
@@ -51,10 +51,11 @@ public class SmaHigherThanSignalTest {
 		assertEquals(testSignal.signal(CK, date, null), true);
 	}
 	
+	@Test
 	public void test004_multiplier() throws Exception {
 		// Test case: Use SEHK_0001.csv, Average = (100 * 4 + 2 * 99) / 6 * 6 < 599, should return true
 		
-		Stock CK = new Stock("SEHK_0001.HK");
+		Stock CK = new Stock("SEHK_0001");
 		CK.read();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = sdf.parse("20160930");
@@ -62,21 +63,10 @@ public class SmaHigherThanSignalTest {
 		assertEquals(testSignal.signal(CK, date, null), false);
 	}
 
-	public void test005_higherthanclosing() throws Exception {
-		// Test case: Use SEHK_0001.csv, Average = (100 * 4 + 2 * 99) / 6 * 6 < 599, should return true
-		
-		Stock CK = new Stock("SEHK_0001.HK");
-		CK.read();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160926"); // closing = 99
-		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "variable", "closing", 1 );
-		assertEquals(testSignal.signal(CK, date, null), true);
-	}
-	
-	public void test006_lessthanclosing() throws Exception {
-		// Test case: Use SEHK_0001.csv, Average = (100 * 4 + 2 * 99) / 6 * 6 < 599, should return true
-		
-		Stock CK = new Stock("SEHK_0001.HK");
+	@Test
+	public void test005_lessthanclosing() throws Exception {
+		// Test case: Use SEHK_0001.csv. SMA < 100 should return false
+		Stock CK = new Stock("SEHK_0001");
 		CK.read();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = sdf.parse("20160930"); // closing = 100
@@ -84,4 +74,25 @@ public class SmaHigherThanSignalTest {
 		assertEquals(testSignal.signal(CK, date, null), false);
 	}
 	
+	@Test
+	public void test006_higherthanclosingwithmultipler() throws Exception {
+		// Test case: Use SEHK_0001.csv, SMA * 101/99.8 = 101 > 100  should return true
+		Stock CK = new Stock("SEHK_0001");
+		CK.read();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Date date = sdf.parse("20160930"); // closing = 100
+		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "variable", "closing", 101/99.8 );
+		assertEquals(testSignal.signal(CK, date, null), true);
+	}
+
+	@Test
+	public void test007_higherthanclosing() throws Exception {
+		// Test case: Use SEHK_0001.csv, SMA = 100.2 > 100  should return true
+		Stock CK = new Stock("SEHK_0002");
+		CK.read();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Date date = sdf.parse("20160930"); // closing = 100
+		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "variable", "closing", 1);
+		assertEquals(testSignal.signal(CK, date, null), true);
+	}
 }

@@ -5,8 +5,8 @@ import java.text.ParseException;
 import com.algotrading.backtesting.pattern.SmaHigherThanSignal;
 import com.algotrading.backtesting.pattern.StockSignal;
 
-public class SmaHigherThanInterperter implements Node {
-	private static String name = "SmaLarger";
+public class SmaHigherThanInterpreter implements Node {
+	private static String name = "SMAHigher";
 	private int magnitude;
 	private String expectedValueType="number";
 	private String expectedValue;
@@ -41,7 +41,7 @@ public class SmaHigherThanInterperter implements Node {
 				} else if ("multiplier".equals(key)) {
 					multiplier = Double.parseDouble(value);
 				} else {
-					throw new ParseException(name + " no field match", 0);				
+					throw new ParseException(name + " no field match: " + key, 0);				
 				}
 			}
 		}

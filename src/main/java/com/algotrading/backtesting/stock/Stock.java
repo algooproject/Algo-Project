@@ -22,7 +22,8 @@ public class Stock {
 
 	public Stock(String ticker) {
 		this.ticker = ticker;
-		history = new TreeMap<>();
+		history = new TreeMap<Date, StockHistory>();
+//		System.out.println("Stock Initiated... ");
 	}
 
 	public void read() {
@@ -30,9 +31,11 @@ public class Stock {
 		String strCsvFile = Stock.FILEPATH + "/" + this.ticker + ".csv";
 		String strLine = "";
 		String strCvsSplitBy = ",";
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		boolean isFirstLine = true;
-
+		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		// corrected format by Milton
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
+//		boolean isFirstLine = true;
+		boolean isFirstLine = false; // we do not need a heading
 		try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
 			while ((strLine = br.readLine()) != null) {
 				if (isFirstLine) {

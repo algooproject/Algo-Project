@@ -2,12 +2,9 @@ package com.algotrading.backtesting.pattern;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.Map;
 
-import com.algotrading.backtesting.indicatorcalculator.SMA;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.stock.Stock;
-import com.algotrading.backtesting.stock.StockHistory;
 
 public abstract class PositionSignal implements StockSignal {
 
@@ -18,10 +15,11 @@ public abstract class PositionSignal implements StockSignal {
 
 
 
-	public PositionSignal(String expectedValueType, String expectedValue, double multiplier) {
+	public PositionSignal(String expectedValueType, String expectedValue, double multiplier) throws ParseException {
 		this.expectedValueType = expectedValueType;
 		this.expectedValue = expectedValue;
 		this.multiplier = multiplier;
+		settestValue();
 	}
 
 	public String getExpectedValueType() {
@@ -56,16 +54,24 @@ public abstract class PositionSignal implements StockSignal {
 	private void settestValue() throws ParseException {
 		switch (expectedValueType) {
 		case "number":
-			testValue = Double.parseDouble(this.expectedValue);
+//			System.out.println("Hitted number!!!");
+			try {
+			    testValue = Double.parseDouble(expectedValue);
+			} catch (Exception e) {
+				throw new ParseException(expectedValue + " cannot be converted into double", 0);
+			  }
+			
+			break;
 		case "variable":
 			switch (expectedValue) { // no value for variable expectedValue 
-			// case "closing":
+			case "closing":
+				throw new ParseException("Getting closing price is not implemented yet", 0);
 				// testValue = closingHistory.get(date); 
 			default:
-				throw new ParseException("Invalid ExpectedvalueType -- " + expectedValue + ": no field match", 0);
+				throw new ParseException("Invalid Expectedvalue -- " + expectedValue + ": no field match", 0);
 			}
 		default:
-			throw new ParseException("Invalid ExpectedvalueType -- " + expectedValue + ": no field match", 0);
+			throw new ParseException("Invalid ExpectedvalueType -- " + expectedValueType + ": no field match", 0);
 		}
 	}
 }
