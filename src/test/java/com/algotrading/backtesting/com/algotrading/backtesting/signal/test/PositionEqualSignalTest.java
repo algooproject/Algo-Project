@@ -25,7 +25,7 @@ public class PositionEqualSignalTest {
 		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = sdf.parse("20160930");
-		Portfolio portfolio = new Portfolio(date);
+		Portfolio portfolio = new Portfolio(date, 10000);
 		portfolio.add(position);
 		PositionEqualSignal testSignal = new PositionEqualSignal("number", "1000", 1 );
 		assertEquals(testSignal.signal(CK, null, portfolio), true);		

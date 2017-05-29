@@ -4,38 +4,51 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.algotrading.backtesting.util.Constants;
+
 public class Stock {
 
 	private static String FILEPATH = "src/main/resources";
-	private String ticker;
+	private final String ticker;
 	private Map<Date, StockHistory> history;
+	private int lotSize;
 
 	public Stock(String ticker, Map<Date, StockHistory> history) {
-		this.ticker = ticker;
-		this.history = history;
+		this(ticker, history, 1);
 	}
 
 	public Stock(String ticker) {
+		this(ticker, new TreeMap<Date, StockHistory>(), 1);
+	}
+
+	public Stock(String ticker, int lotSize) {
+		this(ticker, new TreeMap<Date, StockHistory>(), lotSize);
+	}
+
+	public Stock(String ticker, Map<Date, StockHistory> history, int lotSize) {
 		this.ticker = ticker;
-		history = new TreeMap<Date, StockHistory>();
-//		System.out.println("Stock Initiated... ");
+		this.history = history;
+		this.lotSize = lotSize;
+	}
+
+	public void readLotSize() {
+		// TODO
 	}
 
 	public void read() {
+		read(false);
+	}
+
+	public void read(boolean withHeader) {
 		// TODO read files from ticker
 		String strCsvFile = Stock.FILEPATH + "/" + this.ticker + ".csv";
 		String strLine = "";
 		String strCvsSplitBy = ",";
-		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		// corrected format by Milton
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
-//		boolean isFirstLine = true;
-		boolean isFirstLine = false; // we do not need a heading
+		boolean isFirstLine = withHeader; // will skip header if true
 		try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
 			while ((strLine = br.readLine()) != null) {
 				if (isFirstLine) {
@@ -43,7 +56,7 @@ public class Stock {
 				} else {
 					// use comma as separator
 					String[] strStockHistory = strLine.split(strCvsSplitBy);
-					Date dtStockHistoryDate = sdf.parse(strStockHistory[0]);
+					Date dtStockHistoryDate = Constants.DATE_FORMAT_YYYYMMDD.parse(strStockHistory[0]);
 					Double dbOpen = Double.parseDouble(strStockHistory[1]);
 					Double dbClose = Double.parseDouble(strStockHistory[2]);
 					Double dbHigh = Double.parseDouble(strStockHistory[3]);
@@ -54,9 +67,7 @@ public class Stock {
 							new StockHistory(dtStockHistoryDate, dbOpen, dbClose, dbHigh, dbLow, dbAdjClose, dbVolume));
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 	}
@@ -67,6 +78,10 @@ public class Stock {
 
 	public Map<Date, StockHistory> getHistory() {
 		return history;
+	}
+
+	public int getLotSize() {
+		return lotSize;
 	}
 
 	@Override

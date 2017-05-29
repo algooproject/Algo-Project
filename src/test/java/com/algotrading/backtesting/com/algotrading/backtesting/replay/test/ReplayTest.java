@@ -89,7 +89,7 @@ public class ReplayTest {
 	@Test
 	public void test1_test() throws ParseException {
 		PortfolioHistory history = new PortfolioHistory();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 30000);
 
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
