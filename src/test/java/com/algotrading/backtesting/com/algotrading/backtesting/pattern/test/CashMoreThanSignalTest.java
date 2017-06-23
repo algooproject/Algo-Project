@@ -13,7 +13,7 @@ import com.algotrading.backtesting.pattern.cashMoreThanSignal;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.stock.Stock;
 
-public class cashMoreThanSignalTest {
+public class CashMoreThanSignalTest {
 
 	private Date date;
 	private Portfolio portfolio;

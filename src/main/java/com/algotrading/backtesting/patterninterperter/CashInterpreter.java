@@ -4,7 +4,7 @@ import java.text.ParseException;
 import com.algotrading.backtesting.pattern.StockSignal;
 import com.algotrading.backtesting.pattern.isSufficientCashSignal;
 import com.algotrading.backtesting.pattern.cashMoreThanSignal;
-public class cashInterpreter implements Node {
+public class CashInterpreter implements Node {
 	private String name = "";
 	private String expectedValueType="number";
 	private String expectedValue;
@@ -42,7 +42,7 @@ public class cashInterpreter implements Node {
 				} else if ("multiplier".equals(key) && name == "cashMoreThan") {
 					multiplier = Double.parseDouble(value);
 				} else {
-					throw new ParseException(name + " no field match", 0);				
+					throw new ParseException("Signal '" + name + "' : '" + keyValuePair[0] + "' no field match", 0);				
 				}
 			}
 		}
