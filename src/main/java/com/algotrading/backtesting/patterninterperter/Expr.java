@@ -41,6 +41,14 @@ public class Expr implements Node {
 				.equals("PositionEqual[")) {
 			node = new PositionEqualInterpreter();
 			node.parse(context);
+		} else if (context.currentToken()
+				.equals("isSufficientCash[")) {
+			node = new RsiLowerThanInterperter();
+			node.parse(context);
+		} else if (context.currentToken()
+				.equals("cashMoreThan[")) {
+			node = new RsiLowerThanInterperter();
+			node.parse(context);
 		} else {
 			throw new ParseException("", 0);
 		}

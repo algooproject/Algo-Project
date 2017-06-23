@@ -13,8 +13,6 @@ public abstract class PositionSignal implements StockSignal {
 	protected double multiplier;
 	protected double testValue;
 
-
-
 	public PositionSignal(String expectedValueType, String expectedValue, double multiplier) throws ParseException {
 		this.expectedValueType = expectedValueType;
 		this.expectedValue = expectedValue;
@@ -35,7 +33,7 @@ public abstract class PositionSignal implements StockSignal {
 	}
 
 	@Override
-	public boolean signal(Stock stock, Date date, Portfolio portfolio) throws ParseException {
+	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) throws ParseException {
 
 		int value = portfolio.getStockQuantity(stock);
 		settestValue();
@@ -45,28 +43,27 @@ public abstract class PositionSignal implements StockSignal {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
-		  }
 		}
-
+	}
 
 	protected abstract boolean determine(double value);
 
 	private void settestValue() throws ParseException {
 		switch (expectedValueType) {
 		case "number":
-//			System.out.println("Hitted number!!!");
+			// System.out.println("Hitted number!!!");
 			try {
-			    testValue = Double.parseDouble(expectedValue);
+				testValue = Double.parseDouble(expectedValue);
 			} catch (Exception e) {
 				throw new ParseException(expectedValue + " cannot be converted into double", 0);
-			  }
-			
+			}
+
 			break;
 		case "variable":
-			switch (expectedValue) { // no value for variable expectedValue 
+			switch (expectedValue) { // no value for variable expectedValue
 			case "closing":
 				throw new ParseException("Getting closing price is not implemented yet", 0);
-				// testValue = closingHistory.get(date); 
+				// testValue = closingHistory.get(date);
 			default:
 				throw new ParseException("Invalid Expectedvalue -- " + expectedValue + ": no field match", 0);
 			}
