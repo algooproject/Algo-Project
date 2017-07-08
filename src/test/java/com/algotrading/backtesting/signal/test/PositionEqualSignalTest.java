@@ -1,7 +1,6 @@
 package com.algotrading.backtesting.signal.test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Rule;
@@ -12,6 +11,7 @@ import com.algotrading.backtesting.pattern.PositionEqualSignal;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.util.Constants;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,8 +28,7 @@ public class PositionEqualSignalTest {
 
 		Stock CK = new Stock("SEHK_0001");
 		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, 10000);
 		portfolio.add(position);
 		PositionEqualSignal testSignal = new PositionEqualSignal("number", "1000", 1);
@@ -43,8 +42,7 @@ public class PositionEqualSignalTest {
 
 		Stock CK = new Stock("SEHK_0001");
 		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
 		PositionEqualSignal testSignal = new PositionEqualSignal("number", "2000", 1);
@@ -58,8 +56,7 @@ public class PositionEqualSignalTest {
 
 		Stock CK = new Stock("SEHK_0001");
 		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
 		PositionEqualSignal testSignal = new PositionEqualSignal("number", "2000", 2);
@@ -74,8 +71,7 @@ public class PositionEqualSignalTest {
 
 		Stock CK = new Stock("SEHK_0001");
 		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, BUY_COST_IF_MATCH);
 		portfolio.add(position);
 		PositionEqualSignal testSignal = new PositionEqualSignal("number", "1000", 0.5);
@@ -92,8 +88,7 @@ public class PositionEqualSignalTest {
 		expectedEx.expectMessage("Invalid ExpectedvalueType -- numbers: no field match");
 		Stock CK = new Stock("SEHK_0001");
 		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
 		PositionEqualSignal testSignal = new PositionEqualSignal("numbers", "1000", 0.5);
@@ -106,8 +101,7 @@ public class PositionEqualSignalTest {
 		expectedEx.expectMessage("Invalid Expectedvalue -- closingHistory: no field match");
 		Stock CK = new Stock("SEHK_0001");
 		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
 		PositionEqualSignal testSignal = new PositionEqualSignal("variable", "closingHistory", 0.5);
@@ -120,8 +114,7 @@ public class PositionEqualSignalTest {
 		expectedEx.expectMessage("1000a cannot be converted into double");
 		Stock CK = new Stock("SEHK_0001");
 		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
 		PositionEqualSignal testSignal = new PositionEqualSignal("number", "1000a", 0.5);
@@ -134,8 +127,7 @@ public class PositionEqualSignalTest {
 		expectedEx.expectMessage("Getting closing price is not implemented yet");
 		Stock CK = new Stock("SEHK_0001");
 		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
 		PositionEqualSignal testSignal = new PositionEqualSignal("variable", "closing", 0.5);

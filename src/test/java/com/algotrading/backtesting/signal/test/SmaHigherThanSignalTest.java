@@ -1,12 +1,12 @@
 package com.algotrading.backtesting.signal.test;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
 
 import com.algotrading.backtesting.pattern.SmaHigherThanSignal;
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.util.Constants;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,8 +23,7 @@ public class SmaHigherThanSignalTest {
 
 		Stock CK = new Stock("SEHK_0001");
 		CK.read();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "number", "99", 1);
 		assertEquals(testSignal.signal(CK, date, null, BUY_COST_IF_MATCH), true);
 
@@ -37,8 +36,7 @@ public class SmaHigherThanSignalTest {
 
 		Stock CK = new Stock("SEHK_0001");
 		CK.read();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "number", "100", 1);
 		assertEquals(testSignal.signal(CK, date, null, BUY_COST_IF_MATCH), false);
 	}
@@ -50,8 +48,7 @@ public class SmaHigherThanSignalTest {
 
 		Stock CK = new Stock("SEHK_0001");
 		CK.read();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "number", "597", 6);
 		assertEquals(testSignal.signal(CK, date, null, BUY_COST_IF_MATCH), true);
 	}
@@ -63,8 +60,7 @@ public class SmaHigherThanSignalTest {
 
 		Stock CK = new Stock("SEHK_0001");
 		CK.read();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930");
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "number", "599", 6);
 		assertEquals(testSignal.signal(CK, date, null, BUY_COST_IF_MATCH), false);
 	}
@@ -74,8 +70,8 @@ public class SmaHigherThanSignalTest {
 		// Test case: Use SEHK_0001.csv. SMA < 100 should return false
 		Stock CK = new Stock("SEHK_0001");
 		CK.read();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930"); // closing = 100
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30"); // closing
+																		// = 100
 		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "variable", "closing", 1);
 		assertEquals(testSignal.signal(CK, date, null, BUY_COST_IF_MATCH), false);
 	}
@@ -86,8 +82,8 @@ public class SmaHigherThanSignalTest {
 		// return true
 		Stock CK = new Stock("SEHK_0001");
 		CK.read();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930"); // closing = 100
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30"); // closing
+																		// = 100
 		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "variable", "closing", 101 / 99.8);
 		assertEquals(testSignal.signal(CK, date, null, BUY_COST_IF_MATCH), true);
 	}
@@ -97,8 +93,8 @@ public class SmaHigherThanSignalTest {
 		// Test case: Use SEHK_0001.csv, SMA = 100.2 > 100 should return true
 		Stock CK = new Stock("SEHK_0002");
 		CK.read();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20160930"); // closing = 100
+		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30"); // closing
+																		// = 100
 		SmaHigherThanSignal testSignal = new SmaHigherThanSignal(5, "variable", "closing", 1);
 		assertEquals(testSignal.signal(CK, date, null, BUY_COST_IF_MATCH), true);
 	}

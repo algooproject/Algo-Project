@@ -1,7 +1,6 @@
 package com.algotrading.backtesting.portfolio;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +9,7 @@ import org.junit.Test;
 
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
+import com.algotrading.backtesting.util.Constants;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -21,7 +21,7 @@ public class PortfolioTest {
 	private Stock stock0281;
 
 	public PortfolioTest() throws ParseException {
-		date = new SimpleDateFormat("yyyyMMdd").parse("20170318");
+		date = Constants.DATE_FORMAT_YYYYMMDD.parse("2017-03-18");
 
 		StockHistory stockHistory1382 = new StockHistory(date, 5, 5, 5, 5, 5, 1000);
 		Map<Date, StockHistory> stockMap1382 = new HashMap<>();

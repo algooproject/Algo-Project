@@ -11,8 +11,8 @@ import com.algotrading.backtesting.util.Constants;
 public class Main {
 
 	public static void main(String[] args) throws IOException, ParseException {
-		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("20160401");
-		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("20160411");
+		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-01");
+		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-11");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(Constants.SRC_FILEPATH + "buyStrategies.txt",
 				Constants.SRC_FILEPATH + "sellStrategies.txt");

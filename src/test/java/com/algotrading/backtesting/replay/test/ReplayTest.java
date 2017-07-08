@@ -1,7 +1,6 @@
 package com.algotrading.backtesting.replay.test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +18,7 @@ import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.strategy.Strategy;
+import com.algotrading.backtesting.util.Constants;
 
 public class ReplayTest {
 
@@ -44,9 +44,9 @@ public class ReplayTest {
 	private Stock stock0281;
 
 	public ReplayTest() throws ParseException {
-		startDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-04-01");
-		endDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-04-11");
-		middleDate = new SimpleDateFormat("yyyy-MM-dd").parse("2016-04-06");
+		startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-01");
+		endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-11");
+		middleDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-06");
 
 		mustTrueSignal = new MustTrueSignal();
 		mustFalseSignal = new MustFalseSignal();

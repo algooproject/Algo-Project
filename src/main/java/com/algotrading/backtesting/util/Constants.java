@@ -5,6 +5,6 @@ import java.text.SimpleDateFormat;
 public interface Constants {
 
 	String SRC_FILEPATH = "src/main/resources/";
-	SimpleDateFormat DATE_FORMAT_YYYYMMDD = new SimpleDateFormat("yyyyMMdd");
+	SimpleDateFormat DATE_FORMAT_YYYYMMDD = new SimpleDateFormat("yyyy-MM-dd");
 
 }

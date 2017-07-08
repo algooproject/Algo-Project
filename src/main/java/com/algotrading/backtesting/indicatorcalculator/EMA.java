@@ -1,12 +1,13 @@
 package com.algotrading.backtesting.indicatorcalculator;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import com.algotrading.backtesting.util.Constants;
 
 public class EMA implements IEmaCalculator {
 	// Constructors
@@ -27,14 +28,16 @@ public class EMA implements IEmaCalculator {
 		// this.sma_magnitude, this.alpha, this.boundary);
 		if (!this.line.containsKey(recent)) { // check if recent is a date in
 												// line
-			Map.Entry<Date, Double> entry = this.line.entrySet().iterator().next(); // if
-																					// not,
-																					// use
-																					// the
-																					// most
-																					// recent
-																					// date
-																					// available
+			Map.Entry<Date, Double> entry = this.line.entrySet()
+					.iterator()
+					.next(); // if
+								// not,
+								// use
+								// the
+								// most
+								// recent
+								// date
+								// available
 			this.recent = entry.getKey();
 			this.value = entry.getValue();
 		} else {
@@ -167,11 +170,12 @@ public class EMA implements IEmaCalculator {
 			dates.add(entry.getKey());
 			// System.out.println(entry.getKey().toString() + "/" +
 			// entry.getValue());
-			System.out.println(entry.getKey().toString() + "/" + boundary.get(entry.getKey()));
+			System.out.println(entry.getKey()
+					.toString() + "/" + boundary.get(entry.getKey()));
 			if (pointer >= magnitude - 1 && pointer < datedprice.size() - tail_magnitude) {
 				if (boundary.get(entry.getKey()) == null) {
-					SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd");
-					System.out.println("Insufficient boundary: " + dateformat.format(entry.getKey()) + " is missing! ");
+					System.out.println("Insufficient boundary: " + Constants.DATE_FORMAT_YYYYMMDD.format(entry.getKey())
+							+ " is missing! ");
 					return Collections.<Date, Double> emptyMap();
 				}
 				pointer++;
