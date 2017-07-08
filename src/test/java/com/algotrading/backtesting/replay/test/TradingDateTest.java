@@ -6,12 +6,13 @@ import java.text.ParseException;
 import org.junit.Test;
 
 import com.algotrading.backtesting.replay.TradingDate;
+import com.algotrading.backtesting.util.Constants;
 
 public class TradingDateTest {
 
 	@Test
 	public void testDate() throws IOException, ParseException {
-		TradingDate tradingDate = new TradingDate("src/test/resources/tradingDate.txt");
+		TradingDate tradingDate = new TradingDate(Constants.SRC_TEST_RESOURCE_FILEPATH + "tradingDate.txt");
 		tradingDate.read();
 		while (!tradingDate.isNotLastDate()) {
 			tradingDate.rollDay();
