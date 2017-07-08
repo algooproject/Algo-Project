@@ -12,7 +12,7 @@ import com.algotrading.backtesting.util.Constants;
 
 public class Stock {
 
-	private static String FILEPATH = "src/main/resources";
+	// private static String FILEPATH = "src/main/resources/";
 	private final String ticker;
 	private Map<Date, StockHistory> history;
 	private int lotSize;
@@ -39,13 +39,21 @@ public class Stock {
 		// TODO
 	}
 
+	public void read(String filePath) {
+		read(filePath, false);
+	}
+
 	public void read() {
 		read(false);
 	}
 
 	public void read(boolean withHeader) {
+		read(Constants.SRC_MAIN_RESOURCE_FILEPATH, withHeader);
+	}
+
+	public void read(String filePath, boolean withHeader) {
 		// TODO read files from ticker
-		String strCsvFile = Stock.FILEPATH + "/" + this.ticker + ".csv";
+		String strCsvFile = filePath + this.ticker + ".csv";
 		String strLine = "";
 		String strCvsSplitBy = ",";
 		boolean isFirstLine = withHeader; // will skip header if true

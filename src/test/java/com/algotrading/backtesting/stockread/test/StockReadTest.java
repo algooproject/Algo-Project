@@ -13,7 +13,7 @@ public class StockReadTest {
 	@Test
 	public void test001_OpenPrice() throws ParseException {
 		double expected = 97.20;
-		String ticker = "SEHK_0001.HK";
+		String ticker = "SEHK_0001";
 		String strDate = "2016-08-22";
 		String strInformation = "open";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
@@ -22,7 +22,7 @@ public class StockReadTest {
 	@Test
 	public void test002_ClosePrice() throws ParseException {
 		double expected = 98.05;
-		String ticker = "SEHK_0001.HK";
+		String ticker = "SEHK_0001";
 		String strDate = "2016-08-22";
 		String strInformation = "close";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
@@ -31,7 +31,7 @@ public class StockReadTest {
 	@Test
 	public void test003_HighPrice() throws ParseException {
 		double expected = 98.20;
-		String ticker = "SEHK_0001.HK";
+		String ticker = "SEHK_0001";
 		String strDate = "2016-08-22";
 		String strInformation = "high";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
@@ -40,7 +40,7 @@ public class StockReadTest {
 	@Test
 	public void test004_LowPrice() throws ParseException {
 		double expected = 97.00;
-		String ticker = "SEHK_0001.HK";
+		String ticker = "SEHK_0001";
 		String strDate = "2016-08-22";
 		String strInformation = "low";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
@@ -49,7 +49,7 @@ public class StockReadTest {
 	@Test
 	public void test005_AdjClosePrice() throws ParseException {
 		double expected = 97.315;
-		String ticker = "SEHK_0001.HK";
+		String ticker = "SEHK_0001";
 		String strDate = "2016-08-22";
 		String strInformation = "adjclose";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
@@ -58,7 +58,7 @@ public class StockReadTest {
 	@Test
 	public void test006_Volume() throws ParseException {
 		double expected = 4021200;
-		String ticker = "SEHK_0001.HK";
+		String ticker = "SEHK_0001";
 		String strDate = "2016-08-22";
 		String strInformation = "volume";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
@@ -66,7 +66,7 @@ public class StockReadTest {
 
 	private double getStockHistory(String ticker, String strDate, String strInformation) throws ParseException {
 		Stock SEHK_0001_HK = new Stock(ticker);
-		SEHK_0001_HK.read();
+		SEHK_0001_HK.read(Constants.SRC_TEST_RESOURCE_FILEPATH);
 		if (strInformation.equals("open")) {
 			return SEHK_0001_HK.getHistory()
 					.get(Constants.DATE_FORMAT_YYYYMMDD.parse(strDate))
