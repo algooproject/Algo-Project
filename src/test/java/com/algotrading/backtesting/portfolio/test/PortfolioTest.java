@@ -1,4 +1,4 @@
-package com.algotrading.backtesting.portfolio;
+package com.algotrading.backtesting.portfolio.test;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.algotrading.backtesting.portfolio.Portfolio;
+import com.algotrading.backtesting.portfolio.PortfolioComponent;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
 import com.algotrading.backtesting.util.Constants;

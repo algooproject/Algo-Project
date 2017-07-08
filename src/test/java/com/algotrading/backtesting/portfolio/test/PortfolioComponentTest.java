@@ -1,7 +1,8 @@
-package com.algotrading.backtesting.portfolio;
+package com.algotrading.backtesting.portfolio.test;
 
 import org.junit.Test;
 
+import com.algotrading.backtesting.portfolio.PortfolioComponent;
 import com.algotrading.backtesting.stock.Stock;
 
 import static org.junit.Assert.assertEquals;

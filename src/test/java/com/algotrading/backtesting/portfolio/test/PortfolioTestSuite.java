@@ -1,4 +1,4 @@
-package com.algotrading.backtesting.portfolio;
+package com.algotrading.backtesting.portfolio.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
