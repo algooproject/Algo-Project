@@ -8,11 +8,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.algotrading.backtesting.pattern.isSufficientCashSignal;
+import com.algotrading.backtesting.pattern.IsSufficientCashSignal;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.stock.Stock;
 
-public class isSufficientCashSignalTest {
+public class IsSufficientCashSignalTest {
 	
 	private Date date;
 	Portfolio portfolio;
@@ -24,7 +24,7 @@ public class isSufficientCashSignalTest {
 		date = new SimpleDateFormat("yyyyMMdd").parse("20170318");
 		portfolio = new Portfolio(date, 25000);
 		stock0281 = new Stock("0281");
-		isSufficientCashSignal iscs = new isSufficientCashSignal();
+		IsSufficientCashSignal iscs = new IsSufficientCashSignal();
 		assertTrue(iscs.signal(stock0281, date, portfolio, 20000));			
 	}
 
@@ -33,7 +33,7 @@ public class isSufficientCashSignalTest {
 		date = new SimpleDateFormat("yyyyMMdd").parse("20170318");
 		portfolio = new Portfolio(date, 19000);
 		stock0281 = new Stock("0281");
-		isSufficientCashSignal iscs = new isSufficientCashSignal();
+		IsSufficientCashSignal iscs = new IsSufficientCashSignal();
 		assertEquals(false, iscs.signal(stock0281, date, portfolio, 20000));			
 	}
 	

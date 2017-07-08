@@ -9,7 +9,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.algotrading.backtesting.pattern.cashMoreThanSignal;
+import com.algotrading.backtesting.pattern.CashMoreThanSignal;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.stock.Stock;
 
@@ -29,7 +29,7 @@ public class CashMoreThanSignalTest {
 		stock0281 = new Stock("0281");
 		expectedValueType = "number";
 		expectedValue = "23000";
-		cashMoreThanSignal cmt = new cashMoreThanSignal(expectedValueType, expectedValue, multiplier);
+		CashMoreThanSignal cmt = new CashMoreThanSignal(expectedValueType, expectedValue, multiplier);
 		assertTrue(cmt.signal(stock0281, date, portfolio, 20000));			
 	}
 
@@ -40,7 +40,7 @@ public class CashMoreThanSignalTest {
 		stock0281 = new Stock("0281");
 		expectedValueType = "number";
 		expectedValue = "30000";
-		cashMoreThanSignal cmt = new cashMoreThanSignal(expectedValueType, expectedValue, multiplier);
+		CashMoreThanSignal cmt = new CashMoreThanSignal(expectedValueType, expectedValue, multiplier);
 		assertEquals(false, cmt.signal(stock0281, date, portfolio, 20000));			
 	}
 	
@@ -51,7 +51,7 @@ public class CashMoreThanSignalTest {
 		stock0281 = new Stock("0281");
 		expectedValueType = "cost";
 		expectedValue = "0";
-		cashMoreThanSignal cmt = new cashMoreThanSignal(expectedValueType, expectedValue, multiplier);
+		CashMoreThanSignal cmt = new CashMoreThanSignal(expectedValueType, expectedValue, multiplier);
 		assertTrue(cmt.signal(stock0281, date, portfolio, 20000));				
 	}
 	
@@ -62,7 +62,7 @@ public class CashMoreThanSignalTest {
 		stock0281 = new Stock("0281");
 		expectedValueType = "cost";
 		expectedValue = "0";
-		cashMoreThanSignal cmt = new cashMoreThanSignal(expectedValueType, expectedValue, multiplier);
+		CashMoreThanSignal cmt = new CashMoreThanSignal(expectedValueType, expectedValue, multiplier);
 		assertEquals(false, cmt.signal(stock0281, date, portfolio, 20000));					
 	}
 
@@ -74,7 +74,7 @@ public class CashMoreThanSignalTest {
 		expectedValueType = "cost";
 		expectedValue = "0";
 		multiplier = 1.2;
-		cashMoreThanSignal cmt = new cashMoreThanSignal(expectedValueType, expectedValue, multiplier);
+		CashMoreThanSignal cmt = new CashMoreThanSignal(expectedValueType, expectedValue, multiplier);
 		assertTrue(cmt.signal(stock0281, date, portfolio, 20000));				
 	}
 	@Test
@@ -85,7 +85,7 @@ public class CashMoreThanSignalTest {
 		expectedValueType = "cost";
 		expectedValue = "0";
 		multiplier = 1.5;
-		cashMoreThanSignal cmt = new cashMoreThanSignal(expectedValueType, expectedValue, multiplier);
+		CashMoreThanSignal cmt = new CashMoreThanSignal(expectedValueType, expectedValue, multiplier);
 		assertEquals(false, cmt.signal(stock0281, date, portfolio, 20000));					
 	}
 }

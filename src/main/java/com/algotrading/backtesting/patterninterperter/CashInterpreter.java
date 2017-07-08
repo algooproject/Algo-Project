@@ -2,8 +2,8 @@ package com.algotrading.backtesting.patterninterperter;
 
 import java.text.ParseException;
 import com.algotrading.backtesting.pattern.StockSignal;
-import com.algotrading.backtesting.pattern.isSufficientCashSignal;
-import com.algotrading.backtesting.pattern.cashMoreThanSignal;
+import com.algotrading.backtesting.pattern.IsSufficientCashSignal;
+import com.algotrading.backtesting.pattern.CashMoreThanSignal;
 public class CashInterpreter implements Node {
 	private String name = "";
 	private String expectedValueType="number";
@@ -53,9 +53,9 @@ public class CashInterpreter implements Node {
 		try {
 			switch (name) {
 			case "cashMoreThan":
-				return new cashMoreThanSignal(expectedValueType, expectedValue, multiplier);
+				return new CashMoreThanSignal(expectedValueType, expectedValue, multiplier);
 			case "isSufficientCash":
-				return new isSufficientCashSignal();
+				return new IsSufficientCashSignal();
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

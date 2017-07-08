@@ -1,6 +1,8 @@
 package com.algotrading.backtesting.portfolio;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -16,9 +18,18 @@ public class Portfolio {
 
 	public Portfolio(Date date, double cash) {
 		this.date = date;
-		portfolioComponents = new TreeMap<>();
+		this.portfolioComponents = new TreeMap<>();
 		this.cash = cash;
 		this.initialCash = cash;
+	}
+
+	public List<String> getAllTickerName() {
+		return new ArrayList<String>(portfolioComponents.keySet());
+	}
+
+	public double getCostByTicker(String ticker) {
+		PortfolioComponent portfolioComponent = portfolioComponents.get(ticker);
+		return portfolioComponent.getUnitPrice();
 	}
 
 	public void setDate(Date date) {
@@ -87,11 +98,12 @@ public class Portfolio {
 		return portfolioComponent.getStock()
 				.getTicker();
 	}
-	
-	public int getStockQuantity(Stock stock){
-		if (containsStock(stock)){
-			return portfolioComponents.get(stock.getTicker()).getQuantity();
-		}else{
+
+	public int getStockQuantity(Stock stock) {
+		if (containsStock(stock)) {
+			return portfolioComponents.get(stock.getTicker())
+					.getQuantity();
+		} else {
 			return 0;
 		}
 	}

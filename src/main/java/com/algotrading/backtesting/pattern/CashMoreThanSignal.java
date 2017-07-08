@@ -2,9 +2,9 @@ package com.algotrading.backtesting.pattern;
 
 import java.text.ParseException;
 
-public class cashMoreThanSignal extends cashSignal{
+public class CashMoreThanSignal extends CashSignal{
 
-	public cashMoreThanSignal(String expectedValueType, String expectedValue, double multiplier) throws ParseException {
+	public CashMoreThanSignal(String expectedValueType, String expectedValue, double multiplier) throws ParseException {
 		super(expectedValueType, expectedValue, multiplier);
 	}
 

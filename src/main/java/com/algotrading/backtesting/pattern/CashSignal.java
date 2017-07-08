@@ -6,7 +6,7 @@ import java.util.Date;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.stock.Stock;
 
-public abstract class cashSignal implements StockSignal{
+public abstract class CashSignal implements StockSignal{
 	protected double currentCash;
 	protected double buyCostIfMatch;
 	protected String expectedValueType = "number";
@@ -14,8 +14,8 @@ public abstract class cashSignal implements StockSignal{
 	protected double multiplier = 1;
 	protected double compareValue = 1;
 	
-	public cashSignal(){}
-	public cashSignal(String expectedValueType, String expectedValue, double multiplier) throws ParseException{
+	public CashSignal(){}
+	public CashSignal(String expectedValueType, String expectedValue, double multiplier) throws ParseException{
 		this.expectedValueType = expectedValueType;
 		this.expectedValue = expectedValue;
 		this.multiplier = multiplier;
