@@ -1,6 +1,8 @@
 /target/
 /src/main/resources/*.csv
 
+**/.metadata/
+
 # Eclipse
 .classpath
 .project
