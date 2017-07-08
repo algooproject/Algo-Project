@@ -1,1 +1,0 @@
-INDEX VERSION 1.129+D:\My Documents\Private Projects\Automated Trading Strategy\src\Back-Testing\src\main\.metadata\.plugins\org.eclipse.jdt.core
