@@ -40,11 +40,13 @@ public class Stock {
 	}
 
 	public void read(String filePath) {
-		read(filePath, false);
+		// read(filePath, false);
+		read(filePath, true);
 	}
 
 	public void read() {
-		read(false);
+		// read(false);
+		read(true);
 	}
 
 	public void read(boolean withHeader) {
@@ -90,6 +92,10 @@ public class Stock {
 
 	public int getLotSize() {
 		return lotSize;
+	}
+
+	public void setLotSize(int lotSize) {
+		this.lotSize = lotSize;
 	}
 
 	@Override

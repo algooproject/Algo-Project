@@ -41,8 +41,8 @@ public class PortfolioTest {
 
 		Portfolio portfolio = new Portfolio(date, 10000);
 
-		PortfolioComponent pc1382_1 = new PortfolioComponent(stock1382, 1000, 10);
-		PortfolioComponent pc1382_2 = new PortfolioComponent(stock1382, 1000, 20);
+		PortfolioComponent pc1382_1 = new PortfolioComponent(stock1382, 1000, 10, new Date());
+		PortfolioComponent pc1382_2 = new PortfolioComponent(stock1382, 1000, 20, new Date());
 
 		portfolio.add(pc1382_1);
 		portfolio.add(pc1382_2);
@@ -58,11 +58,11 @@ public class PortfolioTest {
 
 		Portfolio portfolio = new Portfolio(date, 10000);
 
-		PortfolioComponent pc1382_1 = new PortfolioComponent(stock1382, 1000, 10);
-		PortfolioComponent pc1382_2 = new PortfolioComponent(stock1382, 1000, 20);
+		PortfolioComponent pc1382_1 = new PortfolioComponent(stock1382, 1000, 10, new Date());
+		PortfolioComponent pc1382_2 = new PortfolioComponent(stock1382, 1000, 20, new Date());
 
-		PortfolioComponent pc0281_1 = new PortfolioComponent(stock0281, 500, 5);
-		PortfolioComponent pc0281_2 = new PortfolioComponent(stock0281, 500, 10);
+		PortfolioComponent pc0281_1 = new PortfolioComponent(stock0281, 500, 5, new Date());
+		PortfolioComponent pc0281_2 = new PortfolioComponent(stock0281, 500, 10, new Date());
 
 		portfolio.add(pc1382_1);
 		portfolio.add(pc1382_2);

@@ -11,8 +11,15 @@ public class PortfolioHistory {
 
 	private Map<Date, Portfolio> history;
 
+	private double initialCash;
+
 	public PortfolioHistory() {
+		this(0);
+	}
+
+	public PortfolioHistory(double initialCash) {
 		this.history = new TreeMap<>();
+		this.initialCash = initialCash;
 	}
 
 	public void put(Date date, Portfolio portfolio) {
@@ -35,6 +42,9 @@ public class PortfolioHistory {
 			sb.append(Constants.DATE_FORMAT_YYYYMMDD.format(entry.getKey()))
 					.append(":")
 					.append(entry.getValue())
+					.append(", profit: ")
+					.append(entry.getValue()
+							.marketValue() - initialCash)
 					.append("\n");
 		}
 		return sb.toString();

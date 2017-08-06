@@ -49,6 +49,14 @@ public class Expr implements Node {
 				.equals("cashMoreThan[")) {
 			node = new RsiLowerThanInterperter();
 			node.parse(context);
+		} else if (context.currentToken()
+				.equals("SMACrossHigherThan[")) {
+			node = new SmaCrossHigherThanInterpreter();
+			node.parse(context);
+		} else if (context.currentToken()
+				.equals("SMACrossLowerThan[")) {
+			node = new SmaCrossLowerThanInterpreter();
+			node.parse(context);
 		} else {
 			throw new ParseException("", 0);
 		}

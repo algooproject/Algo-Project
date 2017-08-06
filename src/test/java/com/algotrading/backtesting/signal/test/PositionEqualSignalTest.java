@@ -27,7 +27,7 @@ public class PositionEqualSignalTest {
 		// return true
 
 		Stock CK = new Stock("SEHK_0001");
-		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
+		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80, new Date());
 		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, 10000);
 		portfolio.add(position);
@@ -41,7 +41,7 @@ public class PositionEqualSignalTest {
 		// return false
 
 		Stock CK = new Stock("SEHK_0001");
-		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
+		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80, new Date());
 		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
@@ -55,7 +55,7 @@ public class PositionEqualSignalTest {
 		// multiplier = 2; should return true
 
 		Stock CK = new Stock("SEHK_0001");
-		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
+		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80, new Date());
 		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
@@ -70,7 +70,7 @@ public class PositionEqualSignalTest {
 		// multiplier = 0.5; should return false
 
 		Stock CK = new Stock("SEHK_0001");
-		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
+		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80, new Date());
 		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, BUY_COST_IF_MATCH);
 		portfolio.add(position);
@@ -87,7 +87,7 @@ public class PositionEqualSignalTest {
 		expectedEx.expect(ParseException.class);
 		expectedEx.expectMessage("Invalid ExpectedvalueType -- numbers: no field match");
 		Stock CK = new Stock("SEHK_0001");
-		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
+		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80, new Date());
 		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
@@ -100,7 +100,7 @@ public class PositionEqualSignalTest {
 		expectedEx.expect(ParseException.class);
 		expectedEx.expectMessage("Invalid Expectedvalue -- closingHistory: no field match");
 		Stock CK = new Stock("SEHK_0001");
-		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
+		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80, new Date());
 		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
@@ -113,7 +113,7 @@ public class PositionEqualSignalTest {
 		expectedEx.expect(ParseException.class);
 		expectedEx.expectMessage("1000a cannot be converted into double");
 		Stock CK = new Stock("SEHK_0001");
-		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
+		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80, new Date());
 		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);
@@ -126,7 +126,7 @@ public class PositionEqualSignalTest {
 		expectedEx.expect(ParseException.class);
 		expectedEx.expectMessage("Getting closing price is not implemented yet");
 		Stock CK = new Stock("SEHK_0001");
-		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80);
+		PortfolioComponent position = new PortfolioComponent(CK, 1000, 80, new Date());
 		Date date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		Portfolio portfolio = new Portfolio(date, PORTFOLIO_INITIAL_CASH);
 		portfolio.add(position);

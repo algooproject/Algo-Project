@@ -45,6 +45,7 @@ public class Replay {
 				if (component.getQuantity() != 0) {
 					portfolio.add(component);
 					portfolio.addCash(tradedCash);
+					portfolio.addTransaction(buySellAmount);
 				}
 			}
 			portfolioHistory.put(currentDate, portfolio);

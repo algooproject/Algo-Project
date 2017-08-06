@@ -18,4 +18,9 @@ public class BuySellAmount {
 		return tradedCash;
 	}
 
+	@Override
+	public String toString() {
+		return "portfolioComponent: " + portfolioComponent + ", tradedCash: " + tradedCash;
+	}
+
 }

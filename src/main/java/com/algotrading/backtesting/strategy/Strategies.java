@@ -58,8 +58,9 @@ public class Strategies {
 
 	public BuySellAmount buySellAmount(Stock stock, Date date, Portfolio portfolio) throws ParseException {
 		for (Strategy strategy : buySignal) {
-			if (strategy.shouldPutOrder(stock, date, portfolio) && !portfolio.containsStock(stock)) {
-				PortfolioComponent buyAmount = strategy.buyAmount(stock, date);
+			if (strategy.shouldPutOrder(stock, date,
+					portfolio)/* && !portfolio.containsStock(stock) */) {
+				PortfolioComponent buyAmount = strategy.buyAmount(stock, date, portfolio);
 
 				// sellAmount.getQuantity() should be positive as portfolio
 				// increase stock
@@ -79,6 +80,6 @@ public class Strategies {
 				return new BuySellAmount(sellAmount, tradedCash);
 			}
 		}
-		return new BuySellAmount(new PortfolioComponent(stock, 0, 0), 0);
+		return new BuySellAmount(new PortfolioComponent(stock, 0, 0, date), 0);
 	}
 }

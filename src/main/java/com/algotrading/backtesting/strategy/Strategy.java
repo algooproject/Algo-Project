@@ -22,23 +22,26 @@ public class Strategy {
 		return pattern.signal(stock, date, portfolio, buyCostIfMatch);
 	}
 
-	public PortfolioComponent buyAmount(Stock stock, Date date) {
+	public PortfolioComponent buyAmount(Stock stock, Date date, Portfolio portfolio) {
 		double unitPrice = stock.getHistory()
 				.get(date)
 				.getClose();
-		int buyVolumeBeforeLotSize = (int) (buyCostIfMatch / unitPrice);
+		double buyCost = buyCostIfMatch == 0 ? portfolio.getCash() : buyCostIfMatch;
+		int buyVolumeBeforeLotSize = (int) (buyCost / unitPrice);
 		int buyBolumeAfterLotSize = (buyVolumeBeforeLotSize / stock.getLotSize()) * stock.getLotSize();
-		return new PortfolioComponent(stock, buyBolumeAfterLotSize, unitPrice);
+		return new PortfolioComponent(stock, buyBolumeAfterLotSize, unitPrice, date);
 	}
 
 	public PortfolioComponent sellAmount(Stock stock, Date date, Portfolio portfolio) {
 		double unitPrice = stock.getHistory()
 				.get(date)
 				.getClose();
-		int sellVolumeBeforeLotSize = (int) (buyCostIfMatch / unitPrice);
+		int sellVolumeBeforeLotSize = Math.max((int) (buyCostIfMatch / unitPrice),
+				portfolio.getPortfolioComponent(stock.getTicker())
+						.getQuantity());
 		int sellVolumeAfterLotSize = (sellVolumeBeforeLotSize / stock.getLotSize()) * stock.getLotSize();
 		int sellVolumeAfterPossibleSoldAll = buyCostIfMatch == 0 ? portfolio.getPortfolioComponent(stock.getTicker())
 				.getQuantity() : sellVolumeAfterLotSize;
-		return new PortfolioComponent(stock, 0 - sellVolumeAfterPossibleSoldAll, unitPrice);
+		return new PortfolioComponent(stock, 0 - sellVolumeAfterPossibleSoldAll, unitPrice, date);
 	}
 }

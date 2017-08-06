@@ -15,12 +15,14 @@ public class Portfolio {
 	private Date date;
 	private final double initialCash;
 	private double cash;
+	private List<BuySellAmount> transaction;
 
 	public Portfolio(Date date, double cash) {
 		this.date = date;
 		this.portfolioComponents = new TreeMap<>();
 		this.cash = cash;
 		this.initialCash = cash;
+		this.transaction = new ArrayList<>();
 	}
 
 	public List<String> getAllTickerName() {
@@ -34,6 +36,10 @@ public class Portfolio {
 
 	public void setDate(Date date) {
 		this.date = date;
+		for (Map.Entry<String, PortfolioComponent> portfolioComponent : portfolioComponents.entrySet()) {
+			portfolioComponent.getValue()
+					.setDate(date);
+		}
 	}
 
 	public void addCash(double increasedCash) {
@@ -74,13 +80,15 @@ public class Portfolio {
 	}
 
 	public double marketValue() {
-		return portfolioComponents.values()
+		double stockValue = portfolioComponents.values()
 				.stream()
-				.mapToDouble(pc -> pc.getQuantity() * pc.getStock()
+				.mapToDouble(pc -> pc.getQuantity() * (pc.getStock()
 						.getHistory()
 						.get(date)
-						.getClose())
-				.sum() + cash;
+						.getClose()))
+				.sum();
+		// System.out.println(stockValue + " " + cash + " " + initialCash);
+		return stockValue + cash;
 	}
 
 	public double cost() {
@@ -108,10 +116,14 @@ public class Portfolio {
 		}
 	}
 
+	public void addTransaction(BuySellAmount buySellAmount) {
+		this.transaction.add(buySellAmount);
+	}
+
 	@Override
 	public String toString() {
 		return "" + "Date: " + Constants.DATE_FORMAT_YYYYMMDD.format(date) + ", portfolio: " + portfolioComponents
-				+ ", cash: " + cash + ", profit: " + getProfit();
+				+ ", cash: " + cash + ", transaction: " + transaction;
 	}
 
 	public double getProfit() {
@@ -123,7 +135,7 @@ public class Portfolio {
 		Portfolio portfolio = new Portfolio(date, cash);
 		for (String key : portfolioComponents.keySet()) {
 			PortfolioComponent portfolioComponent = portfolioComponents.get(key);
-			portfolio.put(portfolioComponent.clone());
+			portfolio.put(portfolioComponent.clone(date));
 		}
 		return portfolio;
 	}

@@ -1,5 +1,7 @@
 package com.algotrading.backtesting.portfolio.test;
 
+import java.util.Date;
+
 import org.junit.Test;
 
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
@@ -13,8 +15,8 @@ public class PortfolioComponentTest {
 
 	@Test
 	public void test1_addPortfolioComponent() {
-		PortfolioComponent pc1 = new PortfolioComponent(stock1382, 1000, 10);
-		PortfolioComponent pc2 = new PortfolioComponent(stock1382, 1000, 20);
+		PortfolioComponent pc1 = new PortfolioComponent(stock1382, 1000, 10, new Date());
+		PortfolioComponent pc2 = new PortfolioComponent(stock1382, 1000, 20, new Date());
 		pc1.add(pc2);
 		assertEquals(2000, pc1.getQuantity());
 		assertEquals(15, pc1.getUnitPrice(), 0.01);
@@ -22,7 +24,7 @@ public class PortfolioComponentTest {
 
 	@Test
 	public void test2_addPortfolioComponent() {
-		PortfolioComponent pc1 = new PortfolioComponent(stock1382, 1000, 10);
+		PortfolioComponent pc1 = new PortfolioComponent(stock1382, 1000, 10, new Date());
 		pc1.add(1000, 20);
 		assertEquals(2000, pc1.getQuantity());
 		assertEquals(15, pc1.getUnitPrice(), 0.01);
