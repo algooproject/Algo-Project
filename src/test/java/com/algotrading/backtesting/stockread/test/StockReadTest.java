@@ -12,54 +12,54 @@ import static org.junit.Assert.assertEquals;
 public class StockReadTest {
 	@Test
 	public void test001_OpenPrice() throws ParseException {
-		double expected = 97.20;
+		double expected = 98.5;
 		String ticker = "SEHK_0001";
-		String strDate = "2016-08-22";
+		String strDate = "2016-09-30";
 		String strInformation = "open";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
 	}
 
 	@Test
 	public void test002_ClosePrice() throws ParseException {
-		double expected = 98.05;
+		double expected = 100;
 		String ticker = "SEHK_0001";
-		String strDate = "2016-08-22";
+		String strDate = "2016-09-30";
 		String strInformation = "close";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
 	}
 
 	@Test
 	public void test003_HighPrice() throws ParseException {
-		double expected = 98.20;
+		double expected = 100;
 		String ticker = "SEHK_0001";
-		String strDate = "2016-08-22";
+		String strDate = "2016-09-30";
 		String strInformation = "high";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
 	}
 
 	@Test
 	public void test004_LowPrice() throws ParseException {
-		double expected = 97.00;
+		double expected = 98.05;
 		String ticker = "SEHK_0001";
-		String strDate = "2016-08-22";
+		String strDate = "2016-09-30";
 		String strInformation = "low";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
 	}
 
 	@Test
 	public void test005_AdjClosePrice() throws ParseException {
-		double expected = 97.315;
+		double expected = 98.6;
 		String ticker = "SEHK_0001";
-		String strDate = "2016-08-22";
+		String strDate = "2016-09-30";
 		String strInformation = "adjclose";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
 	}
 
 	@Test
 	public void test006_Volume() throws ParseException {
-		double expected = 4021200;
+		double expected = 10000;
 		String ticker = "SEHK_0001";
-		String strDate = "2016-08-22";
+		String strDate = "2016-09-30";
 		String strInformation = "volume";
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
 	}
