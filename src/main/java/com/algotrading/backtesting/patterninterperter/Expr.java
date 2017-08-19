@@ -57,8 +57,12 @@ public class Expr implements Node {
 				.equals("SMACrossLowerThan[")) {
 			node = new SmaCrossLowerThanInterpreter();
 			node.parse(context);
+		} else if (context.currentToken()
+				.equals("VolumeHigher[")) {
+			node = new VolumeHigherThanInterperter();
+			node.parse(context);
 		} else {
-			throw new ParseException("", 0);
+			throw new ParseException(context.currentToken(), 0);
 		}
 	}
 

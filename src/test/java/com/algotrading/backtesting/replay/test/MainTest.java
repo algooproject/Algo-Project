@@ -26,7 +26,7 @@ public class MainTest {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
-		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies.txt1",
+		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies1.txt",
 				Constants.SRC_TEST_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
@@ -53,7 +53,7 @@ public class MainTest {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
-		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies.txt1",
+		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies1.txt",
 				Constants.SRC_TEST_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
@@ -74,7 +74,7 @@ public class MainTest {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
-		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies.txt1",
+		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies1.txt",
 				Constants.SRC_TEST_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
@@ -95,7 +95,7 @@ public class MainTest {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
-		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies.txt1",
+		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies1.txt",
 				Constants.SRC_TEST_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
@@ -116,7 +116,7 @@ public class MainTest {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
-		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies.txt1",
+		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies1.txt",
 				Constants.SRC_TEST_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
@@ -144,7 +144,7 @@ public class MainTest {
 		portfolio.put(TC0006pc);
 
 		history.put(date0913, portfolio);
-		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies.txt1",
+		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies1.txt",
 				Constants.SRC_TEST_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
@@ -176,7 +176,7 @@ public class MainTest {
 		portfolio.put(TC0007pc);
 
 		history.put(date0913, portfolio);
-		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies.txt1",
+		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies1.txt",
 				Constants.SRC_TEST_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
@@ -208,7 +208,7 @@ public class MainTest {
 		portfolio.put(TC0008pc);
 
 		history.put(date0913, portfolio);
-		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies.txt1",
+		Strategies strategies = new Strategies(Constants.SRC_TEST_RESOURCE_FILEPATH + "buyStrategies1.txt",
 				Constants.SRC_TEST_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
