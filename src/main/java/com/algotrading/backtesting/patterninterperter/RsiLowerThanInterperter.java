@@ -28,7 +28,6 @@ public class RsiLowerThanInterperter implements Node {
 			} else {
 				String keyValue = context.currentToken();
 				context.skipToken(context.currentToken());
-
 				String[] keyValuePair = keyValue.split("=");
 				String key = keyValuePair[0];
 				String value = keyValuePair[1];

@@ -42,8 +42,18 @@ public abstract class ClosingSignal implements StockSignal {
 
 	@Override
 	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) {
+		Double dblExpectedValue;
+		if (!portfolio.containsStock(stock)) {
+			return false;
+		}
 		Map<Date, StockHistory> history = stock.getHistory();
-		calExpectedValue = Double.valueOf(expectedValue) * multiplier;
+		if (expectedValue.equals("holdingprice")) {
+			System.out.println("stock.getTicker()"+stock.getTicker());
+			dblExpectedValue = portfolio.getPortfolioComponent(stock.getTicker()).getUnitPrice();
+		} else {
+			dblExpectedValue = Double.valueOf(expectedValue);
+		}
+		calExpectedValue = dblExpectedValue * multiplier;
 		try {
 			double value = history.get(date).getClose();
 			return determine(value);

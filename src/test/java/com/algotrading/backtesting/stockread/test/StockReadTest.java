@@ -4,12 +4,16 @@ import java.text.ParseException;
 
 import org.junit.Test;
 
+import com.algotrading.backtesting.signal.test.SmaHigherThanSignalTest;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.util.Constants;
 
 import static org.junit.Assert.assertEquals;
 
 public class StockReadTest {
+	
+	protected static String RESOURCE_PATH_NAME = Constants.SRC_TEST_RESOURCE_FILEPATH + StockReadTest.class.getPackage().getName().replace('.', '/') + "/";
+	
 	@Test
 	public void test001_OpenPrice() throws ParseException {
 		double expected = 98.5;
@@ -66,7 +70,7 @@ public class StockReadTest {
 
 	private double getStockHistory(String ticker, String strDate, String strInformation) throws ParseException {
 		Stock SEHK_0001_HK = new Stock(ticker);
-		SEHK_0001_HK.read(Constants.SRC_TEST_RESOURCE_FILEPATH);
+		SEHK_0001_HK.read(RESOURCE_PATH_NAME);
 		if (strInformation.equals("open")) {
 			return SEHK_0001_HK.getHistory()
 					.get(Constants.DATE_FORMAT_YYYYMMDD.parse(strDate))

@@ -7,13 +7,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.algotrading.backtesting.stock.Stock;
 
 public class AvailableStocks {
 
-	private List<Stock> stocks;
+	private Map <String, Stock> stocks;
 
 	public AvailableStocks(String fileList) throws IOException, ParseException {
 		read(fileList);
@@ -24,18 +26,18 @@ public class AvailableStocks {
 	}	
 	
 	public AvailableStocks() {
-		stocks = new ArrayList<>();
+		stocks = new HashMap<>();
 	}
 
 	public void read(String filePath) throws IOException, ParseException {
 		Path file = new File(filePath).toPath();
 		Charset charset = Charset.defaultCharset();
 		List<String> stringList = Files.readAllLines(file, charset);
-		stocks = new ArrayList<>();
+		stocks = new HashMap<>();
 		for (String line : stringList) {
 			Stock stock = new Stock(line);
 			stock.read();
-			stocks.add(stock);
+			add(stock);
 		}
 	}
 
@@ -43,20 +45,25 @@ public class AvailableStocks {
 		Path file = new File(filePath + fileName).toPath();
 		Charset charset = Charset.defaultCharset();
 		List<String> stringList = Files.readAllLines(file, charset);
-		stocks = new ArrayList<>();
+		stocks = new HashMap<>();
 		for (String line : stringList) {
 			Stock stock = new Stock(line);
 			stock.read(filePath);
-			stocks.add(stock);
+			add(stock);
 		}
 	}
 
 	public List<Stock> get() {
-		return stocks;
+		return new ArrayList<Stock>(stocks.values());
+	}
+	
+	public Stock get(String ticker)
+	{
+		return stocks.get(ticker);
 	}
 
 	public void add(Stock stock) {
-		stocks.add(stock);
+		stocks.put(stock.getTicker(), stock);
 	}
 
 }

@@ -10,9 +10,11 @@ import com.algotrading.backtesting.util.Constants;
 
 public class TradingDateTest {
 
+	protected static String RESOURCE_PATH_NAME = Constants.SRC_TEST_RESOURCE_FILEPATH + TradingDateTest.class.getPackage().getName().replace('.', '/') + "/";
+	
 	@Test
 	public void testDate() throws IOException, ParseException {
-		TradingDate tradingDate = new TradingDate(Constants.SRC_TEST_RESOURCE_FILEPATH + "tradingDate.txt");
+		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		tradingDate.read();
 		while (!tradingDate.isNotLastDate()) {
 			tradingDate.rollDay();

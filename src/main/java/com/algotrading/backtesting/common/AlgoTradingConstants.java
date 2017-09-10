@@ -13,6 +13,6 @@ public interface AlgoTradingConstants {
 	String SE = "SE[";
 	String RSI_LOWER = "RSILower[";
 	String SMA_HIGHER = "SMAHigher[";
-	String CLOSING_HIGHER = "CLOSINGHigher[";
-	String VOLUME_HIGHER = "VOLUMEHigher[";
+	String CLOSING_HIGHER = "ClosingHigher[";
+	String VOLUME_HIGHER = "VolumeHigher[";
 }

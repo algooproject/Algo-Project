@@ -9,6 +9,7 @@ package com.algotrading.backtesting.pattern;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.algotrading.backtesting.indicatorcalculator.RSI;
 import com.algotrading.backtesting.portfolio.Portfolio;
@@ -60,10 +61,9 @@ public abstract class RsiSignal implements StockSignal {
 	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) throws ParseException {
 		if (closingHistory == null) {
 			Map<Date, StockHistory> history = stock.getHistory();
-			// Map<Date, Double> closingHistory = new TreeMap<>();
+			closingHistory = new TreeMap<>();
 			for (Map.Entry<Date, StockHistory> entry : history.entrySet()) {
-				closingHistory.put(entry.getKey(), entry.getValue()
-						.getClose());
+				closingHistory.put(entry.getKey(), entry.getValue().getClose());
 			}
 			try {
 				rsi = new RSI(closingHistory, date, magnitude, sma_magnitude);
@@ -73,11 +73,11 @@ public abstract class RsiSignal implements StockSignal {
 				return false;
 			}
 		}
-
-		rsi.setRecent(date);
-		settestValue(date);
 		try {
 			RSI rsi = new RSI(closingHistory, date, magnitude, sma_magnitude);
+			rsi.setRecent(date);
+			System.out.println("date: " + date.toString());
+			settestValue(date);
 			double value = rsi.getValue();
 			return determine(value);
 		} catch (Exception e) {

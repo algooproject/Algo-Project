@@ -43,7 +43,7 @@ public class Expr implements Node {
 			node.parse(context);
 		} else if (context.currentToken()
 				.equals("isSufficientCash[")) {
-			node = new RsiLowerThanInterperter();
+			node = new CashInterpreter();
 			node.parse(context);
 		} else if (context.currentToken()
 				.equals("cashMoreThan[")) {
@@ -61,6 +61,11 @@ public class Expr implements Node {
 				.equals("VolumeHigher[")) {
 			node = new VolumeHigherThanInterperter();
 			node.parse(context);
+		} else if (context.currentToken()
+				.equals("ClosingHigher[")) {
+			node = new ClosingHigherThanInterperter();
+			node.parse(context);
+
 		} else {
 			throw new ParseException(context.currentToken(), 0);
 		}
