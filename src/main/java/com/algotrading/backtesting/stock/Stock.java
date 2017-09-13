@@ -15,7 +15,7 @@ public class Stock {
 	// private static String FILEPATH = "src/main/resources/";
 	private final String ticker;
 	private Map<Date, StockHistory> history;
-	private int lotSize;
+	private int lotSize; // default to be 1 if not specified when instantiated;
 
 	public Stock(String ticker, Map<Date, StockHistory> history) {
 		this(ticker, history, 1);
@@ -61,6 +61,7 @@ public class Stock {
 		boolean isFirstLine = withHeader; // will skip header if true
 		try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
 			while ((strLine = br.readLine()) != null) {
+				// System.out.println(strLine);
 				if (isFirstLine) {
 					isFirstLine = false;
 				} else {

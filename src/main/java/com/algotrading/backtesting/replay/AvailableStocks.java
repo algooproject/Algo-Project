@@ -36,6 +36,7 @@ public class AvailableStocks {
 		stocks = new HashMap<>();
 		for (String line : stringList) {
 			Stock stock = new Stock(line);
+			// System.out.println("Reading " + stock.getTicker());
 			stock.read();
 			add(stock);
 		}
@@ -48,6 +49,7 @@ public class AvailableStocks {
 		stocks = new HashMap<>();
 		for (String line : stringList) {
 			Stock stock = new Stock(line);
+			// System.out.println("Reading " + stock.getTicker());
 			stock.read(filePath);
 			add(stock);
 		}

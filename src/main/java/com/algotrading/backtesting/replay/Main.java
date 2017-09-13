@@ -22,8 +22,8 @@ public class Main {
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000);
 
 		replay.simulate();
-		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
-		System.out.println(portfolioHistory);
+		// PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
+		// System.out.println(portfolioHistory);
 	}
 
 }
