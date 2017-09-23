@@ -85,7 +85,16 @@ public class EMA implements IEmaCalculator {
 		if (this.alpha != getAutoAlpha()) {
 			this.alpha = getAutoAlpha();
 			this.line = calculate(this.datedprice, this.magnitude, this.sma_magnitude, this.alpha, this.boundary);
-			this.value = this.line.get(recent);
+			// System.out.println("Setting Auto Alpha: date = " + recent.toString());
+			// System.out.println("datedprice size = " + datedprice.size());
+			if (this.line.get(recent) != null){
+				this.value = this.line.get(recent);	
+			}
+			else{
+				this.value = Double.NaN;
+			}
+			
+			
 		}
 	}
 
@@ -165,13 +174,13 @@ public class EMA implements IEmaCalculator {
 		}
 		List<Date> dates = new ArrayList<Date>();
 		int pointer = 0;
-		System.out.println("Initialization of EMA");
+		// System.out.println("Initialization of EMA");
 		for (Map.Entry<Date, Double> entry : datedprice.entrySet()) {
 			dates.add(entry.getKey());
 			// System.out.println(entry.getKey().toString() + "/" +
 			// entry.getValue());
-			System.out.println(entry.getKey()
-					.toString() + "/" + boundary.get(entry.getKey()));
+			// System.out.println(entry.getKey()
+				//	.toString() + "/" + boundary.get(entry.getKey()));
 			if (pointer >= magnitude - 1 && pointer < datedprice.size() - tail_magnitude) {
 				if (boundary.get(entry.getKey()) == null) {
 					System.out.println("Insufficient boundary: " + Constants.DATE_FORMAT_YYYYMMDD.format(entry.getKey())
@@ -183,7 +192,7 @@ public class EMA implements IEmaCalculator {
 		}
 		Map<Date, Double> line = new TreeMap<Date, Double>();
 		double value = 0;
-		System.out.println("alpha = " + alpha);
+		// System.out.println("alpha = " + alpha);
 		// for (int i = 0; i < magnitude - 1; i++) {
 		for (int i = dates.size() - 1; i >= dates.size() - magnitude + 1; i--) {
 			value += alpha * Math.pow(1 - alpha, dates.size() - 1 - i) * datedprice.get(dates.get(i));
@@ -192,6 +201,7 @@ public class EMA implements IEmaCalculator {
 		double coefficient = Math.pow(1 - alpha, magnitude - 1);
 		value += coefficient * boundary.get(dates.get(dates.size() - magnitude));
 		line.put(dates.get(dates.size() - 1), value);
+		// System.out.println(dates.get(dates.size() - 1).toString() + '/' + value);
 		pointer = dates.size() - 1;
 
 		// for (int i = magnitude; i < dates.size() - tail_magnitude; i++) {
@@ -201,6 +211,7 @@ public class EMA implements IEmaCalculator {
 					+ coefficient * boundary.get(dates.get(i));
 			pointer -= 1;
 			line.put(dates.get(pointer), value);
+			// System.out.println(dates.get(pointer).toString() + '/' + value);
 		}
 		return line;
 	}

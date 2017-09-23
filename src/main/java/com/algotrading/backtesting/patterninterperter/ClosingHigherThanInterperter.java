@@ -30,7 +30,9 @@ public class ClosingHigherThanInterperter implements Node {
 				String[] keyValuePair = keyValue.split("=");
 				String key = keyValuePair[0];
 				String value = keyValuePair[1];
-
+				// System.out.println("key = " + key);
+				// System.out.println("value = " + value);
+				
 				if ("expectedLag".equals(key)) {
 					expectedLag = Integer.parseInt(value);
 				} else if ("expectedValueType".equals(key)) {

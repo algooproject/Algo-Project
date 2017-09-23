@@ -31,7 +31,8 @@ public class RsiLowerThanInterperter implements Node {
 				String[] keyValuePair = keyValue.split("=");
 				String key = keyValuePair[0];
 				String value = keyValuePair[1];
-
+				// System.out.println("key = " + key);
+				// System.out.println("value = " + value);
 				if ("magnitude".equals(key)) {
 					magnitude = Integer.parseInt(value);
 				} else if ("sma_magnitude".equals(key)) {

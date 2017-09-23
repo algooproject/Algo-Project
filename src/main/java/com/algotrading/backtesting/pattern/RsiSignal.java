@@ -31,7 +31,8 @@ public abstract class RsiSignal implements StockSignal {
 			double multiplier) throws ParseException {
 		this.magnitude = magnitude;
 		this.sma_magnitude = sma_magnitude;
-		this.expectedValueType = expectedValue;
+		// this.expectedValueType = expectedValue; this is a bug; corrected 10 Sep
+		this.expectedValueType = expectedValueType;
 		this.expectedValue = expectedValue;
 		this.multiplier = multiplier;
 		// settestValue();
@@ -59,12 +60,15 @@ public abstract class RsiSignal implements StockSignal {
 
 	@Override
 	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) throws ParseException {
+		// System.out.println(stock.getTicker());
 		if (closingHistory == null) {
 			Map<Date, StockHistory> history = stock.getHistory();
 			closingHistory = new TreeMap<>();
 			for (Map.Entry<Date, StockHistory> entry : history.entrySet()) {
+				// System.out.println(entry.getKey().toString() + '/' + entry.getValue().getClose());
 				closingHistory.put(entry.getKey(), entry.getValue().getClose());
 			}
+			// System.out.println(closingHistory.size());
 			try {
 				rsi = new RSI(closingHistory, date, magnitude, sma_magnitude);
 			} catch (Exception e) {
@@ -74,9 +78,9 @@ public abstract class RsiSignal implements StockSignal {
 			}
 		}
 		try {
-			RSI rsi = new RSI(closingHistory, date, magnitude, sma_magnitude);
+			// RSI rsi = new RSI(closingHistory, date, magnitude, sma_magnitude);
 			rsi.setRecent(date);
-			System.out.println("date: " + date.toString());
+			// System.out.println("date: " + date.toString());
 			settestValue(date);
 			double value = rsi.getValue();
 			return determine(value);
@@ -93,14 +97,16 @@ public abstract class RsiSignal implements StockSignal {
 		switch (expectedValueType) {
 		case "number":
 			testValue = Double.parseDouble(this.expectedValue);
+			break; // missing breaks; corrected 10 Sep 2017
 		case "variable":
 			switch (expectedValue) {
 			case "closing":
 				testValue = closingHistory.get(date); // should depend on
-														// expectedValue
+				break;									// expectedValue
 			default:
-				throw new ParseException("Invalid ExpectedvalueType -- " + expectedValue + ": no field match", 0);
+				throw new ParseException("Invalid ExpectedvalueType -- " + expectedValueType + ": no field match", 0);
 			}
+			break;
 		default:
 			throw new ParseException("Invalid ExpectedvalueType -- " + expectedValue + ": no field match", 0);
 		}

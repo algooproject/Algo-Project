@@ -17,7 +17,8 @@ public class Replay {
 	private Strategies strategies;
 	private AvailableStocks availableStocks;
 	private TradingDate tradingDate;
-	private double initialCash;
+	private Portfolio initialPortfolio;
+	private Portfolio portfolio;
 
 	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
 			AvailableStocks availableStocks, TradingDate tradingDate, double initialCash) {
@@ -27,13 +28,22 @@ public class Replay {
 		this.strategies = strategies;
 		this.availableStocks = availableStocks;
 		this.tradingDate = tradingDate;
-		this.initialCash = initialCash;
+		
+		this.portfolio = portfolioHistory.get(startDate);
+		if (this.portfolio != null){
+			this.portfolio.addCash(initialCash);
+			
+		}
+		else{
+			this.portfolio = new Portfolio(startDate, initialCash);
+		}
+		this.initialPortfolio = portfolio.clone();
 	}
 
 	public void simulate() throws ParseException {
 		Date currentDate = startDate;
 		tradingDate.setCurrentDate(currentDate);
-		Portfolio portfolio = new Portfolio(currentDate, initialCash);
+		// Portfolio portfolio = new Portfolio(currentDate, initialCash);
 		while (tradingDate.isNotLastDate() && tradingDate.currentDate()
 				.compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
