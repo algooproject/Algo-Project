@@ -17,6 +17,14 @@ public class Portfolio {
 	private double cash;
 	private List<BuySellAmount> transaction;
 
+	public Portfolio(Date date, double cash, Map<String, PortfolioComponent> portfolioComponents) {
+		this.date = date;
+		this.portfolioComponents = portfolioComponents;
+		this.cash = cash;
+		this.initialCash = cash;
+		this.transaction = new ArrayList<>();
+	}
+
 	public Portfolio(Date date, double cash) {
 		this.date = date;
 		this.portfolioComponents = new TreeMap<>();
@@ -44,6 +52,10 @@ public class Portfolio {
 
 	public void addCash(double increasedCash) {
 		this.cash = this.cash + increasedCash;
+	}
+
+	public Map<String, PortfolioComponent> getPortfolioComponents() {
+		return portfolioComponents;
 	}
 
 	public PortfolioComponent getPortfolioComponent(String tickerName) {
