@@ -16,8 +16,10 @@ public class Main {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "buyStrategies.txt",
 				Constants.SRC_MAIN_RESOURCE_FILEPATH + "sellStrategies.txt");
-		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH + "availableStocks.txt");
+		AvailableStocks availableStocks = new AvailableStocks(
+				Constants.SRC_MAIN_RESOURCE_FILEPATH + "availableStocks.txt");
 		TradingDate tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_FILEPATH + "tradingDate.txt");
+		LotSize lotSize = new LotSize(Constants.SRC_MAIN_RESOURCE_FILEPATH + "lotSize.csv");
 
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000);
 

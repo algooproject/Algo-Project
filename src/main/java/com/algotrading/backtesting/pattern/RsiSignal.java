@@ -19,7 +19,7 @@ import com.algotrading.backtesting.stock.StockHistory;
 public abstract class RsiSignal implements StockSignal {
 
 	protected int magnitude;
-	protected int sma_magnitude;
+	// protected int sma_magnitude;
 	protected String expectedValueType;
 	protected String expectedValue;
 	protected double multiplier;
@@ -27,11 +27,16 @@ public abstract class RsiSignal implements StockSignal {
 	protected RSI rsi;
 	protected Map<Date, Double> closingHistory;
 
-	public RsiSignal(int magnitude, int sma_magnitude, String expectedValueType, String expectedValue,
-			double multiplier) throws ParseException {
+	// public RsiSignal(int magnitude, int sma_magnitude, String
+	// expectedValueType, String expectedValue, double multiplier) throws
+	// ParseException {
+	public RsiSignal(int magnitude, String expectedValueType, String expectedValue, double multiplier)
+			throws ParseException {
+
 		this.magnitude = magnitude;
-		this.sma_magnitude = sma_magnitude;
-		// this.expectedValueType = expectedValue; this is a bug; corrected 10 Sep
+		// this.sma_magnitude = sma_magnitude;
+		// this.expectedValueType = expectedValue; this is a bug; corrected 10
+		// Sep
 		this.expectedValueType = expectedValueType;
 		this.expectedValue = expectedValue;
 		this.multiplier = multiplier;
@@ -42,9 +47,9 @@ public abstract class RsiSignal implements StockSignal {
 		return magnitude;
 	}
 
-	public int getSMA_Magnitude() {
-		return sma_magnitude;
-	}
+	// public int getSMA_Magnitude() {
+	// return sma_magnitude;
+	// }
 
 	public String getExpectedValueType() {
 		return expectedValueType;
@@ -65,12 +70,15 @@ public abstract class RsiSignal implements StockSignal {
 			Map<Date, StockHistory> history = stock.getHistory();
 			closingHistory = new TreeMap<>();
 			for (Map.Entry<Date, StockHistory> entry : history.entrySet()) {
-				// System.out.println(entry.getKey().toString() + '/' + entry.getValue().getClose());
+				// System.out.println(entry.getKey().toString() + '/' +
+				// entry.getValue().getClose());
 				closingHistory.put(entry.getKey(), entry.getValue().getClose());
 			}
 			// System.out.println(closingHistory.size());
 			try {
-				rsi = new RSI(closingHistory, date, magnitude, sma_magnitude);
+				// rsi = new RSI(closingHistory, date, magnitude,
+				// sma_magnitude);
+				rsi = new RSI(closingHistory, date, magnitude);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -78,7 +86,8 @@ public abstract class RsiSignal implements StockSignal {
 			}
 		}
 		try {
-			// RSI rsi = new RSI(closingHistory, date, magnitude, sma_magnitude);
+			// RSI rsi = new RSI(closingHistory, date, magnitude,
+			// sma_magnitude);
 			rsi.setRecent(date);
 			// System.out.println("date: " + date.toString());
 			settestValue(date);
@@ -102,7 +111,7 @@ public abstract class RsiSignal implements StockSignal {
 			switch (expectedValue) {
 			case "closing":
 				testValue = closingHistory.get(date); // should depend on
-				break;									// expectedValue
+				break; // expectedValue
 			default:
 				throw new ParseException("Invalid ExpectedvalueType -- " + expectedValueType + ": no field match", 0);
 			}

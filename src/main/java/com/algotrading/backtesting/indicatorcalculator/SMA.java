@@ -49,7 +49,7 @@ public class SMA implements ISmaCalculator {
 			this.recent = recent;
 			this.value = this.line.get(recent);
 		} else {
-			System.out.println("No such date in record");
+			System.out.println("SMA No such date in record");
 		}
 	}
 
@@ -115,14 +115,14 @@ public class SMA implements ISmaCalculator {
 		value = value / magnitude;
 		line.put(dates.get(dates.size() - 1), value);
 		int pointer = dates.size() - 1;
-//		 System.out.println("Calculating");
-//		 System.out.println(dates.get(pointer) + "/" + value);
+		// System.out.println("Calculating");
+		// System.out.println(dates.get(pointer) + "/" + value);
 		// for (int i = magnitude; i < dates.size(); i++) {
 		for (int i = dates.size() - magnitude - 1; i >= 0; i--) {
 			value = value - datedprice.get(dates.get(pointer)) / magnitude + datedprice.get(dates.get(i)) / magnitude;
 			pointer -= 1;
 			line.put(dates.get(pointer), value);
-//			 System.out.println(dates.get(pointer) + "/" + value);
+			// System.out.println(dates.get(pointer) + "/" + value);
 		}
 
 		return line;

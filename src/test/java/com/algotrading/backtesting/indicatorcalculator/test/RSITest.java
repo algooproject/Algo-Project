@@ -20,18 +20,21 @@ public class RSITest {
 		Calendar loopdate = new GregorianCalendar(2016, 1, 15);
 		int map_length = 20;
 		Date recent = loopdate.getTime();
-		double expected_value = 27.1604938271606; // expected value of recent date
+		double expected_value = 27.1604938271606; // expected value of recent
+													// date
 		int magnitude = 5;
 		int sma_magnitude = 1;
 
-		Double[] series = new Double[] { 97.35, 95.8, 96.4, 95.95, 95.0, 95.5, 96.9, 96.2, 95.9, 95.8, 97.95, 96.1, 96.7, 95.0, 94.0, 92.55, 93.6, 92.55, 93.0, 92.6}; // the series
+		Double[] series = new Double[] { 97.35, 95.8, 96.4, 95.95, 95.0, 95.5, 96.9, 96.2, 95.9, 95.8, 97.95, 96.1,
+				96.7, 95.0, 94.0, 92.55, 93.6, 92.55, 93.0, 92.6 }; // the
+																	// series
 
 		Map<Date, Double> datedprice = new TreeMap<Date, Double>();
 		for (int i = 0; i < map_length; i++) {
 			datedprice.put(loopdate.getTime(), series[i]);
 			loopdate.add(Calendar.DATE, -1);
 		}
-		RSI rsi = new RSI(datedprice, recent, magnitude, sma_magnitude);
+		RSI rsi = new RSI(datedprice, recent, magnitude);
 		// Test case setting ends
 
 		// print the resulting line from rsi
@@ -45,18 +48,19 @@ public class RSITest {
 		System.out.println("Expected");
 		Map<Date, Double> expected_line = new TreeMap<Date, Double>();
 		loopdate = new GregorianCalendar(2016, 1, 15);
-/*		Double[] rsi_points = new Double[] { 0.0, 3.950617284, 7.901234568, 11.85185185, 15.80246914, 19.75308642,
-				29.62962963, 44.44444444, 66.66666667, 100.0, 100.0, 100.0 }; // this
-																				// is
-																				// the
-																				// expecting
-																				// line
-*/
-		Double[] rsi_points = new Double[] { 27.1604938271606,64.1025641025641,47.5,49.3506493506494,63.3333333333332,76.3440860215053,42.156862745098,55.0,42.96875,37.6712328767124,9.09090909090919,28.448275862069,16.8,30.0,34.0909090909091   }; // this
-																				// is
-																				// the
-																				// expecting
-																				// line
+		/*
+		 * Double[] rsi_points = new Double[] { 0.0, 3.950617284, 7.901234568,
+		 * 11.85185185, 15.80246914, 19.75308642, 29.62962963, 44.44444444,
+		 * 66.66666667, 100.0, 100.0, 100.0 }; // this // is // the // expecting
+		 * // line
+		 */
+		Double[] rsi_points = new Double[] { 65.909090909091, 70.0, 83.2000000000001, 71.551724137931, 90.9090909090908,
+				62.3287671232876, 57.03125, 45., 57.843137254902, 23.6559139784947, 36.6666666666668, 50.6493506493506,
+				52.5, 35.8974358974359, 72.8395061728394 }; // this
+		// is
+		// the
+		// expecting
+		// line
 
 		for (int i = 0; i < map_length - magnitude - sma_magnitude + 1; i++) {
 			expected_line.put(loopdate.getTime(), rsi_points[i]);

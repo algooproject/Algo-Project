@@ -17,7 +17,8 @@ public class RSI implements IRsiCalculator {
 	private Date recent;
 
 	/** E.g. 50 points of a 10-day MA. Then magnitude = 10, linelen = 50 */
-	private int magnitude, smaMagnitude;
+	private int magnitude;
+	// private int smaMagnitude;
 
 	/** the EMA of the recent date */
 	private double value;
@@ -33,11 +34,13 @@ public class RSI implements IRsiCalculator {
 
 	private double alpha;
 
-	private EMA emaPlus;
+	// private EMA emaPlus;
 
-	private EMA emaMinus;
+	// private EMA emaMinus;
 
-	public RSI(Map<Date, Double> datedPrice, Date recent, int magnitude, int smaMagnitude) throws Exception {
+	// public RSI(Map<Date, Double> datedPrice, Date recent, int magnitude, int
+	// smaMagnitude) throws Exception {
+	public RSI(Map<Date, Double> datedPrice, Date recent, int magnitude) throws Exception {
 
 		// the stock
 		this.datedPrice = datedPrice;
@@ -50,9 +53,11 @@ public class RSI implements IRsiCalculator {
 
 		// equivalent to a in RSI.pdf
 		// this.smaMagnitude = smaMagnitude;
-		this.smaMagnitude = 0;
+		// this.smaMagnitude = 0;
 
-		if (!readyToCalculate(this.datedPrice, this.magnitude, this.smaMagnitude)) {
+		if (!readyToCalculate(this.datedPrice, this.magnitude)) {
+			// if (!readyToCalculate(this.datedPrice, this.magnitude,
+			// this.smaMagnitude)) {
 			throw new Exception("SMA Instantiation failed!");
 		}
 
@@ -67,18 +72,19 @@ public class RSI implements IRsiCalculator {
 		this.minus = plusMinus.get(1);
 
 		// create EMA by the positive part
-		this.emaPlus = new EMA(this.plus, recent, magnitude, smaMagnitude);
+		// this.emaPlus = new EMA(this.plus, recent, magnitude, smaMagnitude);
 
 		// create EMA by the negative part
-		this.emaMinus = new EMA(this.minus, recent, magnitude, smaMagnitude);
+		// this.emaMinus = new EMA(this.minus, recent, magnitude, smaMagnitude);
 
 		// get the RSI
-		this.line = calLine(this.emaPlus.getLine(), this.emaMinus.getLine());
-		//this.line = calLine(sumPlusOrMinus(this.plus, magnitude), sumPlusOrMinus(this.minus, magnitude));
+		// this.line = calLine(this.emaPlus.getLine(), this.emaMinus.getLine());
+		// this.line = calLine(sumPlusOrMinus(this.plus, magnitude),
+		// sumPlusOrMinus(this.minus, magnitude));
+		this.line = calLine(sumPlusOrMinus(plus, magnitude), sumPlusOrMinus(minus, magnitude));
+		this.line = calculate(datedPrice, this.magnitude);
+		// this.line = calculate(datedPrice, this.magnitude, this.smaMagnitude);
 
-		
-		this.line = calculate(datedPrice, this.magnitude, this.smaMagnitude);
-		
 		// check if recent is a date in line
 		if (!this.line.containsKey(recent)) {
 			// if not, use the most recent date available
@@ -96,31 +102,37 @@ public class RSI implements IRsiCalculator {
 			this.recent = recent;
 			this.value = this.line.get(recent);
 		} else {
-			System.out.println("No such date in record");
+			System.out.println(recent.toString() + " RSI No such date in record");
 		}
 	}
 
-	/** setting the alpha used in those EMA's */
-	public void setAlpha(double alpha) {
+	/**
+	 * setting the alpha used in those EMA's
+	 * 
+	 * @throws Exception
+	 */
+	public void setAlpha(double alpha) throws Exception {
 		if (this.alpha != alpha) {
 			this.alpha = alpha;
-			this.emaPlus.setAlpha(alpha);
-			this.emaMinus.setAlpha(alpha);
-			this.line = calLine(this.emaPlus.getLine(), this.emaMinus.getLine());
+			// this.emaPlus.setAlpha(alpha);
+			// this.emaMinus.setAlpha(alpha);
+			// this.line = calLine(this.emaPlus.getLine(),
+			// this.emaMinus.getLine());
+			this.line = calculate(datedPrice, this.magnitude);
+			// this.line = calculate(datedPrice, this.magnitude,
+			// this.smaMagnitude);
 			this.value = this.line.get(this.recent);
 		}
 	}
 
 	/** setting the default alpha used in those EMA's (2/N) */
-	public void setAutoAlpha() {
-		if (this.alpha != this.emaPlus.getAutoAlpha()) {
-			this.alpha = this.emaPlus.getAutoAlpha();
-			this.emaPlus.setAlpha(alpha);
-			this.emaMinus.setAlpha(alpha);
-			this.line = calLine(this.emaPlus.getLine(), this.emaMinus.getLine());
-			this.value = this.line.get(this.recent);
-		}
-	}
+	/*
+	 * public void setAutoAlpha() { if (this.alpha !=
+	 * this.emaPlus.getAutoAlpha()) { this.alpha = this.emaPlus.getAutoAlpha();
+	 * this.emaPlus.setAlpha(alpha); this.emaMinus.setAlpha(alpha); this.line =
+	 * calLine(this.emaPlus.getLine(), this.emaMinus.getLine()); this.value =
+	 * this.line.get(this.recent); } }
+	 */
 
 	public Date getRecent() {
 		return this.recent;
@@ -143,14 +155,18 @@ public class RSI implements IRsiCalculator {
 	}
 
 	/** check whether stock is sufficient for calculation */
-	private boolean readyToCalculate(Map<Date, Double> datedprice, int magnitude, int tail_magnitude) {
+	private boolean readyToCalculate(Map<Date, Double> datedprice, int magnitude) {
+
+		// private boolean readyToCalculate(Map<Date, Double> datedprice, int
+		// magnitude, int tail_magnitude) {
 		if (datedprice == null || magnitude < 1) {
 			System.out.println("Initialization of variables not completed yet! Cannot proceed!");
 			return false;
 		}
 
 		// check if the date is sufficient
-		if (datedprice.size() < magnitude + tail_magnitude - 1) {
+		// if (datedprice.size() < magnitude + tail_magnitude - 1) {
+		if (datedprice.size() < magnitude - 1) {
 			System.out.println("The length of line is out of range!");
 			return false;
 		}
@@ -168,12 +184,18 @@ public class RSI implements IRsiCalculator {
 		double difference;
 		for (int i = dates.size() - 1; i >= 1; i--) {
 			difference = datedprice.get(dates.get(i)) - datedprice.get(dates.get(i - 1));
+			// System.out.println(datedprice.get(dates.get(i)) + " " +
+			// datedprice.get(dates.get(i - 1)));
 			if (difference >= 0) {
 				plus.put(dates.get(i), difference);
 				minus.put(dates.get(i), 0.0);
+				// System.out.println(dates.get(i).toString() + " " + difference
+				// + " 0");
 			} else {
 				minus.put(dates.get(i), -difference);
 				plus.put(dates.get(i), 0.0);
+				// System.out.println(dates.get(i).toString() + " 0" + " " +
+				// -difference);
 			}
 		}
 		List<Map<Date, Double>> plus_minus = new ArrayList<>();
@@ -187,7 +209,7 @@ public class RSI implements IRsiCalculator {
 		List<Date> dates = new ArrayList<Date>();
 		int pointer = magnitude - 1;
 		// System.out.println("Initialization of EMA");
-		
+
 		for (Map.Entry<Date, Double> entry : plusOrMinus.entrySet()) {
 			dates.add(entry.getKey());
 			// System.out.println(entry.getKey().toString() + "/" +
@@ -209,33 +231,34 @@ public class RSI implements IRsiCalculator {
 		// for (int i = 0; i < magnitude - 1; i++) {
 		// System.out.println("dates.size()" + dates.size());
 		// System.out.println("magnitude" + magnitude);
-		
+
 		for (int i = dates.size() - 1; i >= magnitude - 1; i--) {
 			value = 0;
-			for (int j = i; j >= i - magnitude +1; j--) {
+			for (int j = i; j >= i - magnitude + 1; j--) {
 				value += plusOrMinus.get(dates.get(j));
 			}
 			line.put(dates.get(i), value / magnitude);
-			// System.out.println(dates.get(i).toString() + ": " + value / magnitude);
+			// System.out.println(dates.get(i).toString() + ": " + value /
+			// magnitude);
 		}
 		// System.out.println("***************************************");
 
 		// for (int i = magnitude; i < dates.size(); i++) {
-/*		for (int i = dates.size() - magnitude - 1; i >= magnitude - 1; i--) {
-			pointer -= 1;
-			System.out.println("***************************************");
-			System.out.println(dates);
-			System.out.println("***************************************");
-			System.out.println(pointer);
-			System.out.println("***************************************");
-			line.put(dates.get(pointer), value);
-		}
-*/
+		/*
+		 * for (int i = dates.size() - magnitude - 1; i >= magnitude - 1; i--) {
+		 * pointer -= 1;
+		 * System.out.println("***************************************");
+		 * System.out.println(dates);
+		 * System.out.println("***************************************");
+		 * System.out.println(pointer);
+		 * System.out.println("***************************************");
+		 * line.put(dates.get(pointer), value); }
+		 */
 		return line;
 	}
 
 	/** get the line with the positive and negative increment */
-	private Map<Date, Double> calLine(Map<Date, Double> minus,Map<Date, Double> plus) {
+	private Map<Date, Double> calLine(Map<Date, Double> plus, Map<Date, Double> minus) {
 		Map<Date, Double> line = new TreeMap<>();
 		Date date;
 		for (Map.Entry<Date, Double> entry : plus.entrySet()) {
@@ -244,13 +267,17 @@ public class RSI implements IRsiCalculator {
 				line.put(date, 100.0);
 			} else {
 				// System.out.println("date:" + date.toString());
-				// System.out.println("plus.get("+date.toString()+"):" + plus.get(date));
-				// System.out.println("minus.get("+date.toString()+"):" + minus.get(date));
-				
+				// System.out.println("plus.get(" + date.toString() + "):" +
+				// plus.get(date));
+				// System.out.println("minus.get(" + date.toString() + "):" +
+				// minus.get(date));
+
 				line.put(date, 100 - 100 / (1 + plus.get(date) / minus.get(date)));
 				double test = 100 - 100 / (1 + plus.get(date) / minus.get(date));
-				// System.out.println("100 - 100 / (1 + plus.get(date) / minus.get(date)):" + test);
-				System.out.println(date.toString() + "RSI:" + test);
+				// System.out.println("100 - 100 / (1 + plus.get(date) /
+				// minus.get(date)):" + test);
+				// System.out.println(date.toString() + "RSI: " + test + ".
+				// magnitude: " + magnitude);
 			}
 		}
 		// this.value = line.get(this.recent);
@@ -259,27 +286,31 @@ public class RSI implements IRsiCalculator {
 
 	/** get RSI, open to outside calls */
 	@Override
-	public Map<Date, Double> calculate(Map<Date, Double> datedprice, int magnitude, int sma_magnitude)
-			throws Exception {
+	// public Map<Date, Double> calculate(Map<Date, Double> datedprice, int
+	// magnitude, int sma_magnitude)
+	// throws Exception {
+
+	public Map<Date, Double> calculate(Map<Date, Double> datedprice, int magnitude) throws Exception {
 		Map<Date, Double> line = new TreeMap<>();
 
-		if (!readyToCalculate(datedprice, magnitude, sma_magnitude)) {
+		if (!readyToCalculate(datedprice, magnitude)) {
+			// if (!readyToCalculate(datedprice, magnitude, sma_magnitude)) {
 			return Collections.<Date, Double> emptyMap();
 		}
 		Map.Entry<Date, Double> entry = this.line.entrySet().iterator().next();
-		Date recent = entry.getKey();
+		// Date recent = entry.getKey();
 		List<Map<Date, Double>> plus_minus = differentiate(datedprice);
 		Map<Date, Double> plus = plus_minus.get(0);
 		// System.out.println("plus");
 		// System.out.println(plus);
-		
+
 		Map<Date, Double> minus = plus_minus.get(1);
 		// System.out.println("minus");
 		// System.out.println(minus);
-		//EMA ema_plus = new EMA(plus, recent, magnitude, sma_magnitude);
-		//EMA ema_minus = new EMA(minus, recent, magnitude, sma_magnitude);
+		// EMA ema_plus = new EMA(plus, recent, magnitude, sma_magnitude);
+		// EMA ema_minus = new EMA(minus, recent, magnitude, sma_magnitude);
 		// line = calLine(ema_plus.getLine(), ema_minus.getLine());
-		line = calLine(sumPlusOrMinus(plus, magnitude),sumPlusOrMinus(minus, magnitude));
+		line = calLine(sumPlusOrMinus(plus, magnitude), sumPlusOrMinus(minus, magnitude));
 		return line;
 	}
 }

@@ -17,6 +17,7 @@ public class Replay {
 	private Strategies strategies;
 	private AvailableStocks availableStocks;
 	private TradingDate tradingDate;
+	// private LotSize lotSize;
 	private Portfolio initialPortfolio;
 	private Portfolio portfolio;
 
@@ -28,13 +29,13 @@ public class Replay {
 		this.strategies = strategies;
 		this.availableStocks = availableStocks;
 		this.tradingDate = tradingDate;
-		
+		// this.lotSize = lotSize;
+
 		this.portfolio = portfolioHistory.get(startDate);
-		if (this.portfolio != null){
+		if (this.portfolio != null) {
 			this.portfolio.addCash(initialCash);
-			
-		}
-		else{
+
+		} else {
 			this.portfolio = new Portfolio(startDate, initialCash);
 		}
 		this.initialPortfolio = portfolio.clone();
@@ -44,8 +45,7 @@ public class Replay {
 		Date currentDate = startDate;
 		tradingDate.setCurrentDate(currentDate);
 		// Portfolio portfolio = new Portfolio(currentDate, initialCash);
-		while (tradingDate.isNotLastDate() && tradingDate.currentDate()
-				.compareTo(endDate) <= 0) {
+		while (tradingDate.isNotLastDate() && tradingDate.currentDate().compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
 			portfolio.setDate(currentDate);
 			for (Stock stock : availableStocks.get()) {

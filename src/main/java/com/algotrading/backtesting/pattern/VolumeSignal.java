@@ -1,7 +1,7 @@
 package com.algotrading.backtesting.pattern;
 
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.algotrading.backtesting.portfolio.Portfolio;
@@ -47,10 +47,18 @@ public abstract class VolumeSignal implements StockSignal {
 		if (expectedValueType.equals("variable")) {
 			if (expectedValue.equals("volume")) {
 
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(date);
-				cal.add(Calendar.DATE, 0 - expectedLag);
-				Date earlierDate = cal.getTime();
+				Map<Integer, Date> pointerDate = new HashMap<Integer, Date>();
+				Map<Date, Integer> datePointer = new HashMap<Date, Integer>();
+				int i = 1;
+				for (Map.Entry<Date, StockHistory> entry : stock.getHistory().entrySet()) {
+					pointerDate.put(i, entry.getKey());
+					datePointer.put(entry.getKey(), i);
+					i++;
+				}
+
+				pointerDate.get(datePointer.get(date).intValue() - expectedLag);
+				Date earlierDate = pointerDate.get(datePointer.get(date).intValue() - expectedLag);
+				System.out.println("Volume Signal:" + earlierDate.toString());
 
 				calExpectedValue = history.get(earlierDate).getVolume() * multiplier;
 			}

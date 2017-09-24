@@ -6,7 +6,7 @@ public class RsiLowerThanSignal extends RsiSignal {
 
 	public RsiLowerThanSignal(int magnitude, int sma_magnitude, String expectedValueType, String expectedValue,
 			double multiplier) throws ParseException {
-		super(magnitude, sma_magnitude, expectedValueType, expectedValue, multiplier);
+		super(magnitude, expectedValueType, expectedValue, multiplier);
 	}
 
 	@Override

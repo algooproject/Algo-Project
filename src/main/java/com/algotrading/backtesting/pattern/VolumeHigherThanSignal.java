@@ -8,7 +8,7 @@ public class VolumeHigherThanSignal extends VolumeSignal {
 
 	@Override
 	protected boolean determine(double value) {
-		if (value > Double.valueOf(expectedValue)) {
+		if (value > Double.valueOf(calExpectedValue)) {
 			return true;
 		} else {
 			return false;
