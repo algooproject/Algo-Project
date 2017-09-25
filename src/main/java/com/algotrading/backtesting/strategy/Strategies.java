@@ -61,7 +61,6 @@ public class Strategies {
 			if (strategy.shouldPutOrder(stock, date,
 					portfolio)/* && !portfolio.containsStock(stock) */) {
 				PortfolioComponent buyAmount = strategy.buyAmount(stock, date, portfolio);
-
 				// sellAmount.getQuantity() should be positive as portfolio
 				// increase stock
 				// so need to negative it to state decrease cash

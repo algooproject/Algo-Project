@@ -102,7 +102,7 @@ public class RSI implements IRsiCalculator {
 			this.recent = recent;
 			this.value = this.line.get(recent);
 		} else {
-			System.out.println(recent.toString() + " RSI No such date in record");
+			// System.out.println(" RSI No such date in record");
 		}
 	}
 

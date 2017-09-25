@@ -8,6 +8,7 @@ package com.algotrading.backtesting.pattern;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -24,9 +25,11 @@ public abstract class RsiSignal implements StockSignal {
 	protected String expectedValue;
 	protected double multiplier;
 	protected double testValue;
-	protected RSI rsi;
-	protected Map<Date, Double> closingHistory;
 
+	protected Map<String, Map<Date, Double>> storedClosingHistory = new HashMap<String, Map<Date, Double>>();
+	protected Map<Date, Double> closingHistory;
+	protected Map<String, RSI> initiatedRSI = new HashMap<String, RSI>();
+	protected RSI rsi;
 	// public RsiSignal(int magnitude, int sma_magnitude, String
 	// expectedValueType, String expectedValue, double multiplier) throws
 	// ParseException {
@@ -43,6 +46,14 @@ public abstract class RsiSignal implements StockSignal {
 		// settestValue();
 	}
 
+	public void setExpectedValue(String value){
+		expectedValue = value;
+	}
+	
+	public Map<String, RSI> getInitiatedRSI(){
+		return initiatedRSI;
+	}
+	
 	public int getMagnitude() {
 		return magnitude;
 	}
@@ -66,7 +77,7 @@ public abstract class RsiSignal implements StockSignal {
 	@Override
 	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) throws ParseException {
 		// System.out.println(stock.getTicker());
-		if (closingHistory == null) {
+		if (initiatedRSI.get(stock.getTicker()) == null) {
 			Map<Date, StockHistory> history = stock.getHistory();
 			closingHistory = new TreeMap<>();
 			for (Map.Entry<Date, StockHistory> entry : history.entrySet()) {
@@ -79,11 +90,16 @@ public abstract class RsiSignal implements StockSignal {
 				// rsi = new RSI(closingHistory, date, magnitude,
 				// sma_magnitude);
 				rsi = new RSI(closingHistory, date, magnitude);
+				initiatedRSI.put(stock.getTicker(), rsi);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return false;
 			}
+		}
+		else{
+			rsi = initiatedRSI.get(stock.getTicker());
+			closingHistory = storedClosingHistory.get(stock.getTicker());			
 		}
 		try {
 			// RSI rsi = new RSI(closingHistory, date, magnitude,

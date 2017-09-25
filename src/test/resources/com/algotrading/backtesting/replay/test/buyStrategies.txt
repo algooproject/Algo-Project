@@ -1,0 +1,1 @@
+SMACrossLowerThanInterperter[ coeff=5 ]	50000

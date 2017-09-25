@@ -5,6 +5,7 @@ package com.algotrading.backtesting.pattern;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -20,7 +21,9 @@ public abstract class SmaSignal implements StockSignal {
 	protected String expectedValue;
 	protected double multiplier;
 	protected double testValue;
+	protected Map<String, Map<Date, Double>> storedClosingHistory = new HashMap<String, Map<Date, Double>>();
 	protected Map<Date, Double> closingHistory;
+	protected Map<String, SMA> initiatedSMA = new HashMap<String, SMA>();
 	protected SMA sma;
 
 	public SmaSignal(int magnitude, String expectedValueType, String expectedValue, double multiplier) {
@@ -32,6 +35,14 @@ public abstract class SmaSignal implements StockSignal {
 		// settestValue();
 	}
 
+	public void setExpectedValue(String value){
+		expectedValue = value;
+	}
+	
+	public Map<String, SMA> getInitiatedSMA(){
+		return initiatedSMA;
+	}		
+	
 	public int getMagnitude() {
 		return magnitude;
 	}
@@ -50,7 +61,7 @@ public abstract class SmaSignal implements StockSignal {
 
 	@Override
 	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) throws ParseException {
-		if (closingHistory == null) {
+		if (initiatedSMA.get(stock.getTicker()) == null) {
 			closingHistory = new TreeMap<Date, Double>();
 			
 			Map<Date, StockHistory> history = stock.getHistory();
@@ -59,8 +70,10 @@ public abstract class SmaSignal implements StockSignal {
 //				System.out.println(entry.getValue().getClose());
 				closingHistory.put(entry.getKey(), entry.getValue().getClose());
 			}
+			storedClosingHistory.put(stock.getTicker(), closingHistory);
 			try {
 				sma = new SMA(closingHistory, date, magnitude);
+				initiatedSMA.put(stock.getTicker(), sma);
 //				System.out.println("Initiated sma.");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -68,6 +81,10 @@ public abstract class SmaSignal implements StockSignal {
 				return false;
 			}
 		}
+		else{
+			sma = initiatedSMA.get(stock.getTicker());
+			closingHistory = storedClosingHistory.get(stock.getTicker());
+		}			
 		sma.setRecent(date);
 		settestValue(date);
 		try {

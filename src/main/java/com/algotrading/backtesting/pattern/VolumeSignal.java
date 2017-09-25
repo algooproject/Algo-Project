@@ -55,10 +55,12 @@ public abstract class VolumeSignal implements StockSignal {
 					datePointer.put(entry.getKey(), i);
 					i++;
 				}
-
+				if (datePointer.get(date).intValue() - expectedLag < 1){
+					return false;
+				}
 				pointerDate.get(datePointer.get(date).intValue() - expectedLag);
 				Date earlierDate = pointerDate.get(datePointer.get(date).intValue() - expectedLag);
-				System.out.println("Volume Signal:" + earlierDate.toString());
+				// System.out.println("Volume Signal:" + earlierDate.toString());
 
 				calExpectedValue = history.get(earlierDate).getVolume() * multiplier;
 			}

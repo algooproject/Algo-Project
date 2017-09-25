@@ -37,7 +37,7 @@ public class LotSize {
 				String strStockCode = strLotSize[0];
 				int intLotSize = Integer.parseInt(strLotSize[1]);
 				lotSizes.put(strStockCode, intLotSize);
-				System.out.println(strStockCode + " " + intLotSize);
+				// System.out.println(strStockCode + " " + intLotSize);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
