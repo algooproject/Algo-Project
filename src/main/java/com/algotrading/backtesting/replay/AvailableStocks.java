@@ -15,7 +15,7 @@ import com.algotrading.backtesting.stock.Stock;
 
 public class AvailableStocks {
 
-	private Map <String, Stock> stocks;
+	private Map<String, Stock> stocks;
 
 	public AvailableStocks(String fileList) throws IOException, ParseException {
 		read(fileList);
@@ -23,8 +23,8 @@ public class AvailableStocks {
 
 	public AvailableStocks(String filePath, String fileName) throws IOException, ParseException {
 		read(filePath, fileName);
-	}	
-	
+	}
+
 	public AvailableStocks() {
 		stocks = new HashMap<>();
 	}
@@ -34,8 +34,9 @@ public class AvailableStocks {
 		Charset charset = Charset.defaultCharset();
 		List<String> stringList = Files.readAllLines(file, charset);
 		stocks = new HashMap<>();
+		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
 		for (String line : stringList) {
-			Stock stock = new Stock(line);
+			Stock stock = new Stock(line, lotSize.getLotSize(line));
 			// System.out.println("Reading " + stock.getTicker());
 			stock.read();
 			add(stock);
@@ -47,8 +48,10 @@ public class AvailableStocks {
 		Charset charset = Charset.defaultCharset();
 		List<String> stringList = Files.readAllLines(file, charset);
 		stocks = new HashMap<>();
+		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
 		for (String line : stringList) {
-			Stock stock = new Stock(line);
+			System.out.println(line);
+			Stock stock = new Stock(line, lotSize.getLotSize(line));
 			// System.out.println("Reading " + stock.getTicker());
 			stock.read(filePath);
 			add(stock);
@@ -58,9 +61,8 @@ public class AvailableStocks {
 	public List<Stock> get() {
 		return new ArrayList<Stock>(stocks.values());
 	}
-	
-	public Stock get(String ticker)
-	{
+
+	public Stock get(String ticker) {
 		return stocks.get(ticker);
 	}
 

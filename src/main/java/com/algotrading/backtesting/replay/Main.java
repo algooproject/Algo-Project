@@ -11,21 +11,24 @@ import com.algotrading.backtesting.util.Constants;
 public class Main {
 
 	public static void main(String[] args) throws IOException, ParseException {
+
+		System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " + Constants.SRC_MAIN_RESOURCE_FILEPATH);
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-01");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-11");
 		PortfolioHistory history = new PortfolioHistory();
-		Strategies strategies = new Strategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "buyStrategies.txt",
-				Constants.SRC_MAIN_RESOURCE_FILEPATH + "sellStrategies.txt");
-		AvailableStocks availableStocks = new AvailableStocks(
-				Constants.SRC_MAIN_RESOURCE_FILEPATH + "availableStocks.txt");
+		Strategies strategies = new Strategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "buyStrategies1.txt",
+				Constants.SRC_MAIN_RESOURCE_FILEPATH + "sellStrategies1.txt");
+		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH,
+				"availableStocks.txt");
 		TradingDate tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_FILEPATH + "tradingDate.txt");
+
 		LotSize lotSize = new LotSize(Constants.SRC_MAIN_RESOURCE_FILEPATH + "lotSize.csv");
 
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000);
 
 		replay.simulate();
-		// PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
-		// System.out.println(portfolioHistory);
+		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
+		System.out.println(portfolioHistory);
 	}
 
 }

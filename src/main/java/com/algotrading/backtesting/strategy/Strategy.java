@@ -23,25 +23,31 @@ public class Strategy {
 	}
 
 	public PortfolioComponent buyAmount(Stock stock, Date date, Portfolio portfolio) {
-		double unitPrice = stock.getHistory()
-				.get(date)
-				.getClose();
+		double unitPrice = stock.getHistory().get(date).getClose();
 		double buyCost = buyCostIfMatch == 0 ? portfolio.getCash() : buyCostIfMatch;
 		int buyVolumeBeforeLotSize = (int) (buyCost / unitPrice);
 		int buyBolumeAfterLotSize = (buyVolumeBeforeLotSize / stock.getLotSize()) * stock.getLotSize();
+		// System.out.println("stock.getTicker(): " + stock.getTicker());
+		// System.out.println("stock.getLotSize(): " + stock.getLotSize());
+		// System.out
+		// .println("buyVolumeBeforeLotSize / stock.getLotSize(): " +
+		// buyVolumeBeforeLotSize / stock.getLotSize());
+		// System.out.println("buyVolumeBeforeLotSize: " +
+		// buyVolumeBeforeLotSize);
+		// System.out.println("buyBolumeAfterLotSize: " +
+		// buyBolumeAfterLotSize);
 		return new PortfolioComponent(stock, buyBolumeAfterLotSize, unitPrice, date);
 	}
 
 	public PortfolioComponent sellAmount(Stock stock, Date date, Portfolio portfolio) {
-		double unitPrice = stock.getHistory()
-				.get(date)
-				.getClose();
+		double unitPrice = stock.getHistory().get(date).getClose();
 		int sellVolumeBeforeLotSize = Math.max((int) (buyCostIfMatch / unitPrice),
-				portfolio.getPortfolioComponent(stock.getTicker())
-						.getQuantity());
+				portfolio.getPortfolioComponent(stock.getTicker()).getQuantity());
+		// System.out.println("stock.getTicker(): " + stock.getTicker());
+		// System.out.println("stock.getLotSize(): " + stock.getLotSize());
 		int sellVolumeAfterLotSize = (sellVolumeBeforeLotSize / stock.getLotSize()) * stock.getLotSize();
-		int sellVolumeAfterPossibleSoldAll = buyCostIfMatch == 0 ? portfolio.getPortfolioComponent(stock.getTicker())
-				.getQuantity() : sellVolumeAfterLotSize;
+		int sellVolumeAfterPossibleSoldAll = buyCostIfMatch == 0
+				? portfolio.getPortfolioComponent(stock.getTicker()).getQuantity() : sellVolumeAfterLotSize;
 		return new PortfolioComponent(stock, 0 - sellVolumeAfterPossibleSoldAll, unitPrice, date);
 	}
 }
