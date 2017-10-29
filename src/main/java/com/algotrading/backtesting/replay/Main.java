@@ -13,18 +13,19 @@ public class Main {
 	public static void main(String[] args) throws IOException, ParseException {
 
 		System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " + Constants.SRC_MAIN_RESOURCE_FILEPATH);
-		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-01");
-		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-11");
-		PortfolioHistory history = new PortfolioHistory();
+		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-02-01");
+		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-08-22");
+		int initialCash = 300000;
+		PortfolioHistory history = new PortfolioHistory(initialCash);
 		Strategies strategies = new Strategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "buyStrategies1.txt",
 				Constants.SRC_MAIN_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH,
-				"availableStocks.txt");
+				"availableStocks1.txt");
 		TradingDate tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_FILEPATH + "tradingDate.txt");
 
 		LotSize lotSize = new LotSize(Constants.SRC_MAIN_RESOURCE_FILEPATH + "lotSize.csv");
 
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash);
 
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();

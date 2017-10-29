@@ -20,7 +20,7 @@ public class RSITest {
 		Calendar loopdate = new GregorianCalendar(2016, 1, 15);
 		int map_length = 20;
 		Date recent = loopdate.getTime();
-		double expected_value = 27.1604938271606; // expected value of recent
+		double expected_value = 72.83950617; // expected value of recent
 													// date
 		int magnitude = 5;
 		int sma_magnitude = 1;
@@ -54,9 +54,7 @@ public class RSITest {
 		 * 66.66666667, 100.0, 100.0, 100.0 }; // this // is // the // expecting
 		 * // line
 		 */
-		Double[] rsi_points = new Double[] { 65.909090909091, 70.0, 83.2000000000001, 71.551724137931, 90.9090909090908,
-				62.3287671232876, 57.03125, 45., 57.843137254902, 23.6559139784947, 36.6666666666668, 50.6493506493506,
-				52.5, 35.8974358974359, 72.8395061728394 }; // this
+		Double[] rsi_points = new Double[] { 72.83950617,35.8974358974359, 52.5, 50.6493506493506,36.6666666666668, 23.6559139784947, 57.843137254902, 45.0, 57.03125, 62.3287671232876, 90.9090909090908,71.551724137931, 83.2000000000001, 70.0, 65.909090909091 }; // this
 		// is
 		// the
 		// expecting
