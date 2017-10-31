@@ -47,9 +47,10 @@ public class SMA implements ISmaCalculator {
 	public void setRecent(Date recent) {
 		if (this.datedprice.containsKey(recent)) {
 			this.recent = recent;
+//			System.out.println(recent);
 			this.value = this.line.get(recent);
 		} else {
-			System.out.println("SMA No such date in record");
+			System.out.println("SMA No such date("+recent+") in record");
 		}
 	}
 

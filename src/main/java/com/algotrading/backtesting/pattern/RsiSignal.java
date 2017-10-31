@@ -105,9 +105,10 @@ public abstract class RsiSignal implements StockSignal {
 			// RSI rsi = new RSI(closingHistory, date, magnitude,
 			// sma_magnitude);
 			rsi.setRecent(date);
-			// System.out.println("date: " + date.toString());
+//			 System.out.println("date: " + date.toString());
 			settestValue(date);
 			double value = rsi.getValue();
+//			 System.out.println("rsi.getValue(): " + rsi.getValue());
 			return determine(value);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

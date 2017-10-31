@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args) throws IOException, ParseException {
 
 		System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " + Constants.SRC_MAIN_RESOURCE_FILEPATH);
-		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-02-01");
+		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-07-01");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-08-22");
 		int initialCash = 300000;
 		PortfolioHistory history = new PortfolioHistory(initialCash);
@@ -23,7 +23,7 @@ public class Main {
 				"availableStocks1.txt");
 		TradingDate tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_FILEPATH + "tradingDate.txt");
 
-		LotSize lotSize = new LotSize(Constants.SRC_MAIN_RESOURCE_FILEPATH + "lotSize.csv");
+//		LotSize lotSize = new LotSize(Constants.SRC_MAIN_RESOURCE_FILEPATH + "lotSize.csv");
 
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash);
 

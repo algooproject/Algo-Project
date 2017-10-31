@@ -35,9 +35,14 @@ public class TradingDate {
 	}
 
 	public void setCurrentDate(Date date) {
+//		System.out.println("tradingDates.size()" + tradingDates.size());
 		String dateStr = Constants.DATE_FORMAT_YYYYMMDD.format(date);
 		for (int i = 0; i < tradingDates.size(); i++) {
-			if (date.compareTo(tradingDates.get(i)) == 0) {
+//			System.out.println("date.toString(): " + date.toString());
+//			System.out.println("tradingDates.get(i): " + tradingDates.get(i));
+			if (date.compareTo(tradingDates.get(i)) <= 0) {
+//				System.out.println("date.toString(): " + date.toString());
+//				System.out.println("tradingDates.get(i): " + tradingDates.get(i));
 				currentTradingDateIndex = i;
 				break;
 			}

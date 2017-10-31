@@ -43,12 +43,16 @@ public class Replay {
 
 	public void simulate() throws ParseException {
 		Date currentDate = startDate;
+//		System.out.println("startdate: " + startDate);
 		tradingDate.setCurrentDate(currentDate);
+//		System.out.println("End setCurrentDate");
 		// Portfolio portfolio = new Portfolio(currentDate, initialCash);
 		while (tradingDate.isNotLastDate() && tradingDate.currentDate().compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
+//			System.out.println("tradingDate.currentDate(): " + tradingDate.currentDate());
 			portfolio.setDate(currentDate);
 			for (Stock stock : availableStocks.get()) {
+//				System.out.println("simulate: " + currentDate);
 				BuySellAmount buySellAmount = strategies.buySellAmount(stock, currentDate, portfolio);
 				PortfolioComponent component = buySellAmount.getPortfolioComponent();
 				double tradedCash = buySellAmount.getTradedCash();

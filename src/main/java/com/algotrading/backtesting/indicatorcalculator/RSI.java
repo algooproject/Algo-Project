@@ -41,7 +41,7 @@ public class RSI implements IRsiCalculator {
 	// public RSI(Map<Date, Double> datedPrice, Date recent, int magnitude, int
 	// smaMagnitude) throws Exception {
 	public RSI(Map<Date, Double> datedPrice, Date recent, int magnitude) throws Exception {
-
+//		System.out.println(datedPrice);
 		// the stock
 		this.datedPrice = datedPrice;
 
@@ -102,7 +102,8 @@ public class RSI implements IRsiCalculator {
 			this.recent = recent;
 			this.value = this.line.get(recent);
 		} else {
-			// System.out.println(" RSI No such date in record");
+//			System.out.println("rsi recent: " + recent);
+			 System.out.println("RSI No such date ("+recent+") in record");
 		}
 	}
 

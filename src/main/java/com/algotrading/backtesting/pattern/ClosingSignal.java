@@ -56,6 +56,7 @@ public abstract class ClosingSignal implements StockSignal {
 		}
 		calExpectedValue = dblExpectedValue * multiplier;
 		try {
+//			System.out.println("getClose: " + date);
 			double value = history.get(date).getClose();
 			return determine(value);
 		} catch (Exception e) {

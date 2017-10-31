@@ -19,6 +19,7 @@ public class Strategy {
 	}
 
 	public boolean shouldPutOrder(Stock stock, Date date, Portfolio portfolio) throws ParseException {
+//		System.out.println("shouldPutOrder: " + date);
 		return pattern.signal(stock, date, portfolio, buyCostIfMatch);
 	}
 
