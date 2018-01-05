@@ -59,6 +59,9 @@ public class Stock {
 		String strLine = "";
 		String strCvsSplitBy = ",";
 		boolean isFirstLine = withHeader; // will skip header if true
+		Double dbLastClose = null;
+		Double dbLastAdjClose = null;
+		
 		try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
 			while ((strLine = br.readLine()) != null) {
 				// System.out.println(strLine);
@@ -67,13 +70,31 @@ public class Stock {
 				} else {
 					// use comma as separator
 					String[] strStockHistory = strLine.split(strCvsSplitBy);
+					//System.out.println(strStockHistory[0] + '|' + strStockHistory[1] + '|' + strStockHistory[2] + '|' + strStockHistory[3] + '|' + strStockHistory[4] + '|' + strStockHistory[5] + '|' + strStockHistory[6]);
 					Date dtStockHistoryDate = Constants.DATE_FORMAT_YYYYMMDD.parse(strStockHistory[0]);
-					Double dbOpen = Double.parseDouble(strStockHistory[1]);
-					Double dbClose = Double.parseDouble(strStockHistory[2]);
-					Double dbHigh = Double.parseDouble(strStockHistory[3]);
-					Double dbLow = Double.parseDouble(strStockHistory[4]);
-					Double dbAdjClose = Double.parseDouble(strStockHistory[5]);
-					Double dbVolume = Double.parseDouble(strStockHistory[6]);
+					Double dbOpen = null;
+					Double dbClose = null;
+					Double dbHigh = null;
+					Double dbLow = null;
+					Double dbAdjClose = null;
+					Double dbVolume = null;
+					if (strStockHistory[1].equals("null")) {
+						dbOpen = dbLastClose;
+						dbClose = dbLastClose;
+						dbHigh = dbLastClose;
+						dbLow = dbLastClose;
+						dbAdjClose = dbLastAdjClose;
+						dbVolume = 0.0;
+					} else {
+						dbOpen = Double.parseDouble(strStockHistory[1]);
+						dbClose = Double.parseDouble(strStockHistory[4]);
+						dbHigh = Double.parseDouble(strStockHistory[2]);
+						dbLow = Double.parseDouble(strStockHistory[3]);
+						dbAdjClose = Double.parseDouble(strStockHistory[5]);
+						dbVolume = Double.parseDouble(strStockHistory[6]);
+						dbLastClose = dbClose;
+						dbLastAdjClose = dbAdjClose;
+					}
 					history.put(dtStockHistoryDate,
 							new StockHistory(dtStockHistoryDate, dbOpen, dbClose, dbHigh, dbLow, dbAdjClose, dbVolume));
 				}
