@@ -13,8 +13,8 @@ public class Main {
 	public static void main(String[] args) throws IOException, ParseException {
 
 		System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " + Constants.SRC_MAIN_RESOURCE_FILEPATH);
-		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-04");
-		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2017-12-22");
+		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2004-07-01");
+		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2017-09-29");
 		int initialCash = 300000;
 		PortfolioHistory history = new PortfolioHistory(initialCash);
 		Strategies strategies = new Strategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "buyStrategies1.txt",

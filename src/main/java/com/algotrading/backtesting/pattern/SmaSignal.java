@@ -107,7 +107,11 @@ public abstract class SmaSignal implements StockSignal {
 		case "variable":
 			switch (expectedValue) {
 			case "closing":
-//				System.out.println(date.toString() + " Hitting Closing");
+				//System.out.println(date.toString() + " Hitting Closing");
+				System.out.println(closingHistory);
+				System.out.println(date);
+				System.out.println(closingHistory.get(date));
+				
 				testValue = closingHistory.get(date); 
 				// should depend on expectedValue
 				break;
