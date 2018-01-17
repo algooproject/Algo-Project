@@ -11,7 +11,9 @@ public class SmaHigherThanSignal extends SmaSignal {
 
 	@Override
 	protected boolean determine(double value) {
-		if (value * multiplier > testValue) {
+		if (testValue < 0) {
+			return false;
+		} else if (value * multiplier > testValue) {
 			// System.out.println(value + "/" + testValue);
 			return true;
 		} else {
