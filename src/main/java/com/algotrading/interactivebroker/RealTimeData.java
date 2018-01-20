@@ -18,6 +18,7 @@ import java.util.Map;
 // https://www.interactivebrokers.com/en/index.php?f=5041
 import java.util.Vector;
 
+import com.algotrading.interactivebroker.handler.MustBuyTickPriceHandler;
 import com.algotrading.interactivebroker.test.DummyUtil;
 import com.algotrading.interactivebroker.util.Logger;
 import com.ib.client.CommissionReport;
@@ -47,7 +48,7 @@ public class RealTimeData extends BaseEWrapper {
 	private final EReader reader;
 
 	/** The class used to send messages to TWS */
-	private final EClientSocket client;
+	private final EClientSocket clientSocket;
 
 	/** Keep track of the next ID */
 	private int nextOrderID = 0;
@@ -64,6 +65,11 @@ public class RealTimeData extends BaseEWrapper {
 	/** To log the request id with the contract object */
 	private final Map<Integer, Contract> marketRequestMap;
 
+	/**
+	 * To send all request to ib, wrap the clientSocket and related information
+	 */
+	private final Requester requester;
+
 	public RealTimeData() {
 		logger = new Logger();
 		marketRequestMap = new HashMap<>();
@@ -71,22 +77,22 @@ public class RealTimeData extends BaseEWrapper {
 		priceTotal = 0.0;
 		numberOfPrices = 0;
 
-		client = new EClientSocket(this, signal);
-		client.eConnect(null, 7497, 0);
+		clientSocket = new EClientSocket(this, signal);
+		clientSocket.eConnect(null, 7497, 0);
 
 		// Pause here for connection to complete
 		// Can also try: while (client.NextOrderId <= 0);
 		try {
-			while (!(client.isConnected())) {
+			while (!(clientSocket.isConnected())) {
 				logger.info("Connection completed");
 			}
 		} catch (Exception e) {
 		}
 
-		reader = new EReader(client, signal);
+		reader = new EReader(clientSocket, signal);
 		reader.start();
 
-		Requester requester = new Requester(client, marketRequestMap);
+		requester = new Requester(this, clientSocket, marketRequestMap);
 		new Thread() {
 			@Override
 			public void run() {
@@ -107,7 +113,7 @@ public class RealTimeData extends BaseEWrapper {
 		Contract contract = DummyUtil.createContract();
 
 		// TODO remove it and have a class to determine to place order
-		placeOrder(contract);
+		// placeOrder(contract);
 
 		Vector<TagValue> mktDataOptions = new Vector<TagValue>();
 		requester.reqMarketDataType(3);
@@ -130,11 +136,16 @@ public class RealTimeData extends BaseEWrapper {
 		}
 	}
 
+	public int getNextOrderId() {
+		int result = nextOrderID;
+		nextOrderID++;
+		return result;
+	}
+
 	@Deprecated
-	private Contract placeOrder(Contract contract) {
+	private void placeOrder(Contract contract) {
 		Order order = DummyUtil.createTestLimitDayOrder();
-		client.placeOrder(nextOrderID++, contract, order);
-		return contract;
+		clientSocket.placeOrder(getNextOrderId(), contract, order);
 	}
 
 	private void processMessages() {
@@ -164,8 +175,10 @@ public class RealTimeData extends BaseEWrapper {
 			movingAverage = priceTotal / numberOfPrices;
 			logger.info("tickPrice: " + tickerId + "," + field + "," + price + ", " + movingAverage);
 		}
-		System.out.println("tickPrice(): tickerId=" + tickerId + ", field=" + field + "(" + TickType.getField(field)
+		logger.info("tickPrice(): tickerId=" + tickerId + ", field=" + field + "(" + TickType.getField(field)
 				+ "), price=" + price + ", tickAttr=" + strTickAttr(attribs));
+		logger.info("tick price updated, MustBuyTickPriceHandler start");
+		new MustBuyTickPriceHandler().handle(requester, marketRequestMap.get(tickerId), field, price, attribs);
 	}
 
 	@Override

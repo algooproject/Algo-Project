@@ -5,17 +5,20 @@ import java.util.Map;
 
 import com.ib.client.Contract;
 import com.ib.client.EClientSocket;
+import com.ib.client.Order;
 import com.ib.client.TagValue;
 
 /**
  * for EClient to request. To separate it just because of placing javadoc.
  */
 public class Requester {
-	private final EClientSocket client;
+	private final RealTimeData ibClient;
+	private final EClientSocket clientSocket;
 	private final Map<Integer, Contract> marketRequestMap;
 
-	public Requester(EClientSocket client, Map<Integer, Contract> marketRequestMap) {
-		this.client = client;
+	public Requester(RealTimeData ibClient, EClientSocket clientSocket, Map<Integer, Contract> marketRequestMap) {
+		this.ibClient = ibClient;
+		this.clientSocket = clientSocket;
 		this.marketRequestMap = marketRequestMap;
 	}
 
@@ -38,7 +41,7 @@ public class Requester {
 	 *            delayed-frozen market data
 	 */
 	public synchronized void reqMarketDataType(int marketDataType) {
-		client.reqMarketDataType(marketDataType);
+		clientSocket.reqMarketDataType(marketDataType);
 	}
 
 	/**
@@ -87,7 +90,7 @@ public class Requester {
 	public synchronized void reqMktData(int tickerId, Contract contract, String genericTickList, boolean snapshot,
 			boolean regulatory, List<TagValue> marketDataOptions) {
 		marketRequestMap.put(tickerId, contract);
-		client.reqMktData(tickerId, contract, genericTickList, snapshot, regulatory, marketDataOptions);
+		clientSocket.reqMktData(tickerId, contract, genericTickList, snapshot, regulatory, marketDataOptions);
 	}
 
 	/**
@@ -118,7 +121,7 @@ public class Requester {
 	 */
 	public synchronized void reqHistoricalTicks(int reqId, Contract contract, String startDateTime, String endDateTime,
 			int numberOfTicks, String whatToShow, int useRth, boolean ignoreSize, List<TagValue> miscOptions) {
-		client.reqHistoricalTicks(reqId, contract, startDateTime, endDateTime, numberOfTicks, whatToShow, useRth,
+		clientSocket.reqHistoricalTicks(reqId, contract, startDateTime, endDateTime, numberOfTicks, whatToShow, useRth,
 				ignoreSize, miscOptions);
 	}
 
@@ -144,7 +147,7 @@ public class Requester {
 	 *            requested.
 	 */
 	public synchronized void reqAccountUpdates(boolean subscribe, String acctCode) {
-		client.reqAccountUpdates(subscribe, acctCode);
+		clientSocket.reqAccountUpdates(subscribe, acctCode);
 	}
 
 	/**
@@ -153,6 +156,10 @@ public class Requester {
 	 * @see EWrapper::managedAccounts
 	 */
 	public synchronized void reqManagedAccts() {
-		client.reqManagedAccts();
+		clientSocket.reqManagedAccts();
+	}
+
+	public void placeOrder(Contract contract, Order order) {
+		clientSocket.placeOrder(ibClient.getNextOrderId(), contract, order);
 	}
 }
