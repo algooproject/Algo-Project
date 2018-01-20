@@ -37,7 +37,7 @@
 		    <artifactId>tws-api</artifactId>
 		    <version>9.73.01-SNAPSHOT</version>
 		    <scope>system</scope>
-		    <systemPath>${project.basedir}/libs/TwsApi.jar</systemPath>
+		    <systemPath>${project.basedir}/libs/macOS/TwsApi_debug.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<properties>

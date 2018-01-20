@@ -1,7 +1,8 @@
-package com.algotrading.interactivebroker.test;
+package com.algotrading.interactivebroker.util;
 
 import com.ib.client.TickAttr;
 
+/** Util to make toString for the struct IB provided */
 public class ToStringUtil {
 
 	public static String strTickAttr(TickAttr tickAttr) {
