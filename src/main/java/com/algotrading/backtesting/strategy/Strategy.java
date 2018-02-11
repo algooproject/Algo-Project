@@ -6,6 +6,7 @@ import java.util.Date;
 import com.algotrading.backtesting.pattern.StockSignal;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
+import com.algotrading.backtesting.replay.Transaction;
 import com.algotrading.backtesting.stock.Stock;
 
 public class Strategy {
@@ -26,8 +27,7 @@ public class Strategy {
 	public PortfolioComponent buyAmount(Stock stock, Date date, Portfolio portfolio) {
 		double unitPrice = stock.getHistory().get(date).getClose();
 		double buyCost = buyCostIfMatch == 0 ? portfolio.getCash() : buyCostIfMatch;
-		int buyVolumeBeforeLotSize = (int) (buyCost / unitPrice);
-		int buyBolumeAfterLotSize = (buyVolumeBeforeLotSize / stock.getLotSize()) * stock.getLotSize();
+		int buyVolume = getFinalVolume(stock, buyCost, unitPrice);
 		// System.out.println("stock.getTicker(): " + stock.getTicker());
 		// System.out.println("stock.getLotSize(): " + stock.getLotSize());
 		// System.out
@@ -37,7 +37,18 @@ public class Strategy {
 		// buyVolumeBeforeLotSize);
 		// System.out.println("buyBolumeAfterLotSize: " +
 		// buyBolumeAfterLotSize);
-		return new PortfolioComponent(stock, buyBolumeAfterLotSize, unitPrice, date);
+		return new PortfolioComponent(stock, buyVolume, unitPrice, date);
+	}
+	
+	private int getFinalVolume(Stock stock, double buyCost, double unitPrice){
+		int buyVolumeBeforeLotSize = (int) (buyCost / unitPrice);
+		int buyVolumeAfterLotSize = (buyVolumeBeforeLotSize / stock.getLotSize()) * stock.getLotSize();
+		double buyTotal = buyVolumeAfterLotSize * unitPrice;
+		while ( Transaction.getTranscationCost(stock, buyTotal) +  buyTotal > buyCost){
+			buyVolumeAfterLotSize = buyVolumeAfterLotSize - stock.getLotSize();
+			buyTotal = buyVolumeAfterLotSize * unitPrice;
+		}
+		return buyVolumeAfterLotSize;
 	}
 
 	public PortfolioComponent sellAmount(Stock stock, Date date, Portfolio portfolio) {

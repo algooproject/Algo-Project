@@ -9,7 +9,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ 
 	AvailableStocksTest.class, 
 	ReplayTest.class,
-	TradingDateTest.class
+	TradingDateTest.class,
+	MainTest.class
 })
 //@formatter:on
 public class ReplayTestSuite {

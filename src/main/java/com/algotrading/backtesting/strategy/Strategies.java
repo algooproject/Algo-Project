@@ -15,6 +15,7 @@ import com.algotrading.backtesting.patterninterperter.Interperter;
 import com.algotrading.backtesting.portfolio.BuySellAmount;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
+import com.algotrading.backtesting.replay.Transaction;
 import com.algotrading.backtesting.stock.Stock;
 
 public class Strategies {
@@ -65,7 +66,9 @@ public class Strategies {
 				// increase stock
 				// so need to negative it to state decrease cash
 				double tradedCash = -buyAmount.getUnitPrice() * buyAmount.getQuantity();
-				return new BuySellAmount(buyAmount, tradedCash);
+				double transactionCost = Transaction.getTranscationCost(stock, tradedCash);
+				tradedCash = tradedCash - transactionCost;
+				return new BuySellAmount(buyAmount, tradedCash,transactionCost);
 			}
 		}
 		for (Strategy strategy : sellSignal) {
@@ -76,7 +79,9 @@ public class Strategies {
 				// decrease stock
 				// so need to negative it to state increase cash
 				double tradedCash = -sellAmount.getUnitPrice() * sellAmount.getQuantity();
-				return new BuySellAmount(sellAmount, tradedCash);
+				double transactionCost = Transaction.getTranscationCost(stock, tradedCash);
+				tradedCash = tradedCash - transactionCost;
+				return new BuySellAmount(sellAmount, tradedCash, transactionCost);
 			}
 		}
 		return new BuySellAmount(new PortfolioComponent(stock, 0, 0, date), 0);

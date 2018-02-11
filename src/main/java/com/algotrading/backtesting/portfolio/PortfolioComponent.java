@@ -2,6 +2,7 @@ package com.algotrading.backtesting.portfolio;
 
 import java.util.Date;
 
+import com.algotrading.backtesting.replay.Transaction;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.util.Constants;
 
@@ -16,6 +17,7 @@ public class PortfolioComponent {
 	private double unitPrice;
 	private double profit = 0;
 	private Date date;
+	private double transactionCost = 0;
 
 	public PortfolioComponent(Stock stock, int quantity, double unitPrice, Date date) {
 		super();
@@ -23,6 +25,7 @@ public class PortfolioComponent {
 		this.quantity = quantity;
 		this.unitPrice = unitPrice;
 		this.date = date;
+		this.transactionCost = Transaction.getTranscationCost(stock, unitPrice * quantity);
 	}
 
 	public void setDate(Date date) {
@@ -50,8 +53,9 @@ public class PortfolioComponent {
 	}
 
 	public void add(int addQuantity, double addUnitPrice) {
+		transactionCost = transactionCost + Transaction.getTranscationCost(stock, addUnitPrice * addQuantity);
 		if (quantity + addQuantity <= 0) {
-			profit = (addUnitPrice - unitPrice) * quantity;
+			profit = (addUnitPrice - unitPrice) * quantity - transactionCost;
 			quantity = 0;
 			unitPrice = 0;
 		} else {

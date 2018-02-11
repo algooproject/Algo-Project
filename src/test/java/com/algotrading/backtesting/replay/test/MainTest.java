@@ -53,6 +53,8 @@ public class MainTest {
 		// System.out.println(portfolio20160929.getPortfolioComponent("SEHK_TC0001").getQuantity());
 		System.out.println("test001_buyConditionsMet");
 		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
 
 	@Test
@@ -75,6 +77,8 @@ public class MainTest {
 		assertEquals(false, portfolio20160930.containsStock(stockTC0002));
 		System.out.println("test002_buyCondition1Failed");
 		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
 
 	@Test
@@ -96,6 +100,8 @@ public class MainTest {
 		assertEquals(false, portfolio20160930.containsStock(stockTC0003));
 		System.out.println("test003_buyCondition1and2Failed");
 		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
 
 	@Test
@@ -117,6 +123,8 @@ public class MainTest {
 		assertEquals(false, portfolio20160930.containsStock(stockTC0004));
 		System.out.println("test004_buyCondition1Failed");
 		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
 
 	@Test
@@ -138,6 +146,8 @@ public class MainTest {
 		assertEquals(false, portfolio20160930.containsStock(stockTC0005));
 		System.out.println("test005_buyCondition3Failed");
 		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
 
 	@Test
@@ -168,6 +178,8 @@ public class MainTest {
 		assertEquals(11332.2, portfolio20161019.getCash(), 0.0001);
 		System.out.println("test006_takeProfit");
 		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
 
 	@Test
@@ -200,6 +212,8 @@ public class MainTest {
 		assertEquals(8999.1, portfolio20161019.getCash(), 0.0001);
 		System.out.println("test007_stopLoss"); //
 		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
 
 	@Test
@@ -228,5 +242,7 @@ public class MainTest {
 		assertEquals(3333, portfolio20161019.getPortfolioComponent("SEHK_TC0008").getQuantity());
 		System.out.println("test008_sellConditionsNotMet");
 		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
 }

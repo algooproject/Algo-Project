@@ -20,7 +20,17 @@ public class Replay {
 	// private LotSize lotSize;
 	private Portfolio initialPortfolio;
 	private Portfolio portfolio;
+	private double totalTradedVolume = 0;
+	private double totalTrasactionCost = 0;
+	
+	public double getTotalTradedVolume(){
+		return totalTradedVolume;
+	}
 
+	public double getTotalTrasactionCost(){
+		return totalTrasactionCost;
+	}
+	
 	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
 			AvailableStocks availableStocks, TradingDate tradingDate, double initialCash) {
 		this.startDate = startDate;
@@ -55,7 +65,10 @@ public class Replay {
 //				System.out.println("simulate: " + currentDate);
 				BuySellAmount buySellAmount = strategies.buySellAmount(stock, currentDate, portfolio);
 				PortfolioComponent component = buySellAmount.getPortfolioComponent();
+				totalTradedVolume = totalTradedVolume + Math.abs(component.getQuantity() * component.getUnitPrice());
+				totalTrasactionCost = totalTrasactionCost + buySellAmount.getTransaction();
 				double tradedCash = buySellAmount.getTradedCash();
+				
 				if (component.getQuantity() != 0) {
 					portfolio.add(component);
 					portfolio.addCash(tradedCash);
