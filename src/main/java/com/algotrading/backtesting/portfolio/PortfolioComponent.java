@@ -2,7 +2,6 @@ package com.algotrading.backtesting.portfolio;
 
 import java.util.Date;
 
-import com.algotrading.backtesting.replay.Transaction;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.util.Constants;
 
@@ -25,9 +24,19 @@ public class PortfolioComponent {
 		this.quantity = quantity;
 		this.unitPrice = unitPrice;
 		this.date = date;
-		this.transactionCost = Transaction.getTranscationCost(stock, unitPrice * quantity);
-	}
-
+		this.transactionCost = 0;
+	}	
+	
+	public PortfolioComponent(Stock stock, int quantity, double unitPrice, Date date, double transactionCost) {
+		super();
+		this.stock = stock;
+		this.quantity = quantity;
+		this.unitPrice = unitPrice;
+		this.date = date;
+		this.transactionCost = transactionCost;
+	}	
+	
+	
 	public void setDate(Date date) {
 		this.date = date;
 	}
@@ -52,10 +61,14 @@ public class PortfolioComponent {
 		return profit;
 	}
 
-	public void add(int addQuantity, double addUnitPrice) {
-		transactionCost = transactionCost + Transaction.getTranscationCost(stock, addUnitPrice * addQuantity);
+	public double getTransactionCost(){
+		return transactionCost;
+	}
+	
+	public void add(int addQuantity, double addUnitPrice, double transactionCost) {
+		this.transactionCost = this.transactionCost + transactionCost;
 		if (quantity + addQuantity <= 0) {
-			profit = (addUnitPrice - unitPrice) * quantity - transactionCost;
+			profit = (addUnitPrice - unitPrice) * quantity - this.transactionCost;
 			quantity = 0;
 			unitPrice = 0;
 		} else {
@@ -64,13 +77,13 @@ public class PortfolioComponent {
 			quantity = newQuantity;
 			unitPrice = newUnitPrice;
 		}
-	}
-
+	}	
+	
 	public void add(PortfolioComponent pc) {
 		if (pc.getStock()
 				.getTicker()
 				.equals(getStock().getTicker())) {
-			add(pc.getQuantity(), pc.getUnitPrice());
+			add(pc.getQuantity(), pc.getUnitPrice(), pc.getTransactionCost());
 		} else {
 			throw new RuntimeException("not the same portfolio component");
 		}
@@ -86,6 +99,6 @@ public class PortfolioComponent {
 	}
 
 	public PortfolioComponent clone(Date date) {
-		return new PortfolioComponent(stock, quantity, unitPrice, date);
+		return new PortfolioComponent(stock, quantity, unitPrice, date, transactionCost);
 	}
 }

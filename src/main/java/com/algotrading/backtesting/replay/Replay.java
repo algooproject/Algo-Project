@@ -18,7 +18,7 @@ public class Replay {
 	private AvailableStocks availableStocks;
 	private TradingDate tradingDate;
 	// private LotSize lotSize;
-	private Portfolio initialPortfolio;
+	// private Portfolio initialPortfolio;
 	private Portfolio portfolio;
 	private double totalTradedVolume = 0;
 	private double totalTrasactionCost = 0;
@@ -48,7 +48,7 @@ public class Replay {
 		} else {
 			this.portfolio = new Portfolio(startDate, initialCash);
 		}
-		this.initialPortfolio = portfolio.clone();
+		// this.initialPortfolio = portfolio.clone();
 	}
 
 	public void simulate() throws ParseException {
@@ -56,7 +56,6 @@ public class Replay {
 //		System.out.println("startdate: " + startDate);
 		tradingDate.setCurrentDate(currentDate);
 //		System.out.println("End setCurrentDate");
-		// Portfolio portfolio = new Portfolio(currentDate, initialCash);
 		while (tradingDate.isNotLastDate() && tradingDate.currentDate().compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
 //			System.out.println("tradingDate.currentDate(): " + tradingDate.currentDate());
@@ -68,7 +67,6 @@ public class Replay {
 				totalTradedVolume = totalTradedVolume + Math.abs(component.getQuantity() * component.getUnitPrice());
 				totalTrasactionCost = totalTrasactionCost + buySellAmount.getTransaction();
 				double tradedCash = buySellAmount.getTradedCash();
-				
 				if (component.getQuantity() != 0) {
 					portfolio.add(component);
 					portfolio.addCash(tradedCash);

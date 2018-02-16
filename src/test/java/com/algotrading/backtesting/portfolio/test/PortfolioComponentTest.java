@@ -25,7 +25,7 @@ public class PortfolioComponentTest {
 	@Test
 	public void test2_addPortfolioComponent() {
 		PortfolioComponent pc1 = new PortfolioComponent(stock1382, 1000, 10, new Date());
-		pc1.add(1000, 20);
+		pc1.add(1000, 20, 0);
 		assertEquals(2000, pc1.getQuantity());
 		assertEquals(15, pc1.getUnitPrice(), 0.01);
 	}

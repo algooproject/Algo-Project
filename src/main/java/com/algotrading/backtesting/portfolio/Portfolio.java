@@ -80,7 +80,10 @@ public class Portfolio {
 		String tickerName = getTickerFromPortfolioComponent(newComponent);
 		PortfolioComponent component = portfolioComponents.get(tickerName);
 		if (component != null) {
-			component.add(newComponent.getQuantity(), newComponent.getUnitPrice());
+			component.add(newComponent.getQuantity(), newComponent.getUnitPrice(), newComponent.getTransactionCost()
+						//	Transaction.getTranscationCost(newComponent.getStock(), 
+						//			newComponent.getQuantity() * newComponent.getUnitPrice())
+							);
 			portfolioComponents.put(tickerName, component);
 			if (component.getQuantity() == 0) {
 				portfolioComponents.remove(component.getStock()

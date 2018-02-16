@@ -23,11 +23,7 @@ public class Main {
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
 		TradingDate tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_FILEPATH + "tradingDate.txt");
-
-//		LotSize lotSize = new LotSize(Constants.SRC_MAIN_RESOURCE_FILEPATH + "lotSize.csv");
-
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash);
-
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		System.out.println(portfolioHistory);
