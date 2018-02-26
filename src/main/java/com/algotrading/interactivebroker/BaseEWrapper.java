@@ -32,6 +32,30 @@ public abstract class BaseEWrapper implements EWrapper {
 			String tradingClass, String multiplier, Set expirations, Set strikes) {
 	}
 
+	/**
+	 * updates the real time 5 seconds bars
+	 * 
+	 * @param reqId
+	 *            the request's identifier
+	 * @param time
+	 *            the bar's date and time (either as a yyyymmss hh:mm:ss formatted string or as system time 
+	 *            according to the request)
+	 * @param open
+	 *            the bar's open point
+	 * @param high
+	 *            the bar's high point
+	 * @param low
+	 *            the bar's low point
+	 * @param close
+	 *            the bar's closing point
+	 * @param volume
+	 *            the bar's traded volume (only returned for TRADES data)
+	 * @param wap
+	 *            the bar's Weighted Average Price rounded to minimum increment (only available for TRADES).
+	 * @param count
+	 *            the number of trades during the bar's timespan (only available for TRADES).
+	 * @see EClientSocket::reqRealTimeBars
+	 */	
 	@Override
 	public void realtimeBar(int reqId, long time, double open, double high, double low, double close, long volume,
 			double wap, int count) {
@@ -50,11 +74,35 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void accountUpdateMultiEnd(int reqId) {
 	}
 
+	/**
+	 * provides the portfolio's open positions.
+	 * 
+	 * @param reqId
+	 *            the id of request
+	 * @param account
+	 *            the account holding the position.
+	 * @param modelCode
+	 *            the model code holding the position.
+	 * @param contract
+	 *            the position's Contract
+	 * @param pos
+	 *            the number of positions held.
+	 * @param avgCost
+	 *            the average cost of the position.
+	 * @see positionMultiEnd, EClientSocket::reqPositionsMulti
+	 */	
 	@Override
 	public void positionMulti(int reqId, String account, String modelCode, Contract contract, double pos,
 			double avgCost) {
 	}
 
+	/**
+	 * Indicates all the positions have been transmitted.
+	 * 
+	 * @param reqId
+	 *            the id of request
+	 * @see positionMulti, EClient::reqPositionsMulti
+	 */	
 	@Override
 	public void positionMultiEnd(int reqId) {
 	}
@@ -113,6 +161,19 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void execDetailsEnd(int reqId) {
 	}
 
+	/**
+	 * provides the portfolio's open positions.
+	 * 
+	 * @param account
+	 *            the account holding the position.
+	 * @param contract
+	 *            the position's Contract
+	 * @param pos
+	 *            the number of positions held.
+	 * @param avgCost
+	 *            the average cost of the position.
+	 * @see positionEnd, EClientSocket::reqPositions
+	 */	
 	@Override
 	public void position(String account, Contract contract, double pos, double avgCost) {
 	}
@@ -120,6 +181,11 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void position(String account, Contract contract, int pos, double avgCost) {
 	}
 
+	/**
+	 * Indicates all the positions have been transmitted.
+	 * 
+	 * @see position, EClient::reqPositions
+	 */	
 	@Override
 	public void positionEnd() {
 	}
@@ -132,6 +198,11 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void accountSummaryEnd(int reqId) {
 	}
 
+	/**
+	 * Notifies the end of the open orders' reception.
+	 * 
+	 * @see orderStatus, openOrder, EClientSocket::placeOrder, EClientSocket::reqAllOpenOrders, EClientSocket::reqAutoOpenOrders
+	 */	
 	@Override
 	public void openOrderEnd() {
 	}
@@ -148,6 +219,25 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void receiveFA(int faDataType, String xml) {
 	}
 
+	/**
+	 * provides the data resulting from the market scanner request.
+	 * 
+	 * @param reqId
+	 *            the request's identifier.
+	 * @param rank
+	 *            the ranking within the response of this bar.
+	 * @param contractDetails
+	 *            the data's ContractDetails
+	 * @param distance
+	 *            according to query.
+	 * @param benchmark
+	 *            according to query.
+	 * @param projection
+	 *            according to query.
+	 * @param legsStr
+	 *            describes the combo legs when the scanner is returning EFP
+	 * @see scannerParameters, scannerDataEnd, EClientSocket::reqScannerSubscription
+	 */	
 	@Override
 	public void scannerData(int reqId, int rank, ContractDetails contractDetails, String distance, String benchmark,
 			String projection, String legsStr) {
@@ -189,6 +279,19 @@ public abstract class BaseEWrapper implements EWrapper {
 			int size) {
 	}
 
+	/**
+	 * provides IB's bulletins
+	 * 
+	 * @param msgId
+	 *            the bulletin's identifier
+	 * @param msgType
+	 *            one of: 1 - Regular news bulletin 2 - Exchange no longer available for trading 
+	 *            3 - Exchange is available for trading
+	 * @param message
+	 *            the message
+	 * @param origExchange
+	 *            the exchange where the message comes from.
+	 */	
 	@Override
 	public void updateNewsBulletin(int msgId, int msgType, String message, String origExchange) {
 	}
@@ -268,26 +371,108 @@ public abstract class BaseEWrapper implements EWrapper {
 	@Override
 	public void marketRule(int arg0, PriceIncrement[] arg1) {
 	}
-
+	
+	/**
+	 * called when receives Depth Market Data Descriptions
+	 * 
+	 * @param depthMktDataDescriptions
+	 *            Stores a list of DepthMktDataDescriprion
+	 * @see EClient::reqMktDepthExchanges
+	 */	
 	@Override
-	public void mktDepthExchanges(DepthMktDataDescription[] arg0) {
+	public void mktDepthExchanges(DepthMktDataDescription[] depthMktDataDescriptions) {
 	}
 
+	/**
+	 * called when receives News Article
+	 * 
+	 * @param requestId
+	 *            The request ID used in the call to EClient::reqNewsArticle
+	 * @param articleType
+	 *            The type of news article (0 - plain text or html, 1 - binary data / pdf)
+	 * @param articleText
+	 *            The body of article (if articleType == 1, the binary data is encoded using the Base64 scheme)
+	 * @see EClient::reqNewsArticle
+	 */	
 	@Override
-	public void newsArticle(int arg0, int arg1, String arg2) {
+	public void newsArticle(int requestId, int articleType, String articleText) {
 	}
 
+	/**
+	 * returns array of subscribed API news providers for this user
+	 * 
+	 * @param newsProviders
+	 *            The request ID used in the call to EClient::reqNewsArticle
+	 * @see EClient::reqNewsProviders
+	 */	
 	@Override
-	public void newsProviders(NewsProvider[] arg0) {
+	public void newsProviders(NewsProvider[] newsProviders) {
 	}
 
+	/**
+	 * Feeds in currently open orders.
+	 * 
+	 * @param orderId
+	 *            the order's unique id
+	 * @param contract
+	 *            the order's Contract.
+	 * @param order
+	 *            the currently active Order.
+	 * @param orderState
+	 *            the order's OrderState
+	 * @see orderStatus, openOrderEnd, EClientSocket::placeOrder, EClientSocket::reqAllOpenOrders, 
+	 * EClientSocket::reqAutoOpenOrders
+	 */	
 	@Override
-	public void openOrder(int arg0, Contract arg1, com.ib.client.Order arg2, OrderState arg3) {
+	public void openOrder(int orderId, Contract contract, com.ib.client.Order order, OrderState orderState) {
 	}
 
+	/**
+	 * Gives the up-to-date information of an order every time it changes. Often there are duplicate orderStatus messages.
+	 * 
+	 * @param orderId
+	 *            the order's client id.
+	 * @param status
+	 *            the current status of the order. Possible values: PendingSubmit - indicates that you have transmitted 
+	 *            the order, but have not yet received confirmation that it has been accepted by the order destination. 
+	 *            PendingCancel - indicates that you have sent a request to cancel the order but have not yet received 
+	 *            cancel confirmation from the order destination. At this point, your order is not confirmed canceled. 
+	 *            It is not guaranteed that the cancellation will be successful. PreSubmitted - indicates that a simulated 
+	 *            order type has been accepted by the IB system and that this order has yet to be elected. The order is 
+	 *            held in the IB system until the election criteria are met. At that time the order is transmitted to 
+	 *            the order destination as specified . Submitted - indicates that your order has been accepted by the 
+	 *            system. ApiCanceled - after an order has been submitted and before it has been acknowledged, an API 
+	 *            client client can request its cancelation, producing this state. Cancelled - indicates that the balance 
+	 *            of your order has been confirmed canceled by the IB system. This could occur unexpectedly when IB or 
+	 *            the destination has rejected your order. Filled - indicates that the order has been completely filled. 
+	 *            Market orders executions will not always trigger a Filled status. Inactive - indicates that the order 
+	 *            was received by the system but is no longer active because it was rejected or canceled.
+	 * @param filled
+	 *            number of filled positions.
+	 * @param remaining
+	 *            the remnant positions.
+	 * @param avgFillPrice
+	 *            average filling price.
+	 * @param permId
+	 *            the order's permId used by the TWS to identify orders.
+	 * @param parentId
+	 *           parent's id. Used for bracket and auto trailing stop orders.
+	 * @param lastFillPrice
+	 *           price at which the last positions were filled.
+	 * @param clientId
+	 *           API client which submitted the order.
+	 * @param whyHeld
+	 *           this field is used to identify an order held when TWS is trying to locate shares for a short sell. The 
+	 *           value used to indicate this is 'locate'.
+	 * @param mktCapPrice 
+	 *           If an order has been capped, this indicates the current capped price. Requires TWS 967+ and API v973.04+. 
+	 *           Python API specifically requires API v973.06+.
+	 * @see openOrder, openOrderEnd, EClientSocket::placeOrder, EClientSocket::reqAllOpenOrders, 
+	 * EClientSocket::reqAutoOpenOrders
+	 */	
 	@Override
-	public void orderStatus(int arg0, String arg1, double arg2, double arg3, double arg4, int arg5, int arg6,
-			double arg7, int arg8, String arg9, double arg10) {
+	public void orderStatus(int orderId, String status, double filled, double remaining, double avgFillPrice, 
+			int permId, int parentId, double lastFillPrice, int clientId, String whyHeld, double mktCapPrice ) {
 	}
 
 	@Override
@@ -306,12 +491,29 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void rerouteMktDepthReq(int arg0, int arg1, String arg2) {
 	}
 
+	/**
+	 * bit number to exchange + exchange abbreviation dictionary
+	 * 
+	 * @param reqId
+	 *            the request's identifier.
+	 * @param theMap 
+	 *            sa EClient::reqSmartComponents
+	 */
 	@Override
-	public void smartComponents(int arg0, Map<Integer, Entry<String, Character>> arg1) {
+	public void smartComponents(int reqId, Map<Integer, Entry<String, Character>> theMap) {
 	}
 
+	/**
+	 * called when receives Soft Dollar Tier configuration information
+	 * 
+	 * @param reqId
+	 *            The request ID used in the call to EClient::reqSoftDollarTiers
+	 * @param tiers 
+	 *            Stores a list of SoftDollarTier that contains all Soft Dollar Tiers information
+	 * @see EClient::reqSoftDollarTiers
+	 */	
 	@Override
-	public void softDollarTiers(int arg0, SoftDollarTier[] arg1) {
+	public void softDollarTiers(int reqId, SoftDollarTier[] tiers) {
 	}
 
 	@Override
@@ -559,7 +761,8 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @see EClient::reqTickByTickData
 	 */
 	@Override
-	public void tickByTickBidAsk(int arg0, long arg1, double arg2, double arg3, int arg4, int arg5, TickAttr arg6) {
+	public void tickByTickBidAsk(int reqId, long time, double bidPrice, double askPrice, int bidSize, int askSize, 
+			TickAttr attribs) {
 	}
 
 	/**
@@ -574,7 +777,7 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @see EClient::reqTickByTickData
 	 */
 	@Override
-	public void tickByTickMidPoint(int arg0, long arg1, double arg2) {
+	public void tickByTickMidPoint(int reqId, long time, double midPoint) {
 	}
 
 }
