@@ -148,15 +148,22 @@ public class Requester {
 	 */
 	public synchronized void reqAccountUpdates(boolean subscribe, String acctCode) {
 		clientSocket.reqAccountUpdates(subscribe, acctCode);
+		/*
+		* Requests the accounts to which the logged user has access to.
+
+		* See Also
+		* EWrapper::managedAccounts
+		*/
 	}
 
-	/**
-	 * Requests the accounts to which the logged user has access to.
-	 * 
-	 * @see EWrapper::managedAccounts
-	 */
+
 	public synchronized void reqManagedAccts() {
 		clientSocket.reqManagedAccts();
+		/*
+		 * Requests the accounts to which the logged user has access to.
+		 * 
+		 * @see EWrapper::managedAccounts
+		 */		
 	}
 
 	public void placeOrder(Contract contract, Order order) {
