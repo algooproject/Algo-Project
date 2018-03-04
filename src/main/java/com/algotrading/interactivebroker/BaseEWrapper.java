@@ -38,8 +38,8 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @param reqId
 	 *            the request's identifier
 	 * @param time
-	 *            the bar's date and time (either as a yyyymmss hh:mm:ss formatted string or as system time 
-	 *            according to the request)
+	 *            the bar's date and time (either as a yyyymmss hh:mm:ss
+	 *            formatted string or as system time according to the request)
 	 * @param open
 	 *            the bar's open point
 	 * @param high
@@ -51,11 +51,13 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @param volume
 	 *            the bar's traded volume (only returned for TRADES data)
 	 * @param wap
-	 *            the bar's Weighted Average Price rounded to minimum increment (only available for TRADES).
+	 *            the bar's Weighted Average Price rounded to minimum increment
+	 *            (only available for TRADES).
 	 * @param count
-	 *            the number of trades during the bar's timespan (only available for TRADES).
+	 *            the number of trades during the bar's timespan (only available
+	 *            for TRADES).
 	 * @see EClientSocket::reqRealTimeBars
-	 */	
+	 */
 	@Override
 	public void realtimeBar(int reqId, long time, double open, double high, double low, double close, long volume,
 			double wap, int count) {
@@ -90,7 +92,7 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @param avgCost
 	 *            the average cost of the position.
 	 * @see positionMultiEnd, EClientSocket::reqPositionsMulti
-	 */	
+	 */
 	@Override
 	public void positionMulti(int reqId, String account, String modelCode, Contract contract, double pos,
 			double avgCost) {
@@ -210,19 +212,16 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @param avgCost
 	 *            the average cost of the position.
 	 * @see positionEnd, EClientSocket::reqPositions
-	 */	
+	 */
 	@Override
 	public void position(String account, Contract contract, double pos, double avgCost) {
-	}
-
-	public void position(String account, Contract contract, int pos, double avgCost) {
 	}
 
 	/**
 	 * Indicates all the positions have been transmitted.
 	 * 
 	 * @see position, EClient::reqPositions
-	 */	
+	 */
 	@Override
 	public void positionEnd() {
 	}
@@ -290,8 +289,9 @@ public abstract class BaseEWrapper implements EWrapper {
 	 *            according to query.
 	 * @param legsStr
 	 *            describes the combo legs when the scanner is returning EFP
-	 * @see scannerParameters, scannerDataEnd, EClientSocket::reqScannerSubscription
-	 */	
+	 * @see scannerParameters, scannerDataEnd,
+	 *      EClientSocket::reqScannerSubscription
+	 */
 	@Override
 	public void scannerData(int reqId, int rank, ContractDetails contractDetails, String distance, String benchmark,
 			String projection, String legsStr) {
@@ -339,13 +339,13 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @param msgId
 	 *            the bulletin's identifier
 	 * @param msgType
-	 *            one of: 1 - Regular news bulletin 2 - Exchange no longer available for trading 
-	 *            3 - Exchange is available for trading
+	 *            one of: 1 - Regular news bulletin 2 - Exchange no longer
+	 *            available for trading 3 - Exchange is available for trading
 	 * @param message
 	 *            the message
 	 * @param origExchange
 	 *            the exchange where the message comes from.
-	 */	
+	 */
 	@Override
 	public void updateNewsBulletin(int msgId, int msgType, String message, String origExchange) {
 	}
@@ -430,14 +430,14 @@ public abstract class BaseEWrapper implements EWrapper {
 	@Override
 	public void marketRule(int arg0, PriceIncrement[] arg1) {
 	}
-	
+
 	/**
 	 * called when receives Depth Market Data Descriptions
 	 * 
 	 * @param depthMktDataDescriptions
 	 *            Stores a list of DepthMktDataDescriprion
 	 * @see EClient::reqMktDepthExchanges
-	 */	
+	 */
 	@Override
 	public void mktDepthExchanges(DepthMktDataDescription[] depthMktDataDescriptions) {
 	}
@@ -448,11 +448,13 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @param requestId
 	 *            The request ID used in the call to EClient::reqNewsArticle
 	 * @param articleType
-	 *            The type of news article (0 - plain text or html, 1 - binary data / pdf)
+	 *            The type of news article (0 - plain text or html, 1 - binary
+	 *            data / pdf)
 	 * @param articleText
-	 *            The body of article (if articleType == 1, the binary data is encoded using the Base64 scheme)
+	 *            The body of article (if articleType == 1, the binary data is
+	 *            encoded using the Base64 scheme)
 	 * @see EClient::reqNewsArticle
-	 */	
+	 */
 	@Override
 	public void newsArticle(int requestId, int articleType, String articleText) {
 	}
@@ -463,7 +465,7 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @param newsProviders
 	 *            The request ID used in the call to EClient::reqNewsArticle
 	 * @see EClient::reqNewsProviders
-	 */	
+	 */
 	@Override
 	public void newsProviders(NewsProvider[] newsProviders) {
 	}
@@ -479,9 +481,9 @@ public abstract class BaseEWrapper implements EWrapper {
 	 *            the currently active Order.
 	 * @param orderState
 	 *            the order's OrderState
-	 * @see orderStatus, openOrderEnd, EClientSocket::placeOrder, EClientSocket::reqAllOpenOrders, 
-	 * EClientSocket::reqAutoOpenOrders
-	 */	
+	 * @see orderStatus, openOrderEnd, EClientSocket::placeOrder,
+	 *      EClientSocket::reqAllOpenOrders, EClientSocket::reqAutoOpenOrders
+	 */
 	@Override
 	public void openOrder(int orderId, Contract contract, com.ib.client.Order order, OrderState orderState) {
 	}
@@ -568,7 +570,7 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * 
 	 * @param reqId
 	 *            the request's identifier.
-	 * @param theMap 
+	 * @param theMap
 	 *            sa EClient::reqSmartComponents
 	 */
 	@Override
@@ -580,10 +582,11 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * 
 	 * @param reqId
 	 *            The request ID used in the call to EClient::reqSoftDollarTiers
-	 * @param tiers 
-	 *            Stores a list of SoftDollarTier that contains all Soft Dollar Tiers information
+	 * @param tiers
+	 *            Stores a list of SoftDollarTier that contains all Soft Dollar
+	 *            Tiers information
 	 * @see EClient::reqSoftDollarTiers
-	 */	
+	 */
 	@Override
 	public void softDollarTiers(int reqId, SoftDollarTier[] tiers) {
 	}
@@ -833,7 +836,7 @@ public abstract class BaseEWrapper implements EWrapper {
 	 * @see EClient::reqTickByTickData
 	 */
 	@Override
-	public void tickByTickBidAsk(int reqId, long time, double bidPrice, double askPrice, int bidSize, int askSize, 
+	public void tickByTickBidAsk(int reqId, long time, double bidPrice, double askPrice, int bidSize, int askSize,
 			TickAttr attribs) {
 	}
 
