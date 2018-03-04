@@ -305,14 +305,86 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void scannerParameters(String xml) {
 	}
 
+	/**
+	 * Exchange for Physicals.
+	 * 
+	 * @param tickerId
+	 *            The request's identifier.
+	 * @param tickType
+	 *            The type of tick being received.
+	 * @param basisPoints
+	 *            Annualized basis points, which is representative of the
+	 *            financing rate that can be directly compared to broker rates.
+	 * @param formattedBasisPoints
+	 *            Annualized basis points as a formatted string that depicts
+	 *            them in percentage form.
+	 * @param impliedFuture
+	 *            The implied Futures price.
+	 * @param holdDays
+	 *            The number of hold days until the lastTradeDate of the EFP.
+	 * @param futureLastTradeDate
+	 *            The expiration date of the single stock future.
+	 * @param dividendImpact
+	 *            The dividend impact upon the annualized basis points interest
+	 *            rate.
+	 * @param dividendsToLastTradeDate
+	 *            The dividends expected until the expiration of the single
+	 *            stock future.
+	 */
+
 	@Override
 	public void tickEFP(int symbolId, int tickType, double basisPoints, String formattedBasisPoints,
 			double impliedFuture, int holdDays, String futureExpiry, double dividendImpact, double dividendsToExpiry) {
 	}
 
+	/**
+	 * Market data callback.
+	 * 
+	 * @param tickerId
+	 *            the request's unique identifier.
+	 * @param field
+	 *            the type of tick being received.
+	 * @param value
+	 */
+
 	@Override
 	public void tickGeneric(int symbolId, int tickType, double value) {
 	}
+
+	/**
+	 * Receive's option specific market data. This method is called when the
+	 * market in an option or its underlier moves. TWS¡¦s option model
+	 * volatilities, prices, and deltas, along with the present value of
+	 * dividends expected on that options underlier are received.
+	 * 
+	 * @param tickerId
+	 *            the request's unique identifier.
+	 * @param field
+	 *            Specifies the type of option computation. Pass the field value
+	 *            into TickType.getField(int tickType) to retrieve the field
+	 *            description. For example, a field value of 13 will map to
+	 *            modelOptComp, etc. 10 = Bid 11 = Ask 12 = Last
+	 * @param impliedVolatility
+	 *            the implied volatility calculated by the TWS option modeler,
+	 *            using the specified tick type value.
+	 * @param delta
+	 *            the option delta value.
+	 * @param optPrice
+	 *            the option price.
+	 * @param pwDividend
+	 *            the present value of dividends expected on the option's
+	 *            underlying.
+	 * @param gamma
+	 *            the option gamma value.
+	 * @param vega
+	 *            the option vega value.
+	 * @param theta
+	 *            the option theta value.
+	 * @param undPrice
+	 *            the price of the underlying.
+	 * @see TickType, tickSize, tickPrice, tickEFP, tickGeneric, tickString,
+	 *      tickSnapshotEnd, marketDataType, EClientSocket::reqMktData
+	 */
 
 	@Override
 	public void tickOptionComputation(int tickerId, int field, double impliedVol, double delta, double optPrice,
@@ -324,9 +396,52 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void deltaNeutralValidation(int reqId, DeltaNeutralContract underComp) {
 	}
 
+	/**
+	 * Returns the order book.
+	 * 
+	 * @param tickerId
+	 *            the request's identifier
+	 * @param position
+	 *            the order book's row being updated
+	 * @param operation
+	 *            how to refresh the row: 0 = insert (insert this new order into
+	 *            the row identified by 'position')¡P 1 = update (update the
+	 *            existing order in the row identified by 'position')¡P 2 =
+	 *            delete (delete the existing order at the row identified by
+	 *            'position').
+	 * @param side
+	 *            0 for ask, 1 for bid
+	 * @param price
+	 *            the order's price
+	 * @param size
+	 *            the order's size
+	 * @see updateMktDepthL2, EClientSocket::reqMarketDepth
+	 */
 	@Override
 	public void updateMktDepth(int symbolId, int position, int operation, int side, double price, int size) {
 	}
+
+	/**
+	 * Returns the order book.
+	 * 
+	 * @param tickerId
+	 *            the request's identifier
+	 * @param position
+	 *            the order book's row being updated
+	 * @param operation
+	 *            how to refresh the row: 0 = insert (insert this new order into
+	 *            the row identified by 'position')¡P 1 = update (update the
+	 *            existing order in the row identified by 'position')¡P 2 =
+	 *            delete (delete the existing order at the row identified by
+	 *            'position').
+	 * @param side
+	 *            0 for ask, 1 for bid
+	 * @param price
+	 *            the order's price
+	 * @param size
+	 *            the order's size
+	 * @see updateMktDepth, EClientSocket::reqMarketDepth
+	 */
 
 	@Override
 	public void updateMktDepthL2(int symbolId, int position, String marketMaker, int operation, int side, double price,
@@ -353,6 +468,12 @@ public abstract class BaseEWrapper implements EWrapper {
 	@Override
 	public void marketDataType(int reqId, int marketDataType) {
 	}
+
+	/**
+	 * When requesting market data snapshots, this market will indicate the
+	 * snapshot reception is finished. Expected to occur 11 seconds after
+	 * beginning of request.
+	 */
 
 	@Override
 	public void tickSnapshotEnd(int tickerId) {
@@ -386,6 +507,20 @@ public abstract class BaseEWrapper implements EWrapper {
 		System.err.println("error: " + id + "," + errorCode + "," + errorMsg);
 	}
 
+	/**
+	 * Market data callback. Every tickPrice is followed by a tickSize. There
+	 * are also independent tickSize callbacks anytime the tickSize changes, and
+	 * so there will be duplicate tickSize messages following a tickPrice.
+	 * 
+	 * @param tickerId
+	 *            the request's unique identifier.
+	 * @param field
+	 *            the type of the tick being received
+	 * @see TickType, tickSize, tickPrice, tickEFP, tickGeneric,
+	 *      tickOptionComputation, tickSnapshotEnd, marketDataType,
+	 *      EClientSocket::reqMktData
+	 */
+
 	@Override
 	public void tickString(int orderId, int tickType, String value) {
 	}
@@ -399,16 +534,45 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void familyCodes(FamilyCode[] arg0) {
 	}
 
+	/**
+	 * returns beginning of data for contract for specified data type
+	 * 
+	 * @param requestId
+	 * @param headTimestamp
+	 *            - string identifying earliest data date
+	 * @see EClient::reqHeadTimestamp
+	 */
 	@Override
-	public void headTimestamp(int arg0, String arg1) {
+	public void headTimestamp(int requestId, String headTimestamp) {
 	}
 
+	/**
+	 * returns data histogram
+	 * 
+	 * @param requestId
+	 * @param data
+	 *            - returned Tuple of histogram data, number of trades at
+	 *            specified price level
+	 * @see EClient::reqHistogramData
+	 */
 	@Override
-	public void histogramData(int arg0, List<HistogramEntry> arg1) {
+	public void histogramData(int requestId, List<HistogramEntry> data) {
 	}
 
+	/**
+	 * returns the requested historical data bars
+	 * 
+	 * @param reqId
+	 *            the request's identifier
+	 * @param bar
+	 *            the OHLC historical data Bar. The time zone of the bar is the
+	 *            time zone chosen on the TWS login screen. Smallest bar size is
+	 *            1 second.
+	 * @see EClientSocket::reqHistoricalData
+	 * 
+	 */
 	@Override
-	public void historicalData(int arg0, Bar arg1) {
+	public void historicalData(int reqId, Bar bar) {
 	}
 
 	@Override
@@ -419,16 +583,48 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void historicalDataUpdate(int arg0, Bar arg1) {
 	}
 
-	@Override
-	public void historicalNews(int arg0, String arg1, String arg2, String arg3, String arg4) {
-	}
+	/**
+	 * returns news headline
+	 * 
+	 * @param requestId
+	 * @param time
+	 * @param providerCode
+	 * @param articleId
+	 * @param headline
+	 * @see EClient::reqHistoricalNews
+	 */
 
 	@Override
-	public void historicalNewsEnd(int arg0, boolean arg1) {
+	public void historicalNews(int requestId, String time, String providerCode, String articleId, String headline) {
 	}
 
+	/*
+	 * returns news headlines end marker
+	 * 
+	 * @param requestId
+	 * 
+	 * @param hasMore - indicates whether there are more results available,
+	 * false otherwise
+	 * 
+	 * @see EClient::reqHistoricalNews
+	 */
+
 	@Override
-	public void marketRule(int arg0, PriceIncrement[] arg1) {
+	public void historicalNewsEnd(int requestId, boolean hasMore) {
+	}
+
+	/**
+	 * returns minimum price increment structure for a particular market rule ID
+	 * market rule IDs for an instrument on valid exchanges can be obtained from
+	 * the contractDetails object for that contract
+	 * 
+	 * @param marketRuleId
+	 * @param priceIncrements
+	 * @see EClient::reqMarketRule
+	 */
+
+	@Override
+	public void marketRule(int marketRuleId, PriceIncrement[] priceIncrements) {
 	}
 
 	/**
@@ -468,6 +664,22 @@ public abstract class BaseEWrapper implements EWrapper {
 	 */
 	@Override
 	public void newsProviders(NewsProvider[] newsProviders) {
+	}
+
+	/**
+	 * Receives next valid order id. Will be invoked automatically upon
+	 * successful API client connection, or after call to EClient::reqIds
+	 * Important: the next valid order ID is only valid at the time it is
+	 * received.
+	 * 
+	 * @param orderId
+	 *            the next order id
+	 * @see EClientSocket::reqIds
+	 */
+
+	@Override
+	public void nextValidId(int orderId) {
+
 	}
 
 	/**
@@ -591,8 +803,15 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void softDollarTiers(int reqId, SoftDollarTier[] tiers) {
 	}
 
+	/**
+	 * returns array of sample contract descriptions
+	 * 
+	 * @param ContractDescription[]
+	 * @see EClient::reqMatchingSymbols
+	 */
+
 	@Override
-	public void symbolSamples(int arg0, ContractDescription[] arg1) {
+	public void symbolSamples(int reqId, ContractDescription[] contractDescriptions) {
 	}
 
 	@Override
