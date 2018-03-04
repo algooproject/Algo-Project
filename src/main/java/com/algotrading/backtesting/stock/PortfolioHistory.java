@@ -26,7 +26,12 @@ public class PortfolioHistory {
 		history.put(date, portfolio);
 	}
 
-	public double portfolioReturn(double startDate, double endDate) {
+	public double portfolioReturn(Date endDate) {
+		// TODO: no exception handling yet...
+		return getNetProfit(endDate)/ initialCash;
+	}	
+	
+	public double portfolioReturn(Date startDate, Date endDate) {
 		// TODO: no exception handling yet...
 		double startDateMarketValue = history.get(startDate)
 				.marketValue();
@@ -35,6 +40,17 @@ public class PortfolioHistory {
 		return (endDateMarketValue - startDateMarketValue) / startDateMarketValue;
 	}
 
+	public double getNetProfit(Date endDate) {
+		// TODO: no exception handling yet...
+		return history.get(endDate).marketValue() - initialCash;
+	}
+
+	public double getNetProfit(Date startDate, Date endDate) {
+		// TODO: no exception handling yet...
+		return history.get(endDate).marketValue() - 
+					history.get(startDate).marketValue();
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

@@ -2,6 +2,7 @@ package com.algotrading.backtesting.replay;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.Duration;
 import java.util.Date;
 
 import com.algotrading.backtesting.stock.PortfolioHistory;
@@ -26,7 +27,16 @@ public class Main {
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
+		Date lastTradingDate = tradingDate.rollBackCurrentDate(endDate, endDate);
+		double years = ((endDate.getTime() - startDate.getTime())/(1000*60*60*24)/365);
+		double profitRate = portfolioHistory.portfolioReturn(lastTradingDate);
+		// int days = Duration.between(startDate, endDate).toDays();
+		// Date firstTradingDate = tradingDate.rollToCurrentDate(startDate, startDate);
 		System.out.println(portfolioHistory);
+		System.out.println("Net Profit: " + portfolioHistory.getNetProfit(lastTradingDate) + "\n");
+		System.out.println("Duration: " + years + " years");
+		System.out.println("Profit Rate: " + profitRate);
+		System.out.println("Annual Increment: " + (Math.pow(1 + profitRate, 1/years) - 1 ));
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
 		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
