@@ -41,11 +41,45 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void securityDefinitionOptionalParameterEnd(int reqId) {
 	}
 
+	/**
+	 * provides the account updates.
+	 * 
+	 * @param requestId
+	 *            the id of request
+	 * @param account
+	 *            the account with updates
+	 * @param modelCode
+	 *            the model code with updates
+	 * @param key
+	 *            the name of parameter
+	 * @param value
+	 *            the value of parameter
+	 * @param currency
+	 *            the currency of parameter
+	 * @see accountSummary, EClientSocket::reqAccountSummary
+	 */
 	@Override
 	public void accountUpdateMulti(int reqId, String account, String modelCode, String key, String value,
 			String currency) {
 	}
 
+	/**
+	 * Indicates all the account updates have been transmitted.
+	 * 
+	 * @param requestId
+	 *            the id of request
+	 * @param account
+	 *            the account with updates
+	 * @param modelCode
+	 *            the model code with updates
+	 * @param key
+	 *            the name of parameter
+	 * @param value
+	 *            the value of parameter
+	 * @param currency
+	 *            the currency of parameter
+	 * @see accountUpdateMultiEnd, EClient::reqAccountUpdatesMulti
+	 */
 	@Override
 	public void accountUpdateMultiEnd(int reqId) {
 	}
@@ -63,14 +97,40 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void bondContractDetails(int reqId, ContractDetails contractDetails) {
 	}
 
+	/**
+	 * receives the full contract's definitons This method will return all
+	 * contracts matching the requested via EClientSocket::reqContractDetails.
+	 * For example, one can obtain the whole option chain with it.
+	 * 
+	 * @param reqId
+	 *            the unique request identifier
+	 * @param contractDetails
+	 *            the instrument's complete definition.
+	 * @see contractDetailsEnd, EClientSocket::reqContractDetails
+	 */
 	@Override
 	public void contractDetails(int reqId, ContractDetails contractDetails) {
 	}
 
+	/**
+	 * After all contracts matching the request were returned, this method will
+	 * mark the end of their reception.
+	 * 
+	 * @see contractDetails, EClientSocket::reqContractDetails
+	 */
 	@Override
 	public void contractDetailsEnd(int reqId) {
 	}
 
+	/**
+	 * returns Reuters' Fundamental data
+	 * 
+	 * @param reqId
+	 *            the request's identifier
+	 * @param data
+	 *            Reuthers xml-formatted fundamental data
+	 * @see EClientSocket::reqFundamentalData
+	 */
 	@Override
 	public void fundamentalData(int reqId, String data) {
 	}
@@ -78,9 +138,13 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void bondContractDetails(ContractDetails contractDetails) {
 	}
 
-	public void contractDetails(ContractDetails contractDetails) {
-	}
-
+	/**
+	 * TWS's current time. TWS is synchronized with the server (not local
+	 * computer) using NTP and this function will receive the current time in
+	 * TWS.
+	 * 
+	 * @see EClient::reqCurrentTime
+	 */
 	@Override
 	public void currentTime(long time) {
 	}
@@ -109,6 +173,13 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void verifyMessageAPI(String message) {
 	}
 
+	/**
+	 * indicates the end of the Execution reception.
+	 * 
+	 * @param reqId
+	 *            the request's identifier
+	 * @see execDetails, commissionReport, EClientSocket::reqExecutions
+	 */
 	@Override
 	public void execDetailsEnd(int reqId) {
 	}
@@ -124,24 +195,46 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void positionEnd() {
 	}
 
+	/**
+	 * Receives the account information. This method will receive the account
+	 * information just as it appears in the TWS' Account Summary Window.
+	 * 
+	 * @param reqId
+	 *            the request's unique identifier.
+	 * @param account
+	 *            the account id
+	 * @param tag
+	 *            the account's attribute being received.
+	 * @param value
+	 *            the account's attribute's value.
+	 * @param currency
+	 *            the currency on which the value is expressed.
+	 * @see accountSummaryEnd, EClientSocket::reqAccountSummary
+	 */
 	@Override
 	public void accountSummary(int reqId, String account, String tag, String value, String currency) {
 	}
 
+	/**
+	 * notifies when all the accounts' information has ben received. Requires
+	 * TWS 967+ to receive accountSummaryEnd in linked account structures.
+	 * 
+	 * @param reqId
+	 *            the request's identifier.
+	 * @see accountSummary, EClientSocket::reqAccountSummary
+	 */
 	@Override
 	public void accountSummaryEnd(int reqId) {
 	}
 
+	/**
+	 * Notifies the end of the open orders' reception.
+	 * 
+	 * @see orderStatus, openOrder, EClientSocket::placeOrder,
+	 *      EClientSocket::reqAllOpenOrders, EClientSocket::reqAutoOpenOrders
+	 */
 	@Override
 	public void openOrderEnd() {
-	}
-
-	public void orderStatus(int orderId, String status, double filled, double remaining, double avgFillPrice,
-			int permId, int parentId, double lastFillPrice, int clientId, String whyHeld) {
-	}
-
-	public void orderStatus(int orderId, String status, int filled, int remaining, double avgFillPrice, int permId,
-			int parentId, double lastFillPrice, int clientId, String whyHeld) {
 	}
 
 	@Override
@@ -233,6 +326,11 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void tickString(int orderId, int tickType, String value) {
 	}
 
+	/**
+	 * returns array of family codes
+	 * 
+	 * @see EClient::reqFamilyCodes
+	 */
 	@Override
 	public void familyCodes(FamilyCode[] arg0) {
 	}
@@ -281,13 +379,83 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void newsProviders(NewsProvider[] arg0) {
 	}
 
+	/**
+	 * Feeds in currently open orders.
+	 * 
+	 * @param orderId
+	 *            the order's unique id
+	 * @param contract
+	 *            the order's Contract.
+	 * @param order
+	 *            the currently active Order.
+	 * @param orderState
+	 *            the order's OrderState
+	 * @see orderStatus, openOrderEnd, EClientSocket::placeOrder,
+	 *      EClientSocket::reqAllOpenOrders, EClientSocket::reqAutoOpenOrders
+	 */
 	@Override
 	public void openOrder(int arg0, Contract arg1, com.ib.client.Order arg2, OrderState arg3) {
 	}
 
+	/**
+	 * Gives the up-to-date information of an order every time it changes. Often
+	 * there are duplicate orderStatus messages.
+	 * 
+	 * @param orderId
+	 *            the order's client id.
+	 * @param status
+	 *            the current status of the order. Possible values:
+	 *            PendingSubmit - indicates that you have transmitted the order,
+	 *            but have not yet received confirmation that it has been
+	 *            accepted by the order destination. PendingCancel - indicates
+	 *            that you have sent a request to cancel the order but have not
+	 *            yet received cancel confirmation from the order destination.
+	 *            At this point, your order is not confirmed canceled. It is not
+	 *            guaranteed that the cancellation will be successful.
+	 *            PreSubmitted - indicates that a simulated order type has been
+	 *            accepted by the IB system and that this order has yet to be
+	 *            elected. The order is held in the IB system until the election
+	 *            criteria are met. At that time the order is transmitted to the
+	 *            order destination as specified . Submitted - indicates that
+	 *            your order has been accepted by the system. ApiCanceled -
+	 *            after an order has been submitted and before it has been
+	 *            acknowledged, an API client client can request its
+	 *            cancelation, producing this state. Cancelled - indicates that
+	 *            the balance of your order has been confirmed canceled by the
+	 *            IB system. This could occur unexpectedly when IB or the
+	 *            destination has rejected your order. Filled - indicates that
+	 *            the order has been completely filled. Market orders executions
+	 *            will not always trigger a Filled status. Inactive - indicates
+	 *            that the order was received by the system but is no longer
+	 *            active because it was rejected or canceled.
+	 * @param filled
+	 *            number of filled positions.
+	 * @param remaining
+	 *            the remnant positions.
+	 * @param avgFillPrice
+	 *            average filling price.
+	 * @param permId
+	 *            the order's permId used by the TWS to identify orders.
+	 * @param parentId
+	 *            parent's id. Used for bracket and auto trailing stop orders.
+	 * @param lastFillPrice
+	 *            price at which the last positions were filled.
+	 * @param clientId
+	 *            API client which submitted the order.
+	 * @param whyHeld
+	 *            this field is used to identify an order held when TWS is
+	 *            trying to locate shares for a short sell. The value used to
+	 *            indicate this is 'locate'.
+	 * @param mktCapPrice
+	 *            If an order has been capped, this indicates the current capped
+	 *            price. Requires TWS 967+ and API v973.04+. Python API
+	 *            specifically requires API v973.06+.
+	 * @see openOrder, openOrderEnd, EClientSocket::placeOrder,
+	 *      EClientSocket::reqAllOpenOrders, EClientSocket::reqAutoOpenOrders
+	 */
 	@Override
-	public void orderStatus(int arg0, String arg1, double arg2, double arg3, double arg4, int arg5, int arg6,
-			double arg7, int arg8, String arg9, double arg10) {
+	public void orderStatus(int orderId, String status, double filled, double remaining, double avgFillPrice,
+			int permId, int parentId, double lastFillPrice, int clientId, String whyHeld, double mktCapPrice) {
 	}
 
 	@Override
