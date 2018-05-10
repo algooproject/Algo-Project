@@ -598,13 +598,14 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void historicalNews(int requestId, String time, String providerCode, String articleId, String headline) {
 	}
 
-	/*
+	/**
 	 * returns news headlines end marker
 	 * 
 	 * @param requestId
 	 * 
-	 * @param hasMore - indicates whether there are more results available,
-	 * false otherwise
+	 * @param hasMore
+	 *            - indicates whether there are more results available, false
+	 *            otherwise
 	 * 
 	 * @see EClient::reqHistoricalNews
 	 */

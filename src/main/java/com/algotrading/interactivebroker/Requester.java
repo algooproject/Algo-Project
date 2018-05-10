@@ -45,6 +45,28 @@ public class Requester {
 	}
 
 	/**
+	 * Requests the contract's market depth (order book). This request must be
+	 * direct-routed to an exchange and not smart-routed. The number of
+	 * simultaneous market depth requests allowed in an account is calculated
+	 * based on a formula that looks at an accounts equity, commissions, and
+	 * quote booster packs.
+	 * 
+	 * @param tickerId
+	 *            - the request's identifier
+	 * @param contract
+	 *            - the Contract for which the depth is being requested
+	 * @param numRows
+	 *            - the number of rows on each side of the order book
+	 * @param mktDepthOptions
+	 * 
+	 * @see cancelMktDepth, EWrapper::updateMktDepth, EWrapper::updateMktDepthL2
+	 */
+
+	void reqMarketDepth(int tickerId, Contract contract, int numRows, List<TagValue> mktDepthOptions) {
+
+	}
+
+	/**
 	 * Ka Wing: Also place the mapping of request id to contract
 	 * 
 	 * Requests real time market data. Returns market data for an instrument
@@ -165,8 +187,8 @@ public class Requester {
 	 *            the request's unique identifier. contract the contract for
 	 *            which we want to retrieve the data. endDateTime request's
 	 *            ending time with format yyyyMMdd HH:mm:ss {TMZ} durationString
-	 *            the amount of time for which the data needs to be retrieved:
-	 *            " S (seconds) - " D (days) " W (weeks) - " M (months) " Y
+	 *            the amount of time for which the data needs to be retrieved: "
+	 *            S (seconds) - " D (days) " W (weeks) - " M (months) " Y
 	 *            (years) barSizeSetting the size of the bar: 1 sec 5 secs 15
 	 *            secs 30 secs 1 min 2 mins 3 mins 5 mins 15 mins 30 mins 1 hour
 	 *            1 day whatToShow the kind of information being retrieved:
@@ -215,15 +237,15 @@ public class Requester {
 	 * @param reqId
 	 *            id of the request contract Contract object that is subject of
 	 *            query startDateTime,i.e. "20170701 12:01:00". Uses TWS
-	 *            timezone specified at login. endDateTime,i.e.
-	 *            "20170701 13:01:00". In TWS timezone. Exactly one of start
-	 *            time and end time has to be defined. numberOfTicks Number of
-	 *            distinct data points. Max currently 1000 per request.
-	 *            whatToShow (Bid_Ask, Midpoint, Trades) Type of data requested.
-	 *            useRth Data from regular trading hours (1), or all available
-	 *            hours (0) ignoreSize A filter only used when the source price
-	 *            is Bid_Ask miscOptions should be defined as null, reserved for
-	 *            internal use
+	 *            timezone specified at login. endDateTime,i.e. "20170701
+	 *            13:01:00". In TWS timezone. Exactly one of start time and end
+	 *            time has to be defined. numberOfTicks Number of distinct data
+	 *            points. Max currently 1000 per request. whatToShow (Bid_Ask,
+	 *            Midpoint, Trades) Type of data requested. useRth Data from
+	 *            regular trading hours (1), or all available hours (0)
+	 *            ignoreSize A filter only used when the source price is Bid_Ask
+	 *            miscOptions should be defined as null, reserved for internal
+	 *            use
 	 */
 	void reqHistoricalTicks(int reqId, Contract contract, String startDateTime, String endDateTime, int numberOfTicks,
 			String whatToShow, int useRth, Boolean ignoreSize, List<TagValue> miscOptions) {
@@ -325,12 +347,11 @@ public class Requester {
 	 *            users with corresponding real time market data subscriptions.
 	 *            A true value will return a one-time snapshot, while a false
 	 *            value will provide streaming data. regulatory snapshot for US
-	 *            stocks requests NBBO snapshots for users which have
-	 *            "US Securities Snapshot Bundle" subscription but not
-	 *            corresponding Network A, B, or C subscription necessary for
-	 *            streaming * market data. One-time snapshot of current market
-	 *            price that will incur a fee of 1 cent to the account per
-	 *            snapshot.
+	 *            stocks requests NBBO snapshots for users which have "US
+	 *            Securities Snapshot Bundle" subscription but not corresponding
+	 *            Network A, B, or C subscription necessary for streaming *
+	 *            market data. One-time snapshot of current market price that
+	 *            will incur a fee of 1 cent to the account per snapshot.
 	 * 
 	 * @see cancelMktData, EWrapper::tickPrice, EWrapper::tickSize,
 	 *      EWrapper::tickString, EWrapper::tickEFP, EWrapper::tickGeneric,
@@ -358,6 +379,24 @@ public class Requester {
 	 */
 	void reqHeadTimestamp(int tickerId, Contract contract, String whatToShow, int useRTH, int formatDate) {
 		clientSocket.reqHeadTimestamp(tickerId, contract, whatToShow, useRTH, formatDate);
+	}
+
+	/**
+	 * @return data histogram of specified contract .
+	 * 
+	 * @param tickerId
+	 *            - an identifier for the request
+	 * @param contract
+	 *            - Contract object for which histogram is being requested
+	 * @param useRTH
+	 *            - use regular trading hours only, 1 for yes or 0 for no
+	 * @param period
+	 *            - period of which data is being requested, e.g. "3 days"
+	 * @see histogramData
+	 */
+
+	void reqHistogramData(int tickerId, Contract contract, Boolean useRTH, String period) {
+
 	}
 
 	public void placeOrder(Contract contract, Order order) {
