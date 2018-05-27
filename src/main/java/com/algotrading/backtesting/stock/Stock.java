@@ -16,7 +16,16 @@ public class Stock {
 	private final String ticker;
 	private Map<Date, StockHistory> history;
 	private int lotSize; // default to be 1 if not specified when instantiated;
+	private Boolean status = true;
 
+	public Boolean getStatus() {
+		return status;
+	}	
+	
+	public void setStatus( Boolean status ){
+		this.status = status;
+	}
+	
 	public Stock(String ticker, Map<Date, StockHistory> history) {
 		this(ticker, history, 1);
 	}

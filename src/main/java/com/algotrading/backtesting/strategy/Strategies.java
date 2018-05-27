@@ -20,17 +20,32 @@ import com.algotrading.backtesting.stock.Stock;
 public class Strategies {
 	private List<Strategy> buySignal;
 	private List<Strategy> sellSignal;
-
+	private List<Strategy> exitSignal;
+	private List<Strategy> reentrySignal;
+	
+	
 	public Strategies() {
 		buySignal = new ArrayList<>();
 		sellSignal = new ArrayList<>();
+		exitSignal = new ArrayList<>();
+		reentrySignal = new ArrayList<>();
 	}
 
 	public Strategies(String buyStrategiesFilePath, String sellStrategiesFilePath) throws IOException, ParseException {
 		buySignal = read(buyStrategiesFilePath);
 		sellSignal = read(sellStrategiesFilePath);
+		exitSignal = new ArrayList<>();
+		reentrySignal = new ArrayList<>();
 	}
 
+	public Strategies(String buyStrategiesFilePath, String sellStrategiesFilePath,
+			String exitStrategiesFilePath, String reentryStrategiesFilePath) throws IOException, ParseException {
+		buySignal = read(buyStrategiesFilePath);
+		sellSignal = read(sellStrategiesFilePath);
+		exitSignal = read(exitStrategiesFilePath);
+		reentrySignal = read(reentryStrategiesFilePath);
+	}	
+	
 	public void addBuySignal(Strategy strategy) {
 		buySignal.add(strategy);
 	}
@@ -57,18 +72,43 @@ public class Strategies {
 	}
 
 	public BuySellAmount buySellAmount(Stock stock, Date date, Portfolio portfolio) throws ParseException {
-		for (Strategy strategy : buySignal) {
-			if (strategy.shouldPutOrder(stock, date,
-					portfolio)/* && !portfolio.containsStock(stock) */) {
-				PortfolioComponent buyAmount = strategy.buyAmount(stock, date, portfolio);
-				// sellAmount.getQuantity() should be positive as portfolio
-				// increase stock
-				// so need to negative it to state decrease cash
-				double transactionCost = buyAmount.getTransactionCost();
-				double tradedCash = -buyAmount.getUnitPrice() * buyAmount.getQuantity() - transactionCost;
-				return new BuySellAmount(buyAmount, tradedCash, transactionCost);
+		if ( !stock.getStatus() ){
+			for (Strategy strategy : reentrySignal){
+				if (strategy.shouldPutOrder(stock, date,
+						portfolio)/* && !portfolio.containsStock(stock) */)	{
+					stock.setStatus(true);
+					break;
+				}
 			}
 		}
+		if ( stock.getStatus() ){
+			for (Strategy strategy : buySignal) {
+				if (strategy.shouldPutOrder(stock, date,
+						portfolio)/* && !portfolio.containsStock(stock) */) {
+					PortfolioComponent buyAmount = strategy.buyAmount(stock, date, portfolio);
+					// sellAmount.getQuantity() should be positive as portfolio
+					// increase stock
+					// so need to negative it to state decrease cash
+					double transactionCost = buyAmount.getTransactionCost();
+					double tradedCash = -buyAmount.getUnitPrice() * buyAmount.getQuantity() - transactionCost;
+					return new BuySellAmount(buyAmount, tradedCash, transactionCost);
+				}
+			}
+		}
+		
+		for (Strategy strategy : exitSignal) {
+			if (strategy.shouldPutOrder(stock, date, portfolio) && portfolio.containsStock(stock)) {
+				PortfolioComponent sellAmount = strategy.sellAmount(stock, date, portfolio);
+				// sellAmount.getQuantity() should be negative as portfolio
+				// decrease stock
+				// so need to negative it to state increase cash
+				stock.setStatus(false);
+				double transactionCost = sellAmount.getTransactionCost();
+				double tradedCash = -sellAmount.getUnitPrice() * sellAmount.getQuantity() - transactionCost;
+				return new BuySellAmount(sellAmount, tradedCash, transactionCost);
+			}
+		}
+
 		for (Strategy strategy : sellSignal) {
 			if (strategy.shouldPutOrder(stock, date, portfolio) && portfolio.containsStock(stock)) {
 				PortfolioComponent sellAmount = strategy.sellAmount(stock, date, portfolio);

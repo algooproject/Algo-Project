@@ -31,7 +31,9 @@ public class MainTest {
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
-				RESOURCE_PATH_NAME + "sellStrategies1.txt");
+				RESOURCE_PATH_NAME + "sellStrategies1.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "AllavailableStocks.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
@@ -64,7 +66,9 @@ public class MainTest {
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
-				RESOURCE_PATH_NAME + "sellStrategies1.txt");
+				RESOURCE_PATH_NAME + "sellStrategies1.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "AllavailableStocks.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
@@ -87,7 +91,9 @@ public class MainTest {
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
-				RESOURCE_PATH_NAME + "sellStrategies1.txt");
+				RESOURCE_PATH_NAME + "sellStrategies1.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "AllavailableStocks.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
@@ -110,7 +116,9 @@ public class MainTest {
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
-				RESOURCE_PATH_NAME + "sellStrategies1.txt");
+				RESOURCE_PATH_NAME + "sellStrategies1.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "AllavailableStocks.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
@@ -133,7 +141,9 @@ public class MainTest {
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
-				RESOURCE_PATH_NAME + "sellStrategies1.txt");
+				RESOURCE_PATH_NAME + "sellStrategies1.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "AllavailableStocks.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
@@ -163,7 +173,9 @@ public class MainTest {
 		portfolio.put(TC0006pc);
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
-				RESOURCE_PATH_NAME + "sellStrategies1.txt");
+				RESOURCE_PATH_NAME + "sellStrategies1.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "AllavailableStocks.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
@@ -195,7 +207,9 @@ public class MainTest {
 		portfolio.put(TC0007pc);
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
-				RESOURCE_PATH_NAME + "sellStrategies1.txt");
+				RESOURCE_PATH_NAME + "sellStrategies1.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "AllavailableStocks.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
@@ -230,7 +244,9 @@ public class MainTest {
 
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
-				RESOURCE_PATH_NAME + "sellStrategies1.txt");
+				RESOURCE_PATH_NAME + "sellStrategies1.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "AllavailableStocks.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
@@ -245,4 +261,86 @@ public class MainTest {
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
 		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}
+
+	@Test
+	public void test009_buyConditionsMetButStockDisabled() throws ParseException, IOException {
+		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
+		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
+		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
+		PortfolioHistory history = new PortfolioHistory();
+		Portfolio portfolio = new Portfolio(startDate, 0);
+		Stock stockTC0009 = new Stock("SEHK_TC0009", lotSize.getLotSize("SEHK_TC0009"));
+		stockTC0009.read(RESOURCE_PATH_NAME);
+		PortfolioComponent TC0009pc = new PortfolioComponent(stockTC0009, 2000, 3, startDate);
+		portfolio.put(TC0009pc);
+		history.put(startDate, portfolio);
+		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies9.txt",
+				RESOURCE_PATH_NAME + "sellStrategies1.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
+		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks9.txt");
+		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
+		replay.simulate();
+		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
+		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));
+		Portfolio portfolio20161014 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-14"));
+		Portfolio portfolio20161017 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-17"));
+		Portfolio portfolio20161018 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-18"));
+		Portfolio portfolio20161019 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19"));
+
+		assertTrue(portfolio20161013.containsStock(stockTC0009));
+		assertEquals(false, portfolio20161014.containsStock(stockTC0009));
+		assertEquals(false, portfolio20161017.containsStock(stockTC0009));
+		// On 20161018 Buy Conditions hit but stock is disabled hence no action
+		assertEquals(false, portfolio20161018.containsStock(stockTC0009));
+		assertEquals(false, portfolio20161019.containsStock(stockTC0009));
+		
+		assertEquals(5400, portfolio20161019.getCash(), 0.0001);
+		System.out.println("test009_buyConditionsMetButStockDisabled"); //
+		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+	}
+	
+	@Test
+	public void test010_stockEnabledBuyConditionsMet() throws ParseException, IOException {
+		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
+		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
+		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-21");
+		PortfolioHistory history = new PortfolioHistory();
+		Portfolio portfolio = new Portfolio(startDate, 0);
+		Stock stockTC0010 = new Stock("SEHK_TC0010", lotSize.getLotSize("SEHK_TC0010"));
+		stockTC0010.read(RESOURCE_PATH_NAME);
+		PortfolioComponent TC0010pc = new PortfolioComponent(stockTC0010, 2000, 3, startDate);
+		portfolio.put(TC0010pc);
+		history.put(startDate, portfolio);
+		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies10.txt",
+				RESOURCE_PATH_NAME + "sellStrategies10.txt",
+				RESOURCE_PATH_NAME + "exitStrategies.txt",
+				RESOURCE_PATH_NAME + "reentryStrategies.txt");
+		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks10.txt");
+		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate10.txt");
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
+		replay.simulate();
+		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
+		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));
+		Portfolio portfolio20161014 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-14"));
+		Portfolio portfolio20161019 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19"));
+		Portfolio portfolio20161020 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-20"));
+		Portfolio portfolio20161021 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-21"));
+
+		assertTrue(portfolio20161013.containsStock(stockTC0010));
+		assertEquals(false, portfolio20161014.containsStock(stockTC0010)); // exit strategy
+		assertEquals(false, portfolio20161019.containsStock(stockTC0010));
+		assertEquals(false, portfolio20161020.containsStock(stockTC0010)); // stock enabled again but no action yet
+		assertTrue(portfolio20161021.containsStock(stockTC0010)); // Buy stock
+		
+		assertEquals(4400, portfolio20161021.getCash(), 0.0001);
+		System.out.println("test010_stockEnabledBuyConditionsMet"); //
+		// System.out.println(portfolioHistory);
+		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+	}	
+	
 }
