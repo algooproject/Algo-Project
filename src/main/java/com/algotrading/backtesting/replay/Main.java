@@ -29,16 +29,17 @@ public class Main {
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Date lastTradingDate = tradingDate.rollBackCurrentDate(endDate, endDate);
-		double years = ((endDate.getTime() - startDate.getTime())/(1000*60*60*24)/365);
+		double years = ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24) / 365);
 		double profitRate = portfolioHistory.portfolioReturn(lastTradingDate);
 		// int days = Duration.between(startDate, endDate).toDays();
-		// Date firstTradingDate = tradingDate.rollToCurrentDate(startDate, startDate);
+		// Date firstTradingDate = tradingDate.rollToCurrentDate(startDate,
+		// startDate);
 		System.out.println(portfolioHistory);
 		System.out.println("Net Profit: " + portfolioHistory.getNetProfit(lastTradingDate) + "\n");
 		System.out.println("Start: " + startDate.toString() + "; End: " + endDate.toString());
 		System.out.println("Duration: " + years + " years");
 		System.out.println("Profit Rate: " + profitRate);
-		System.out.println("Annual Increment: " + (Math.pow(1 + profitRate, 1/years) - 1 ));
+		System.out.println("Annual Increment: " + (Math.pow(1 + profitRate, 1 / years) - 1));
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
 		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
 	}

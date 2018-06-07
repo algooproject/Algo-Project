@@ -20,12 +20,12 @@ public class Stock {
 
 	public Boolean getStatus() {
 		return status;
-	}	
-	
-	public void setStatus( Boolean status ){
+	}
+
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
-	
+
 	public Stock(String ticker, Map<Date, StockHistory> history) {
 		this(ticker, history, 1);
 	}
@@ -70,7 +70,7 @@ public class Stock {
 		boolean isFirstLine = withHeader; // will skip header if true
 		Double dbLastClose = null;
 		Double dbLastAdjClose = null;
-		
+
 		try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
 			while ((strLine = br.readLine()) != null) {
 				// System.out.println(strLine);
@@ -79,7 +79,10 @@ public class Stock {
 				} else {
 					// use comma as separator
 					String[] strStockHistory = strLine.split(strCvsSplitBy);
-					//System.out.println(strStockHistory[0] + '|' + strStockHistory[1] + '|' + strStockHistory[2] + '|' + strStockHistory[3] + '|' + strStockHistory[4] + '|' + strStockHistory[5] + '|' + strStockHistory[6]);
+					// System.out.println(strStockHistory[0] + '|' +
+					// strStockHistory[1] + '|' + strStockHistory[2] + '|' +
+					// strStockHistory[3] + '|' + strStockHistory[4] + '|' +
+					// strStockHistory[5] + '|' + strStockHistory[6]);
 					Date dtStockHistoryDate = Constants.DATE_FORMAT_YYYYMMDD.parse(strStockHistory[0]);
 					Double dbOpen = null;
 					Double dbClose = null;

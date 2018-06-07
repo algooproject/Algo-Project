@@ -22,8 +22,7 @@ public class Strategies {
 	private List<Strategy> sellSignal;
 	private List<Strategy> exitSignal;
 	private List<Strategy> reentrySignal;
-	
-	
+
 	public Strategies() {
 		buySignal = new ArrayList<>();
 		sellSignal = new ArrayList<>();
@@ -38,14 +37,14 @@ public class Strategies {
 		reentrySignal = new ArrayList<>();
 	}
 
-	public Strategies(String buyStrategiesFilePath, String sellStrategiesFilePath,
-			String exitStrategiesFilePath, String reentryStrategiesFilePath) throws IOException, ParseException {
+	public Strategies(String buyStrategiesFilePath, String sellStrategiesFilePath, String exitStrategiesFilePath,
+			String reentryStrategiesFilePath) throws IOException, ParseException {
 		buySignal = read(buyStrategiesFilePath);
 		sellSignal = read(sellStrategiesFilePath);
 		exitSignal = read(exitStrategiesFilePath);
 		reentrySignal = read(reentryStrategiesFilePath);
-	}	
-	
+	}
+
 	public void addBuySignal(Strategy strategy) {
 		buySignal.add(strategy);
 	}
@@ -72,16 +71,16 @@ public class Strategies {
 	}
 
 	public BuySellAmount buySellAmount(Stock stock, Date date, Portfolio portfolio) throws ParseException {
-		if ( !stock.getStatus() ){
-			for (Strategy strategy : reentrySignal){
+		if (!stock.getStatus()) {
+			for (Strategy strategy : reentrySignal) {
 				if (strategy.shouldPutOrder(stock, date,
-						portfolio)/* && !portfolio.containsStock(stock) */)	{
+						portfolio)/* && !portfolio.containsStock(stock) */) {
 					stock.setStatus(true);
 					break;
 				}
 			}
 		}
-		if ( stock.getStatus() ){
+		if (stock.getStatus()) {
 			for (Strategy strategy : buySignal) {
 				if (strategy.shouldPutOrder(stock, date,
 						portfolio)/* && !portfolio.containsStock(stock) */) {
@@ -95,7 +94,7 @@ public class Strategies {
 				}
 			}
 		}
-		
+
 		for (Strategy strategy : exitSignal) {
 			if (strategy.shouldPutOrder(stock, date, portfolio) && portfolio.containsStock(stock)) {
 				PortfolioComponent sellAmount = strategy.sellAmount(stock, date, portfolio);
