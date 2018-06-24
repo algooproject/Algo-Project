@@ -11,14 +11,14 @@ public class isExitByClosingDownToSignal extends isExitSignal {
 
 	private ClosingHigherThanSignal signal; // Want to use Not
 											// VolumeHigherThanSignal
-	private String expectedValueType = AlgoTradingConstants.NUMBER;
-	private String expectedValue;
+	private String expectedValueType = AlgoTradingConstants.VARIABLE;
+	private String expectedValue = AlgoTradingConstants.HOLDINGPRICE;
 	private double multiplier = 1;
 
-	public isExitByClosingDownToSignal(String expectedValueType, String expectedValue, double multiplier)
-			throws ParseException {
+	public isExitByClosingDownToSignal(double multiplier) throws ParseException {
 		super();
-		signal = new ClosingHigherThanSignal(expectedValueType, expectedValue, 1, multiplier);
+		signal = new ClosingHigherThanSignal(AlgoTradingConstants.VARIABLE, AlgoTradingConstants.HOLDINGPRICE, 1,
+				multiplier);
 	}
 
 	public String getExpectedValueType() {
@@ -37,7 +37,8 @@ public class isExitByClosingDownToSignal extends isExitSignal {
 	protected boolean secondSignal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch)
 			throws ParseException {
 		if (!signal.signal(stock, date, portfolio, buyCostIfMatch)) {
-			System.out.println("Exiting: setting " + stock.getTicker() + " to 'Disabled' on " + date.toString());
+			// System.out.println("Exiting: setting " + stock.getTicker() + " to
+			// 'Disabled' on " + date.toString());
 			stock.setStatus(false);
 			return true;
 		}

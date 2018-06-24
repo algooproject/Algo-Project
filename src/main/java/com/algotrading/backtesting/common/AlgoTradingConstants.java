@@ -4,6 +4,7 @@ public interface AlgoTradingConstants {
 	String NUMBER = "number";
 	String VARIABLE = "variable";
 	String CLOSING = "closing";
+	String HOLDINGPRICE = "holdingprice";
 
 	String SRC_FILEPATH = "src/main/resources/";
 

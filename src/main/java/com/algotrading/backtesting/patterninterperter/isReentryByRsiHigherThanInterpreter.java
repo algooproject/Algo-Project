@@ -4,7 +4,7 @@ import java.text.ParseException;
 
 import com.algotrading.backtesting.common.AlgoTradingConstants;
 import com.algotrading.backtesting.pattern.StockSignal;
-import com.algotrading.backtesting.pattern.isReentryByRsiHigherSignal;
+import com.algotrading.backtesting.pattern.isReentryByRsiHigherThanSignal;
 
 public class isReentryByRsiHigherThanInterpreter implements Node {
 	private static String name = "isReentryByRsiHigher";
@@ -52,7 +52,7 @@ public class isReentryByRsiHigherThanInterpreter implements Node {
 	@Override
 	public StockSignal execute() {
 		try {
-			return new isReentryByRsiHigherSignal(magnitude, sma_magnitude, expectedValueType, expectedValue,
+			return new isReentryByRsiHigherThanSignal(magnitude, sma_magnitude, expectedValueType, expectedValue,
 					multiplier);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

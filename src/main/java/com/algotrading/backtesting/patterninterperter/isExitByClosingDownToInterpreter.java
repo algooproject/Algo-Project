@@ -30,11 +30,7 @@ public class isExitByClosingDownToInterpreter implements Node {
 				String key = keyValuePair[0];
 				String value = keyValuePair[1];
 
-				if ("expectedValueType".equals(key)) {
-					expectedValueType = value;
-				} else if ("expectedValue".equals(key)) {
-					expectedValue = value;
-				} else if ("multiplier".equals(key)) {
+				if ("multiplier".equals(key)) {
 					multiplier = Double.parseDouble(value);
 				} else {
 					throw new ParseException(name + " no field match", 0);
@@ -46,7 +42,7 @@ public class isExitByClosingDownToInterpreter implements Node {
 	@Override
 	public StockSignal execute() {
 		try {
-			return new isExitByClosingDownToSignal(expectedValueType, expectedValue, multiplier);
+			return new isExitByClosingDownToSignal(multiplier);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

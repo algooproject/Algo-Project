@@ -15,6 +15,8 @@ public abstract class isReentrySignal implements StockSignal {
 	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) throws ParseException {
 		if (stock.getStatus())
 			return false;
+		// System.out.println("isReentrySignal: stock " + stock.getTicker() + "
+		// has been disabled on " + date.toString());
 		return secondSignal(stock, date, portfolio, buyCostIfMatch);
 	}
 
