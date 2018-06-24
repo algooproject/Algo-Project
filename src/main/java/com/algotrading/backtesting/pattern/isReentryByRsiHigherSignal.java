@@ -43,6 +43,7 @@ public class isReentryByRsiHigherSignal extends isReentrySignal {
 	protected boolean secondSignal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch)
 			throws ParseException {
 		if (signal.signal(stock, date, portfolio, buyCostIfMatch)) {
+			System.out.println("isReentrySignal: stock " + stock.getTicker() + " is enabled on " + date.toString());
 			stock.setStatus(true);
 			return true;
 		}

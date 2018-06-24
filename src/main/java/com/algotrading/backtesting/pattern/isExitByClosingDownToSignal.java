@@ -37,8 +37,7 @@ public class isExitByClosingDownToSignal extends isExitSignal {
 	protected boolean secondSignal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch)
 			throws ParseException {
 		if (!signal.signal(stock, date, portfolio, buyCostIfMatch)) {
-			// System.out.println("Exiting: setting " + stock.getTicker() + " to
-			// 'Disabled' on " + date.toString());
+			System.out.println("Exiting: setting " + stock.getTicker() + " to 'Disabled' on " + date.toString());
 			stock.setStatus(false);
 			return true;
 		}
