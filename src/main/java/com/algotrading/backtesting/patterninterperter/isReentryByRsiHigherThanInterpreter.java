@@ -2,11 +2,12 @@ package com.algotrading.backtesting.patterninterperter;
 
 import java.text.ParseException;
 
-import com.algotrading.backtesting.pattern.RsiLowerThanSignal;
+import com.algotrading.backtesting.common.AlgoTradingConstants;
 import com.algotrading.backtesting.pattern.StockSignal;
+import com.algotrading.backtesting.pattern.isReentryByRsiHigherSignal;
 
-public class RsiLowerThanInterperter implements Node {
-	private static String name = "RsiLower";
+public class isReentryByRsiHigherThanInterpreter implements Node {
+	private static String name = "isReentryByRsiHigher";
 	private int magnitude = 10;
 	private int sma_magnitude = 10;
 	private String expectedValueType = "number";
@@ -18,19 +19,19 @@ public class RsiLowerThanInterperter implements Node {
 		while (true) {
 			if (context.currentToken() == null) {
 				throw new ParseException(name, 0);
-			} else if (context.currentToken().equals("RSILower[")) {
-				context.skipToken("RSILower[");
+			} else if (context.currentToken().equals(AlgoTradingConstants.ISREENTRYBYRSI_HIGHER)) {
+				context.skipToken(AlgoTradingConstants.ISREENTRYBYRSI_HIGHER);
 			} else if (context.currentToken().equals("]")) {
 				context.skipToken("]");
 				break;
 			} else {
 				String keyValue = context.currentToken();
 				context.skipToken(context.currentToken());
+
 				String[] keyValuePair = keyValue.split("=");
 				String key = keyValuePair[0];
 				String value = keyValuePair[1];
-				// System.out.println("key = " + key);
-				// System.out.println("value = " + value);
+
 				if ("magnitude".equals(key)) {
 					magnitude = Integer.parseInt(value);
 				} else if ("sma_magnitude".equals(key)) {
@@ -51,7 +52,8 @@ public class RsiLowerThanInterperter implements Node {
 	@Override
 	public StockSignal execute() {
 		try {
-			return new RsiLowerThanSignal(magnitude, sma_magnitude, expectedValueType, expectedValue, multiplier);
+			return new isReentryByRsiHigherSignal(magnitude, sma_magnitude, expectedValueType, expectedValue,
+					multiplier);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

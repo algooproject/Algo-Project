@@ -15,4 +15,7 @@ public interface AlgoTradingConstants {
 	String SMA_HIGHER = "SMAHigher[";
 	String CLOSING_HIGHER = "ClosingHigher[";
 	String VOLUME_HIGHER = "VolumeHigher[";
+	String ISREENTRYBYRSI_HIGHER = "isReentryByRsiHigher[";
+	String ISSTOCKENABLED = "isStockEnabled[";
+	String ISEXITBYCLOSINGDOWNTO = "isExitByClosingDownTo[";
 }

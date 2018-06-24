@@ -16,6 +16,7 @@ public class Stock {
 	private final String ticker;
 	private Map<Date, StockHistory> history;
 	private int lotSize; // default to be 1 if not specified when instantiated;
+	private Boolean status = true;
 
 	public Stock(String ticker, Map<Date, StockHistory> history) {
 		this(ticker, history, 1);
@@ -33,6 +34,14 @@ public class Stock {
 		this.ticker = ticker;
 		this.history = history;
 		this.lotSize = lotSize;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 
 	public void readLotSize() {
@@ -61,7 +70,7 @@ public class Stock {
 		boolean isFirstLine = withHeader; // will skip header if true
 		Double dbLastClose = null;
 		Double dbLastAdjClose = null;
-		
+
 		try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
 			while ((strLine = br.readLine()) != null) {
 				// System.out.println(strLine);
@@ -70,7 +79,10 @@ public class Stock {
 				} else {
 					// use comma as separator
 					String[] strStockHistory = strLine.split(strCvsSplitBy);
-					//System.out.println(strStockHistory[0] + '|' + strStockHistory[1] + '|' + strStockHistory[2] + '|' + strStockHistory[3] + '|' + strStockHistory[4] + '|' + strStockHistory[5] + '|' + strStockHistory[6]);
+					// System.out.println(strStockHistory[0] + '|' +
+					// strStockHistory[1] + '|' + strStockHistory[2] + '|' +
+					// strStockHistory[3] + '|' + strStockHistory[4] + '|' +
+					// strStockHistory[5] + '|' + strStockHistory[6]);
 					Date dtStockHistoryDate = Constants.DATE_FORMAT_YYYYMMDD.parse(strStockHistory[0]);
 					Double dbOpen = null;
 					Double dbClose = null;
