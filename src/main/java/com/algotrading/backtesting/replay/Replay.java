@@ -22,15 +22,15 @@ public class Replay {
 	private Portfolio portfolio;
 	private double totalTradedVolume = 0;
 	private double totalTrasactionCost = 0;
-	
-	public double getTotalTradedVolume(){
+
+	public double getTotalTradedVolume() {
 		return totalTradedVolume;
 	}
 
-	public double getTotalTrasactionCost(){
+	public double getTotalTrasactionCost() {
 		return totalTrasactionCost;
 	}
-	
+
 	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
 			AvailableStocks availableStocks, TradingDate tradingDate, double initialCash) {
 		this.startDate = startDate;
@@ -53,21 +53,24 @@ public class Replay {
 
 	public void simulate() throws ParseException {
 		Date currentDate = startDate;
-//		System.out.println("startdate: " + startDate);
+		// System.out.println("startdate: " + startDate);
 		tradingDate.setCurrentDate(currentDate);
-//		System.out.println("End setCurrentDate");
+		// System.out.println("End setCurrentDate");
 		while (tradingDate.isNotLastDate() && tradingDate.currentDate().compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
-//			System.out.println("tradingDate.currentDate(): " + tradingDate.currentDate());
+			// System.out.println("tradingDate.currentDate(): " +
+			// tradingDate.currentDate());
 			portfolio.setDate(currentDate);
 			for (Stock stock : availableStocks.get()) {
-//				System.out.println("simulate: " + currentDate);
+				// System.out.println("simulate: " + currentDate);
 				BuySellAmount buySellAmount = strategies.buySellAmount(stock, currentDate, portfolio);
 				PortfolioComponent component = buySellAmount.getPortfolioComponent();
-				totalTradedVolume = totalTradedVolume + Math.abs(component.getQuantity() * component.getUnitPrice());
-				totalTrasactionCost = totalTrasactionCost + buySellAmount.getTransaction();
-				double tradedCash = buySellAmount.getTradedCash();
 				if (component.getQuantity() != 0) {
+					totalTradedVolume = totalTradedVolume
+							+ Math.abs(component.getQuantity() * component.getUnitPrice());
+					totalTrasactionCost = totalTrasactionCost + buySellAmount.getTransaction();
+					double tradedCash = buySellAmount.getTradedCash();
+
 					portfolio.add(component);
 					portfolio.addCash(tradedCash);
 					portfolio.addTransaction(buySellAmount);

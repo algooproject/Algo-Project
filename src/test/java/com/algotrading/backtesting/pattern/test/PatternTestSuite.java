@@ -8,7 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 // @formatter:off
 @SuiteClasses({ CashMoreThanSignalTest.class, IsSufficientCashSignalTest.class, isStockEnabledSignalTest.class,
 		RsiLowerThanSignalTest.class, SmaHigherThanSignalTest.class, RsiHigherThanSignalTest.class,
-		isReentryByRsiHigherThanSignalTest.class, isExitByClosingDownToSignalTest.class })
+		ReentrySignalTest.class, ExitSignalTest.class })
 // @formatter:on
 public class PatternTestSuite {
 

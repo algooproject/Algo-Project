@@ -45,8 +45,7 @@ public class Portfolio {
 	public void setDate(Date date) {
 		this.date = date;
 		for (Map.Entry<String, PortfolioComponent> portfolioComponent : portfolioComponents.entrySet()) {
-			portfolioComponent.getValue()
-					.setDate(date);
+			portfolioComponent.getValue().setDate(date);
 		}
 	}
 
@@ -64,8 +63,7 @@ public class Portfolio {
 
 	public boolean containsStock(Stock stock) {
 		for (String key : portfolioComponents.keySet()) {
-			if (key.equals(stock.getTicker()) && portfolioComponents.get(key)
-					.getQuantity() != 0) {
+			if (key.equals(stock.getTicker()) && portfolioComponents.get(key).getQuantity() != 0) {
 				return true;
 			}
 		}
@@ -81,13 +79,12 @@ public class Portfolio {
 		PortfolioComponent component = portfolioComponents.get(tickerName);
 		if (component != null) {
 			component.add(newComponent.getQuantity(), newComponent.getUnitPrice(), newComponent.getTransactionCost()
-						//	Transaction.getTranscationCost(newComponent.getStock(), 
-						//			newComponent.getQuantity() * newComponent.getUnitPrice())
-							);
+			// Transaction.getTranscationCost(newComponent.getStock(),
+			// newComponent.getQuantity() * newComponent.getUnitPrice())
+			);
 			portfolioComponents.put(tickerName, component);
 			if (component.getQuantity() == 0) {
-				portfolioComponents.remove(component.getStock()
-						.getTicker());
+				portfolioComponents.remove(component.getStock().getTicker());
 			}
 		} else {
 			portfolioComponents.put(tickerName, newComponent);
@@ -95,22 +92,14 @@ public class Portfolio {
 	}
 
 	public double marketValue() {
-		double stockValue = portfolioComponents.values()
-				.stream()
-				.mapToDouble(pc -> pc.getQuantity() * (pc.getStock()
-						.getHistory()
-						.get(date)
-						.getClose()))
-				.sum();
+		double stockValue = portfolioComponents.values().stream()
+				.mapToDouble(pc -> pc.getQuantity() * (pc.getStock().getHistory().get(date).getClose())).sum();
 		// System.out.println(stockValue + " " + cash + " " + initialCash);
 		return stockValue + cash;
 	}
 
 	public double cost() {
-		return portfolioComponents.values()
-				.stream()
-				.mapToDouble(pc -> pc.getQuantity() * pc.getUnitPrice())
-				.sum();
+		return portfolioComponents.values().stream().mapToDouble(pc -> pc.getQuantity() * pc.getUnitPrice()).sum();
 	}
 
 	public double getCash() {
@@ -118,14 +107,12 @@ public class Portfolio {
 	}
 
 	private String getTickerFromPortfolioComponent(PortfolioComponent portfolioComponent) {
-		return portfolioComponent.getStock()
-				.getTicker();
+		return portfolioComponent.getStock().getTicker();
 	}
 
 	public int getStockQuantity(Stock stock) {
 		if (containsStock(stock)) {
-			return portfolioComponents.get(stock.getTicker())
-					.getQuantity();
+			return portfolioComponents.get(stock.getTicker()).getQuantity();
 		} else {
 			return 0;
 		}
@@ -133,6 +120,10 @@ public class Portfolio {
 
 	public void addTransaction(BuySellAmount buySellAmount) {
 		this.transaction.add(buySellAmount);
+	}
+
+	public List<BuySellAmount> getTransaction() {
+		return transaction;
 	}
 
 	@Override

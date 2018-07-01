@@ -17,6 +17,7 @@ public class PortfolioComponent {
 	private double profit = 0;
 	private Date date;
 	private double transactionCost = 0;
+	private String action;
 
 	public PortfolioComponent(Stock stock, int quantity, double unitPrice, Date date) {
 		super();
@@ -25,8 +26,8 @@ public class PortfolioComponent {
 		this.unitPrice = unitPrice;
 		this.date = date;
 		this.transactionCost = 0;
-	}	
-	
+	}
+
 	public PortfolioComponent(Stock stock, int quantity, double unitPrice, Date date, double transactionCost) {
 		super();
 		this.stock = stock;
@@ -34,15 +35,29 @@ public class PortfolioComponent {
 		this.unitPrice = unitPrice;
 		this.date = date;
 		this.transactionCost = transactionCost;
-	}	
-	
-	
+	}
+
+	public PortfolioComponent(Stock stock, int quantity, double unitPrice, Date date, double transactionCost,
+			String action) {
+		super();
+		this.stock = stock;
+		this.quantity = quantity;
+		this.unitPrice = unitPrice;
+		this.date = date;
+		this.transactionCost = transactionCost;
+		this.action = action;
+	}
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
 	public double cost() {
 		return quantity * unitPrice;
+	}
+
+	public String getAction() {
+		return action;
 	}
 
 	public Stock getStock() {
@@ -61,10 +76,10 @@ public class PortfolioComponent {
 		return profit;
 	}
 
-	public double getTransactionCost(){
+	public double getTransactionCost() {
 		return transactionCost;
 	}
-	
+
 	public void add(int addQuantity, double addUnitPrice, double transactionCost) {
 		this.transactionCost = this.transactionCost + transactionCost;
 		if (quantity + addQuantity <= 0) {
@@ -77,12 +92,10 @@ public class PortfolioComponent {
 			quantity = newQuantity;
 			unitPrice = newUnitPrice;
 		}
-	}	
-	
+	}
+
 	public void add(PortfolioComponent pc) {
-		if (pc.getStock()
-				.getTicker()
-				.equals(getStock().getTicker())) {
+		if (pc.getStock().getTicker().equals(getStock().getTicker())) {
 			add(pc.getQuantity(), pc.getUnitPrice(), pc.getTransactionCost());
 		} else {
 			throw new RuntimeException("not the same portfolio component");
@@ -93,9 +106,8 @@ public class PortfolioComponent {
 	public String toString() {
 		// return stock + ":" + quantity + "@" + unitPrice + ", profit=" +
 		// profit;
-		return stock + ":" + quantity + "@" + unitPrice + "$" + stock.getHistory()
-				.get(date)
-				.getClose() + "#" + Constants.DATE_FORMAT_YYYYMMDD.format(date);
+		return stock + ":" + quantity + "@" + unitPrice + "$" + stock.getHistory().get(date).getClose() + "#"
+				+ Constants.DATE_FORMAT_YYYYMMDD.format(date);
 	}
 
 	public PortfolioComponent clone(Date date) {
