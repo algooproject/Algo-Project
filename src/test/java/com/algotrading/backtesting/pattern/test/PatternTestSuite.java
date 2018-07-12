@@ -5,14 +5,11 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-//@formatter:off
-@SuiteClasses({ 
-	CashMoreThanSignalTest.class, 
-	IsSufficientCashSignalTest.class,
-	RsiLowerThanSignalTest.class, 
-	SmaHigherThanSignalTest.class
-})
-//@formatter:on
+// @formatter:off
+@SuiteClasses({ CashMoreThanSignalTest.class, IsSufficientCashSignalTest.class, isStockEnabledSignalTest.class,
+		RsiLowerThanSignalTest.class, SmaHigherThanSignalTest.class, RsiHigherThanSignalTest.class,
+		ReentrySignalTest.class, ExitSignalTest.class })
+// @formatter:on
 public class PatternTestSuite {
 
 }

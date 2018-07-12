@@ -50,7 +50,7 @@ public class AvailableStocks {
 		stocks = new HashMap<>();
 		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
 		for (String line : stringList) {
-			System.out.println(line);
+			// System.out.println(line);
 			Stock stock = new Stock(line, lotSize.getLotSize(line));
 			// System.out.println("Reading " + stock.getTicker());
 			stock.read(filePath);

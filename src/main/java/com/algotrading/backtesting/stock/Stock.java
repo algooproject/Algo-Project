@@ -18,14 +18,6 @@ public class Stock {
 	private int lotSize; // default to be 1 if not specified when instantiated;
 	private Boolean status = true;
 
-	public Boolean getStatus() {
-		return status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
-
 	public Stock(String ticker, Map<Date, StockHistory> history) {
 		this(ticker, history, 1);
 	}
@@ -42,6 +34,14 @@ public class Stock {
 		this.ticker = ticker;
 		this.history = history;
 		this.lotSize = lotSize;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 
 	public void readLotSize() {

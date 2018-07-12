@@ -4,6 +4,7 @@ public interface AlgoTradingConstants {
 	String NUMBER = "number";
 	String VARIABLE = "variable";
 	String CLOSING = "closing";
+	String HOLDINGPRICE = "holdingprice";
 
 	String SRC_FILEPATH = "src/main/resources/";
 
@@ -15,4 +16,7 @@ public interface AlgoTradingConstants {
 	String SMA_HIGHER = "SMAHigher[";
 	String CLOSING_HIGHER = "ClosingHigher[";
 	String VOLUME_HIGHER = "VolumeHigher[";
+	String ISREENTRYBYRSI_HIGHER = "isReentryByRsiHigher[";
+	String ISSTOCKENABLED = "isStockEnabled[";
+	String ISEXITBYCLOSINGDOWNTO = "isExitByClosingDownTo[";
 }

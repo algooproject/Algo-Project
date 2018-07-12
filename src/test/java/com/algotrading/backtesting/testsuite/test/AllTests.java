@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.algotrading.backtesting.indicatorcalculator.test.IndicatorCalculatorTestSuite;
 import com.algotrading.backtesting.pattern.test.PatternTestSuite;
-import com.algotrading.backtesting.patterninterperter.test.PatternInterperterTestSuite;
+import com.algotrading.backtesting.patterninterpreter.test.PatternInterperterTestSuite;
 import com.algotrading.backtesting.portfolio.test.PortfolioTestSuite;
 import com.algotrading.backtesting.replay.test.ReplayTestSuite;
 import com.algotrading.backtesting.signal.test.SignalTestSuite;

@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.algotrading.backtesting.pattern.StockSignal;
-import com.algotrading.backtesting.patterninterperter.Interperter;
+import com.algotrading.backtesting.patterninterpreter.Interperter;
 import com.algotrading.backtesting.portfolio.BuySellAmount;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
