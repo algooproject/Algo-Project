@@ -376,7 +376,7 @@ public abstract class BaseEWrapper implements EWrapper {
 
 	/**
 	 * Receive's option specific market data. This method is called when the
-	 * market in an option or its underlier moves. TWS¡¦s option model
+	 * market in an option or its underlier moves. TWSï¿½ï¿½s option model
 	 * volatilities, prices, and deltas, along with the present value of
 	 * dividends expected on that options underlier are received.
 	 * 
@@ -428,8 +428,8 @@ public abstract class BaseEWrapper implements EWrapper {
 	 *            the order book's row being updated
 	 * @param operation
 	 *            how to refresh the row: 0 = insert (insert this new order into
-	 *            the row identified by 'position')¡P 1 = update (update the
-	 *            existing order in the row identified by 'position')¡P 2 =
+	 *            the row identified by 'position')ï¿½P 1 = update (update the
+	 *            existing order in the row identified by 'position')ï¿½P 2 =
 	 *            delete (delete the existing order at the row identified by
 	 *            'position').
 	 * @param side
@@ -453,8 +453,8 @@ public abstract class BaseEWrapper implements EWrapper {
 	 *            the order book's row being updated
 	 * @param operation
 	 *            how to refresh the row: 0 = insert (insert this new order into
-	 *            the row identified by 'position')¡P 1 = update (update the
-	 *            existing order in the row identified by 'position')¡P 2 =
+	 *            the row identified by 'position')ï¿½P 1 = update (update the
+	 *            existing order in the row identified by 'position')ï¿½P 2 =
 	 *            delete (delete the existing order at the row identified by
 	 *            'position').
 	 * @param side
