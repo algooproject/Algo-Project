@@ -13,24 +13,25 @@ public class Portfolio {
 
 	private Map<String, PortfolioComponent> portfolioComponents;
 	private Date date;
-	private final double initialCash;
 	private double cash;
-	private List<BuySellAmount> transaction;
+	private List<BuySellAmount> transactions;
 
 	public Portfolio(Date date, double cash, Map<String, PortfolioComponent> portfolioComponents) {
 		this.date = date;
 		this.portfolioComponents = portfolioComponents;
 		this.cash = cash;
-		this.initialCash = cash;
-		this.transaction = new ArrayList<>();
+		this.transactions = new ArrayList<>();
 	}
 
 	public Portfolio(Date date, double cash) {
 		this.date = date;
 		this.portfolioComponents = new TreeMap<>();
 		this.cash = cash;
-		this.initialCash = cash;
-		this.transaction = new ArrayList<>();
+		this.transactions = new ArrayList<>();
+	}
+
+	public void setTransaction(List<BuySellAmount> transaction) {
+		this.transactions = transaction;
 	}
 
 	public List<String> getAllTickerName() {
@@ -70,6 +71,20 @@ public class Portfolio {
 		return false;
 	}
 
+	public double getTotalTradedVolume() {
+		double total = 0;
+		for (int i = 0; i < transactions.size(); i++)
+			total = total + transactions.get(i).getPortfolioComponent().getVolume();
+		return total;
+	}
+
+	public double getTotalTransactionCost() {
+		double total = 0;
+		for (int i = 0; i < transactions.size(); i++)
+			total = total + transactions.get(i).getPortfolioComponent().getTransactionCost();
+		return total;
+	}
+
 	public void put(PortfolioComponent portfolioComponent) {
 		portfolioComponents.put(getTickerFromPortfolioComponent(portfolioComponent), portfolioComponent);
 	}
@@ -94,7 +109,6 @@ public class Portfolio {
 	public double marketValue() {
 		double stockValue = portfolioComponents.values().stream()
 				.mapToDouble(pc -> pc.getQuantity() * (pc.getStock().getHistory().get(date).getClose())).sum();
-		// System.out.println(stockValue + " " + cash + " " + initialCash);
 		return stockValue + cash;
 	}
 
@@ -119,21 +133,17 @@ public class Portfolio {
 	}
 
 	public void addTransaction(BuySellAmount buySellAmount) {
-		this.transaction.add(buySellAmount);
+		this.transactions.add(buySellAmount);
 	}
 
-	public List<BuySellAmount> getTransaction() {
-		return transaction;
+	public List<BuySellAmount> getTransactions() {
+		return transactions;
 	}
 
 	@Override
 	public String toString() {
 		return "" + "Date: " + Constants.DATE_FORMAT_YYYYMMDD.format(date) + ", portfolio: " + portfolioComponents
-				+ ", cash: " + cash + ", transaction: " + transaction;
-	}
-
-	public double getProfit() {
-		return marketValue() - initialCash;
+				+ ", cash: " + cash + ", transaction: " + transactions;
 	}
 
 	@Override
@@ -143,6 +153,7 @@ public class Portfolio {
 			PortfolioComponent portfolioComponent = portfolioComponents.get(key);
 			portfolio.put(portfolioComponent.clone(date));
 		}
+		// portfolio.setTransaction(transactions);
 		return portfolio;
 	}
 }

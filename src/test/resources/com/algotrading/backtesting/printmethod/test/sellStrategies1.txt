@@ -1,0 +1,1 @@
+AND( NOT( PositionEqual[ expectedValueType=number expectedValue=0 ] ) , OR( ClosingHigher[ expectedValueType=variable expectedValue=holdingprice multiplier=1.1 ] , Exit( NOT( ClosingHigher[ expectedValueType=variable expectedValue=holdingprice multiplier=0.9 ] ) ) ) )	0

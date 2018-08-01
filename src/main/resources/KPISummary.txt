@@ -1,0 +1,5 @@
+startDate Wed Jan 02 00:00:00 CST 2013
+endDate Fri Dec 22 00:00:00 CST 2017
+Duration 4.0
+initialValue 300000.0
+finalValue 408992.7070000001

@@ -52,6 +52,10 @@ public class PortfolioComponent {
 		this.date = date;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
 	public double cost() {
 		return quantity * unitPrice;
 	}
@@ -62,6 +66,10 @@ public class PortfolioComponent {
 
 	public Stock getStock() {
 		return stock;
+	}
+
+	public double getVolume() {
+		return Math.abs(cost());
 	}
 
 	public int getQuantity() {
@@ -111,6 +119,12 @@ public class PortfolioComponent {
 	}
 
 	public PortfolioComponent clone(Date date) {
-		return new PortfolioComponent(stock, quantity, unitPrice, date, transactionCost);
+		return new PortfolioComponent(stock, quantity, unitPrice, date, transactionCost, action);
 	}
+
+	@Override
+	public PortfolioComponent clone() {
+		return clone(date);
+	}
+
 }

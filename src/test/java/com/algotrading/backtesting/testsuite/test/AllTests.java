@@ -8,22 +8,18 @@ import com.algotrading.backtesting.indicatorcalculator.test.IndicatorCalculatorT
 import com.algotrading.backtesting.pattern.test.PatternTestSuite;
 import com.algotrading.backtesting.patterninterpreter.test.PatternInterperterTestSuite;
 import com.algotrading.backtesting.portfolio.test.PortfolioTestSuite;
+import com.algotrading.backtesting.printmethod.test.PrintMethodTestSuite;
 import com.algotrading.backtesting.replay.test.ReplayTestSuite;
 import com.algotrading.backtesting.signal.test.SignalTestSuite;
 import com.algotrading.backtesting.stockread.test.StockReadTestSuite;
 
 @RunWith(Suite.class)
-//@formatter:off
-@SuiteClasses({ 
-	IndicatorCalculatorTestSuite.class, 
-	PatternTestSuite.class, 
-	PatternInterperterTestSuite.class,
-	PortfolioTestSuite.class,
-	ReplayTestSuite.class,
-	SignalTestSuite.class,
-	StockReadTestSuite.class
-	})
-//@formatter:on
+// @formatter:off
+@SuiteClasses({ IndicatorCalculatorTestSuite.class, PatternTestSuite.class, PatternInterperterTestSuite.class,
+		PortfolioTestSuite.class, ReplayTestSuite.class, SignalTestSuite.class, StockReadTestSuite.class,
+		PrintMethodTestSuite.class })
+
+// @formatter:on
 public class AllTests {
 
 }

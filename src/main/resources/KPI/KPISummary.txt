@@ -1,0 +1,17 @@
+startDate 2013-01-02
+endDate 2017-12-22
+Duration 4.0
+initialValue 300000.0
+finalValue 408992.71
+marketHigh 408992.71
+marketHighDate 2017-12-22
+marketLow 300000.0
+marketLowDate 2013-01-02
+netProfit 108992.71
+netReturn 0.36
+annualReturn 0.08
+tradedVolume: 2457875.3
+transactionCost: 24578.75
+numOpen 12
+numTakeProfit 9
+numStopLoss 3

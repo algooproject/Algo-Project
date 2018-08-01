@@ -9,6 +9,7 @@ import com.algotrading.backtesting.portfolio.PortfolioComponent;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.strategy.Strategies;
+import com.algotrading.backtesting.util.PrintMethod;
 
 public class Replay {
 	private Date startDate;
@@ -23,15 +24,18 @@ public class Replay {
 	private double totalTradedVolume = 0;
 	private double totalTrasactionCost = 0;
 
+	private PrintMethod print;
+	private Boolean doPrint = false;
+
 	public double getTotalTradedVolume() {
 		return totalTradedVolume;
 	}
 
-	public double getTotalTrasactionCost() {
+	public double getTotalTransactionCost() {
 		return totalTrasactionCost;
 	}
 
-	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
+	private void setData(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
 			AvailableStocks availableStocks, TradingDate tradingDate, double initialCash) {
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -47,19 +51,31 @@ public class Replay {
 
 		} else {
 			this.portfolio = new Portfolio(startDate, initialCash);
+			this.portfolioHistory.put(startDate, portfolio);
 		}
-		// this.initialPortfolio = portfolio.clone();
+		this.portfolioHistory.setInitValue(this.portfolio.marketValue());
+	}
+
+	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
+			AvailableStocks availableStocks, TradingDate tradingDate, double initialCash, PrintMethod printMethod)
+			throws ParseException {
+		print = printMethod;
+		print.setDatesAndHistory(startDate, endDate, portfolioHistory);
+		doPrint = true;
+		setData(startDate, endDate, portfolioHistory, strategies, availableStocks, tradingDate, initialCash);
+	}
+
+	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
+			AvailableStocks availableStocks, TradingDate tradingDate, double initialCash) {
+		setData(startDate, endDate, portfolioHistory, strategies, availableStocks, tradingDate, initialCash);
 	}
 
 	public void simulate() throws ParseException {
+		System.out.println("Simulation started... ");
 		Date currentDate = startDate;
-		// System.out.println("startdate: " + startDate);
 		tradingDate.setCurrentDate(currentDate);
-		// System.out.println("End setCurrentDate");
 		while (tradingDate.isNotLastDate() && tradingDate.currentDate().compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
-			// System.out.println("tradingDate.currentDate(): " +
-			// tradingDate.currentDate());
 			portfolio.setDate(currentDate);
 			for (Stock stock : availableStocks.get()) {
 				// System.out.println("simulate: " + currentDate);
@@ -76,7 +92,9 @@ public class Replay {
 					portfolio.addTransaction(buySellAmount);
 				}
 			}
-			portfolioHistory.put(currentDate, portfolio);
+			if (doPrint) {
+				print.record(currentDate, portfolio);
+			}
 			portfolio = portfolio.clone();
 			tradingDate.rollDay();
 		}
@@ -85,4 +103,16 @@ public class Replay {
 	public PortfolioHistory getPortfolioHistory() {
 		return portfolioHistory;
 	}
+
+	public void print() throws ParseException {
+		if (doPrint)
+			print.print();
+		else
+			throw new ParseException("Print Error: Print method has not been initiated.", 0);
+	}
+
+	public PrintMethod getPrintMethod() {
+		return print;
+	}
+
 }

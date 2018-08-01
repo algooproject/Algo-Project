@@ -1,0 +1,17 @@
+startDate 2016-10-03
+endDate 2016-10-19
+Duration 0.043835616438356165
+initialValue 9665.7
+finalValue 8999.1
+marketHigh 10665.6
+marketHighDate 2016-10-10
+marketLow 8999.1
+marketLowDate 2016-10-14
+netProfit -666.6
+netReturn -0.07
+annualReturn -0.8
+tradedVolume: 8999.1
+transactionCost: 0.0
+numOpen 0
+numTakeProfit 0
+numStopLoss 1

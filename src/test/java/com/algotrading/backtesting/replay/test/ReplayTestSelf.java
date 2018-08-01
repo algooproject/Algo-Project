@@ -55,15 +55,13 @@ public class ReplayTestSelf {
 		availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH + "smacross/",
 				"availableStocks.txt");
 
-		availableStocks.get()
-				.forEach(stock -> stock.setLotSize(lotSizes.get(stock.getTicker())));
+		availableStocks.get().forEach(stock -> stock.setLotSize(lotSizes.get(stock.getTicker())));
 	}
 
 	@Test
 	public void test1_test() throws ParseException {
-		double initialCash = unitBuyCost * availableStocks.get()
-				.size();
-		PortfolioHistory history = new PortfolioHistory(initialCash);
+		double initialCash = unitBuyCost * availableStocks.get().size();
+		PortfolioHistory history = new PortfolioHistory();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash);
 
 		replay.simulate();

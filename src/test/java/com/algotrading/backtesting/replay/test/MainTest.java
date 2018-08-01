@@ -19,6 +19,8 @@ import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.PrintMethod;
+import com.algotrading.backtesting.util.Print_Console;
 
 public class MainTest {
 
@@ -35,7 +37,9 @@ public class MainTest {
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000);
+		PrintMethod print = new Print_Console();
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Date triggeredDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-29");
@@ -51,7 +55,7 @@ public class MainTest {
 		System.out.println("test001_buyConditionsMet");
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 	@Test
@@ -65,7 +69,9 @@ public class MainTest {
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000);
+		PrintMethod print = new Print_Console();
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
@@ -75,7 +81,7 @@ public class MainTest {
 		System.out.println("test002_buyCondition1Failed"); //
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 	@Test
@@ -88,7 +94,9 @@ public class MainTest {
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks3.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000);
+		PrintMethod print = new Print_Console();
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
@@ -98,7 +106,7 @@ public class MainTest {
 		System.out.println("test003_buyCondition1and2Failed");
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 	@Test
@@ -111,7 +119,9 @@ public class MainTest {
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks4.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000);
+		PrintMethod print = new Print_Console();
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
@@ -121,7 +131,7 @@ public class MainTest {
 		System.out.println("test004_buyCondition1Failed"); //
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 	@Test
@@ -134,7 +144,9 @@ public class MainTest {
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks5.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000);
+		PrintMethod print = new Print_Console();
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
@@ -144,7 +156,7 @@ public class MainTest {
 		System.out.println("test005_buyCondition3Failed");
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 	@Test
@@ -163,7 +175,8 @@ public class MainTest {
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks6.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
+		PrintMethod print = new Print_Console();
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));
@@ -176,7 +189,7 @@ public class MainTest {
 		System.out.println("test006_takeProfit");
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 	@Test
@@ -195,7 +208,8 @@ public class MainTest {
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks7.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
+		PrintMethod print = new Print_Console();
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));
@@ -208,7 +222,7 @@ public class MainTest {
 		System.out.println("test007_stopLoss");
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 	@Test
@@ -228,7 +242,8 @@ public class MainTest {
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks8.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
+		PrintMethod print = new Print_Console();
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161019 = portfolioHistory.get(endDate);
@@ -238,7 +253,7 @@ public class MainTest {
 		System.out.println("test008_sellConditionsNotMet");
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 	@Test
@@ -257,7 +272,8 @@ public class MainTest {
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks9.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
+		PrintMethod print = new Print_Console();
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));
@@ -275,7 +291,7 @@ public class MainTest {
 		System.out.println("test009_buyConditionsMetButStockDisabled");
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 	@Test
@@ -294,7 +310,8 @@ public class MainTest {
 				RESOURCE_PATH_NAME + "sellStrategies10.txt");
 		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks10.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate10.txt");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0,
+				new Print_Console());
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));
@@ -315,7 +332,7 @@ public class MainTest {
 		System.out.println("test010_stockEnabledBuyConditionsMet");
 		// System.out.println(portfolioHistory);
 		System.out.println("Total Traded Volume: " + replay.getTotalTradedVolume());
-		System.out.println("Total Transaction Cost: " + replay.getTotalTrasactionCost());
+		System.out.println("Total Transaction Cost: " + replay.getTotalTransactionCost());
 	}
 
 }
