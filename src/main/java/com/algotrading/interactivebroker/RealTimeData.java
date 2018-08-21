@@ -21,6 +21,8 @@ import java.util.Vector;
 import com.algotrading.interactivebroker.handler.MustBuyTickPriceHandler;
 import com.algotrading.interactivebroker.test.DummyUtil;
 import com.algotrading.interactivebroker.util.Logger;
+import com.algotrading.persistence.mongo.dbobject.TickPrice;
+import com.algotrading.persistence.mongo.helper.MongoDBHelper;
 import com.ib.client.CommissionReport;
 import com.ib.client.Contract;
 import com.ib.client.EClientSocket;
@@ -70,8 +72,12 @@ public class RealTimeData extends BaseEWrapper {
 	 */
 	private final Requester requester;
 
+	private MongoDBHelper dbHelper;
+
 	public RealTimeData() {
 		logger = new Logger();
+		dbHelper = new MongoDBHelper(logger);
+
 		marketRequestMap = new HashMap<>();
 
 		priceTotal = 0.0;
@@ -175,9 +181,15 @@ public class RealTimeData extends BaseEWrapper {
 			movingAverage = priceTotal / numberOfPrices;
 			logger.info("tickPrice: " + tickerId + "," + field + "," + price + ", " + movingAverage);
 		}
-		logger.info("tickPrice(): tickerId=" + tickerId + ", field=" + field + "(" + TickType.getField(field)
-				+ "), price=" + price + ", tickAttr=" + strTickAttr(attribs));
+		logger.info("===" + marketRequestMap.get(tickerId) + " tickPrice(): tickerId=" + tickerId + ", field=" + field
+				+ "(" + TickType.getField(field) + "), price=" + price + ", tickAttr=" + strTickAttr(attribs));
 		logger.info("tick price updated, MustBuyTickPriceHandler start");
+
+		TickPrice tickPrice = new TickPrice(new Date(), marketRequestMap.get(tickerId)
+				.symbol(), price);
+
+		dbHelper.tickPrice.insert(tickPrice);
+
 		new MustBuyTickPriceHandler().handle(requester, marketRequestMap.get(tickerId), field, price, attribs);
 	}
 
