@@ -7,10 +7,13 @@ import com.mongodb.MongoClientURI;
 
 public class MongoDBHelper {
 
+	private static final String DATABASE_EXAMPLES = "Examples";
 	private final MongoClient mongoClient;
 	private final DB databaseExamples;
+	private final MongoDBLogger mongoDbLogger;
 
-	public TickPriceDBHelper tickPrice;
+	public final TickPriceDBHelper tickPrice;
+	public final DailyPriceHelper dailyPrice;
 
 	public MongoDBHelper(Logger logger) {
 		this(logger, "localhost", 27017);
@@ -18,8 +21,10 @@ public class MongoDBHelper {
 
 	public MongoDBHelper(Logger logger, String hostName, int port) {
 		this.mongoClient = new MongoClient(new MongoClientURI("mongodb://" + hostName + ":" + port));
-		this.databaseExamples = mongoClient.getDB("Examples");
-		this.tickPrice = new TickPriceDBHelper(databaseExamples, new MongoDBLogger(logger));
+		this.databaseExamples = mongoClient.getDB(DATABASE_EXAMPLES);
+		this.mongoDbLogger = new MongoDBLogger(logger);
+		this.tickPrice = new TickPriceDBHelper(databaseExamples, mongoDbLogger);
+		this.dailyPrice = new DailyPriceHelper(databaseExamples, mongoDbLogger);
 	}
 
 }
