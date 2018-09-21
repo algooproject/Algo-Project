@@ -21,7 +21,7 @@ import java.util.Vector;
 import com.algotrading.interactivebroker.handler.MustBuyTickPriceHandler;
 import com.algotrading.interactivebroker.test.DummyUtil;
 import com.algotrading.interactivebroker.util.Logger;
-import com.algotrading.persistence.mongo.dbobject.TickPrice;
+import com.algotrading.persistence.mongo.dbobject.DummyTickPrice;
 import com.algotrading.persistence.mongo.helper.MongoDBHelper;
 import com.ib.client.CommissionReport;
 import com.ib.client.Contract;
@@ -185,7 +185,7 @@ public class RealTimeData extends BaseEWrapper {
 				+ "(" + TickType.getField(field) + "), price=" + price + ", tickAttr=" + strTickAttr(attribs));
 		logger.info("tick price updated, MustBuyTickPriceHandler start");
 
-		TickPrice tickPrice = new TickPrice(new Date(), marketRequestMap.get(tickerId)
+		DummyTickPrice tickPrice = new DummyTickPrice(new Date(), marketRequestMap.get(tickerId)
 				.symbol(), price);
 
 		dbHelper.tickPrice.insert(tickPrice);

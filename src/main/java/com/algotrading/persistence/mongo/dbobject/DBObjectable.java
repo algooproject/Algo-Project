@@ -8,6 +8,10 @@ import com.mongodb.DBObject;
  */
 public interface DBObjectable {
 
-	public DBObject toDBObject();
+	DBObject toDBObject();
+
+	void fromDBObject(DBObject dbObject);
+
+	String getKey();
 
 }

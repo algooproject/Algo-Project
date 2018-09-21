@@ -13,6 +13,8 @@ public class DailyPrice implements DBObjectable {
 	private static final String FIELD_LOW = "low";
 	private static final String FIELD_HIGH = "high";
 	private static final String FIELD_DATE = "date";
+	private static final String FIELD_CHANGE = "change";
+	private static final String FIELD_TURNOVER = "turnover";
 
 	private String ticker;
 	private String date; // yyyy-MM-dd
@@ -22,6 +24,8 @@ public class DailyPrice implements DBObjectable {
 	private double close;
 	private double volume;
 	private double adjustedClose;
+	private double change;
+	private double turnover;
 
 	public String getTicker() {
 		return ticker;
@@ -55,20 +59,36 @@ public class DailyPrice implements DBObjectable {
 		return adjustedClose;
 	}
 
+	public double getChange() {
+		return change;
+	}
+
+	public double getTurnover() {
+		return turnover;
+	}
+
 	@Override
 	public String toString() {
 		return "DailyPrice [ticker=" + ticker + ", date=" + date + ", high=" + high + ", low=" + low + ", open=" + open
-				+ ", close=" + close + ", volume=" + volume + ", adjustedClose=" + adjustedClose + "]";
+				+ ", close=" + close + ", volume=" + volume + ", adjustedClose=" + adjustedClose + ", change=" + change
+				+ ", turnover=" + turnover + "]";
 	}
 
 	@Override
 	public DBObject toDBObject() {
-		return new BasicDBObject("_id", getKey()).append(FIELD_DATE, getDate()).append(FIELD_HIGH, getHigh())
-				.append(FIELD_LOW, getLow()).append(FIELD_OPEN, getOpen()).append(FIELD_CLOSE, getClose())
-				.append(FIELD_VOLUME, getVolume()).append(FIELD_ADJUSTED_CLOSE, getAdjustedClose())
-				.append(FIELD_TICKER, getTicker());
+		return new BasicDBObject("_id", getKey()).append(FIELD_DATE, getDate())
+				.append(FIELD_HIGH, getHigh())
+				.append(FIELD_LOW, getLow())
+				.append(FIELD_OPEN, getOpen())
+				.append(FIELD_CLOSE, getClose())
+				.append(FIELD_VOLUME, getVolume())
+				.append(FIELD_ADJUSTED_CLOSE, getAdjustedClose())
+				.append(FIELD_TICKER, getTicker())
+				.append(FIELD_CHANGE, getChange())
+				.append(FIELD_TURNOVER, getTurnover());
 	}
 
+	@Override
 	public void fromDBObject(DBObject dbObject) {
 		date = (String) dbObject.get(FIELD_DATE);
 		high = (double) dbObject.get(FIELD_HIGH);
@@ -78,8 +98,11 @@ public class DailyPrice implements DBObjectable {
 		volume = (double) dbObject.get(FIELD_VOLUME);
 		adjustedClose = (double) dbObject.get(FIELD_ADJUSTED_CLOSE);
 		ticker = (String) dbObject.get(FIELD_TICKER);
+		change = (double) dbObject.get(FIELD_CHANGE);
+		turnover = (double) dbObject.get(FIELD_TURNOVER);
 	}
 
+	@Override
 	public String getKey() {
 		return getTicker() + "_" + getDate();
 	}

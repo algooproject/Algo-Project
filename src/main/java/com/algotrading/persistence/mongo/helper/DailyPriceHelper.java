@@ -1,7 +1,7 @@
 package com.algotrading.persistence.mongo.helper;
 
 import com.algotrading.persistence.mongo.dbobject.DailyPrice;
-import com.algotrading.persistence.mongo.dbobject.TickPrice;
+import com.algotrading.persistence.mongo.dbobject.DummyTickPrice;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -17,7 +17,7 @@ public class DailyPriceHelper {
 		this.dbDailyPriceCollection = db.getCollection("dailyPrice");
 	}
 
-	public void insert(TickPrice tickPrice) {
+	public void insert(DummyTickPrice tickPrice) {
 		logger.logInsert(tickPrice);
 		dbDailyPriceCollection.insert(tickPrice.toDBObject());
 	}
