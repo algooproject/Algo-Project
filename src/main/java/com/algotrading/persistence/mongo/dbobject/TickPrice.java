@@ -1,9 +1,13 @@
 package com.algotrading.persistence.mongo.dbobject;
 
+import java.util.function.Supplier;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 public class TickPrice implements DBObjectable {
+
+	public static final String NAME = "tickPrice";
 
 	private static final String FIELD_TICKER = "ticker";
 	private static final String FIELD_TIMESTAMP = "timestamp";
@@ -56,6 +60,43 @@ public class TickPrice implements DBObjectable {
 	private double askPrice4;
 	private int askVolume5;
 	private double askPrice5;
+
+	public TickPrice() {
+
+	}
+
+	public TickPrice(String ticker, String timestamp, String tradingStatus, int transactionVolume,
+			double transactionPrice, int bidVolume1, double bidPrice1, int bidVolume2, double bidPrice2, int bidVolume3,
+			double bidPrice3, int bidVolume4, double bidPrice4, int bidVolume5, double bidPrice5, int askVolume1,
+			double askPrice1, int askVolume2, double askPrice2, int askVolume3, double askPrice3, int askVolume4,
+			double askPrice4, int askVolume5, double askPrice5) {
+		super();
+		this.ticker = ticker;
+		this.timestamp = timestamp;
+		this.tradingStatus = tradingStatus;
+		this.transactionVolume = transactionVolume;
+		this.transactionPrice = transactionPrice;
+		this.bidVolume1 = bidVolume1;
+		this.bidPrice1 = bidPrice1;
+		this.bidVolume2 = bidVolume2;
+		this.bidPrice2 = bidPrice2;
+		this.bidVolume3 = bidVolume3;
+		this.bidPrice3 = bidPrice3;
+		this.bidVolume4 = bidVolume4;
+		this.bidPrice4 = bidPrice4;
+		this.bidVolume5 = bidVolume5;
+		this.bidPrice5 = bidPrice5;
+		this.askVolume1 = askVolume1;
+		this.askPrice1 = askPrice1;
+		this.askVolume2 = askVolume2;
+		this.askPrice2 = askPrice2;
+		this.askVolume3 = askVolume3;
+		this.askPrice3 = askPrice3;
+		this.askVolume4 = askVolume4;
+		this.askPrice4 = askPrice4;
+		this.askVolume5 = askVolume5;
+		this.askPrice5 = askPrice5;
+	}
 
 	public String getTicker() {
 		return ticker;
@@ -231,6 +272,16 @@ public class TickPrice implements DBObjectable {
 	@Override
 	public String getKey() {
 		return getTicker() + "_" + getTimestamp();
+	}
+
+	@Override
+	public String getCollectionName() {
+		return NAME;
+	}
+
+	@Override
+	public Supplier<? extends DBObjectable> getSupplier() {
+		return TickPrice::new;
 	}
 
 }

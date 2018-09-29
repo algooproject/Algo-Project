@@ -188,7 +188,7 @@ public class RealTimeData extends BaseEWrapper {
 		DummyTickPrice tickPrice = new DummyTickPrice(new Date(), marketRequestMap.get(tickerId)
 				.symbol(), price);
 
-		dbHelper.tickPrice.insert(tickPrice);
+		dbHelper.dummyTickPrice.insert(tickPrice);
 
 		new MustBuyTickPriceHandler().handle(requester, marketRequestMap.get(tickerId), field, price, attribs);
 	}

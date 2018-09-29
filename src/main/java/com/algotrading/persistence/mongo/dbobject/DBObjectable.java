@@ -1,5 +1,7 @@
 package com.algotrading.persistence.mongo.dbobject;
 
+import java.util.function.Supplier;
+
 import com.mongodb.DBObject;
 
 /**
@@ -13,5 +15,9 @@ public interface DBObjectable {
 	void fromDBObject(DBObject dbObject);
 
 	String getKey();
+
+	String getCollectionName();
+
+	Supplier<? extends DBObjectable> getSupplier();
 
 }

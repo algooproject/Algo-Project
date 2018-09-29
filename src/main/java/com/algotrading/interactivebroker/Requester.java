@@ -840,7 +840,8 @@ public class Requester {
 	 * Requests pre-defined Soft Dollar Tiers. This is only supported for
 	 * registered professional advisors and hedge and mutual funds who have
 	 * configured Soft Dollar Tiers in Account Management. Refer to:
-	 * https://www.interactivebrokers.com/en/software/am/am/manageaccount/requestsoftdollars.htm?Highlight=soft%20dollar%20tier.
+	 * https://www.interactivebrokers.com/en/software/am/am/manageaccount/
+	 * requestsoftdollars.htm?Highlight=soft%20dollar%20tier.
 	 * 
 	 * @see EWrapper::softDollarTiers
 	 */
@@ -871,8 +872,18 @@ public class Requester {
 
 	}
 
-	public void placeOrder(Contract contract, Order order) {
-		clientSocket.placeOrder(ibClient.getNextOrderId(), contract, order);
+	public int placeOrder(Contract contract, Order order) {
+		int orderId = ibClient.getNextOrderId();
+		clientSocket.placeOrder(orderId, contract, order);
+		return orderId;
+	}
+
+	public void cancelOrder(int orderId) {
+		clientSocket.cancelOrder(orderId);
+	}
+
+	public void cancelAllOrders() {
+		clientSocket.reqGlobalCancel();
 	}
 
 }

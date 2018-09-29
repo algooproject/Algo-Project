@@ -1,9 +1,13 @@
 package com.algotrading.persistence.mongo.dbobject;
 
+import java.util.function.Supplier;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 public class DailyPrice implements DBObjectable {
+
+	public static final String NAME = "dailyPrice";
 
 	private static final String FIELD_TICKER = "ticker";
 	private static final String FIELD_ADJUSTED_CLOSE = "adjustedClose";
@@ -109,6 +113,16 @@ public class DailyPrice implements DBObjectable {
 
 	public static String createKey(String ticker, String date) {
 		return ticker + "_" + date;
+	}
+
+	@Override
+	public String getCollectionName() {
+		return NAME;
+	}
+
+	@Override
+	public Supplier<? extends DBObjectable> getSupplier() {
+		return DailyPrice::new;
 	}
 
 }

@@ -12,7 +12,7 @@ public class MongoDBHelper {
 	private final DB databaseExamples;
 	private final MongoDBLogger mongoDbLogger;
 
-	public final TickPriceDBHelper tickPrice;
+	public final DummyTickPriceDBHelper dummyTickPrice;
 	public final DailyPriceHelper dailyPrice;
 
 	public MongoDBHelper(Logger logger) {
@@ -23,7 +23,7 @@ public class MongoDBHelper {
 		this.mongoClient = new MongoClient(new MongoClientURI("mongodb://" + hostName + ":" + port));
 		this.databaseExamples = mongoClient.getDB(DATABASE_EXAMPLES);
 		this.mongoDbLogger = new MongoDBLogger(logger);
-		this.tickPrice = new TickPriceDBHelper(databaseExamples, mongoDbLogger);
+		this.dummyTickPrice = new DummyTickPriceDBHelper(databaseExamples, mongoDbLogger);
 		this.dailyPrice = new DailyPriceHelper(databaseExamples, mongoDbLogger);
 	}
 

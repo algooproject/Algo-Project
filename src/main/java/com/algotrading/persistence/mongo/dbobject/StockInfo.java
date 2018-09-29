@@ -1,9 +1,17 @@
 package com.algotrading.persistence.mongo.dbobject;
 
+import java.util.function.Supplier;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 public class StockInfo implements DBObjectable {
+
+	public static final String NAME = "stockInfo";
+
+	public StockInfo() {
+
+	}
 
 	private static final String FIELD_TICKER = "ticker";
 	private static final String FIELD_DATE = "date";
@@ -24,6 +32,20 @@ public class StockInfo implements DBObjectable {
 	private int lotSize;
 	private double earning;
 	private double dividend;
+
+	public StockInfo(String ticker, String date, String name, String exchange, String industry, int issuedShares,
+			int lotSize, double earning, double dividend) {
+		super();
+		this.ticker = ticker;
+		this.date = date;
+		this.name = name;
+		this.exchange = exchange;
+		this.industry = industry;
+		this.issuedShares = issuedShares;
+		this.lotSize = lotSize;
+		this.earning = earning;
+		this.dividend = dividend;
+	}
 
 	public String getTicker() {
 		return ticker;
@@ -97,6 +119,16 @@ public class StockInfo implements DBObjectable {
 	@Override
 	public String getKey() {
 		return getTicker();
+	}
+
+	@Override
+	public String getCollectionName() {
+		return NAME;
+	}
+
+	@Override
+	public Supplier<? extends DBObjectable> getSupplier() {
+		return StockInfo::new;
 	}
 
 }
