@@ -10,6 +10,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 
 public class DBObjectableHelper<DBOBJECTABLE extends DBObjectable> {
 	protected final MongoDBLogger logger;
@@ -34,7 +35,7 @@ public class DBObjectableHelper<DBOBJECTABLE extends DBObjectable> {
 	}
 
 	public DBOBJECTABLE queryById(String id) {
-		DBObject query = new BasicDBObject("_id", id);
+		DBObject query = new BasicDBObject(DBObjectable.ID, id);
 		DBCursor cursor = databaseCollection.find(query);
 		DBObject result = cursor.one();
 		return fromDBObject(result);
@@ -61,5 +62,16 @@ public class DBObjectableHelper<DBOBJECTABLE extends DBObjectable> {
 		return dbObjects.stream()
 				.map(dbObject -> fromDBObject(dbObject))
 				.collect(Collectors.toList());
+	}
+
+	public void updateById(String id, DBOBJECTABLE dbObjectable) {
+		DBObject queryObject = new BasicDBObject(DBObjectable.ID, id);
+		WriteResult resultOfUpdate = databaseCollection.update(queryObject, dbObjectable.toDBObject());
+	}
+
+	public void removeById(String id) {
+		DBObject queryObject = new BasicDBObject(DBObjectable.ID, id);
+		// TODO execute the remove
+		WriteResult resultOfRemove = databaseCollection.remove(queryObject);
 	}
 }

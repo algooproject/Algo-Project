@@ -10,6 +10,8 @@ import com.mongodb.DBObject;
  */
 public interface DBObjectable {
 
+	String ID = "_id";
+
 	DBObject toDBObject();
 
 	void fromDBObject(DBObject dbObject);
