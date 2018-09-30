@@ -40,6 +40,18 @@ public class DummyTickPrice implements DBObjectable {
 		return price;
 	}
 
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void setTicker(String ticker) {
+		this.ticker = ticker;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 	@Override
 	public DBObject toDBObject() {
 		return new BasicDBObject("_id", getKey()).append(FIELD_DATE, getDate())

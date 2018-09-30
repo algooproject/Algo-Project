@@ -131,4 +131,40 @@ public class StockInfo implements DBObjectable {
 		return StockInfo::new;
 	}
 
+	public void setTicker(String ticker) {
+		this.ticker = ticker;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setExchange(String exchange) {
+		this.exchange = exchange;
+	}
+
+	public void setIndustry(String industry) {
+		this.industry = industry;
+	}
+
+	public void setIssuedShares(int issuedShares) {
+		this.issuedShares = issuedShares;
+	}
+
+	public void setLotSize(int lotSize) {
+		this.lotSize = lotSize;
+	}
+
+	public void setEarning(double earning) {
+		this.earning = earning;
+	}
+
+	public void setDividend(double dividend) {
+		this.dividend = dividend;
+	}
+
 }

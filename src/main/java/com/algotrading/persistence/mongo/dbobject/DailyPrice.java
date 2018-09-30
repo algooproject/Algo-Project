@@ -71,6 +71,46 @@ public class DailyPrice implements DBObjectable {
 		return turnover;
 	}
 
+	public void setTicker(String ticker) {
+		this.ticker = ticker;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public void setHigh(double high) {
+		this.high = high;
+	}
+
+	public void setLow(double low) {
+		this.low = low;
+	}
+
+	public void setOpen(double open) {
+		this.open = open;
+	}
+
+	public void setClose(double close) {
+		this.close = close;
+	}
+
+	public void setVolume(double volume) {
+		this.volume = volume;
+	}
+
+	public void setAdjustedClose(double adjustedClose) {
+		this.adjustedClose = adjustedClose;
+	}
+
+	public void setChange(double change) {
+		this.change = change;
+	}
+
+	public void setTurnover(double turnover) {
+		this.turnover = turnover;
+	}
+
 	@Override
 	public String toString() {
 		return "DailyPrice [ticker=" + ticker + ", date=" + date + ", high=" + high + ", low=" + low + ", open=" + open

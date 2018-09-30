@@ -76,7 +76,7 @@ public class RealTimeData extends BaseEWrapper {
 
 	public RealTimeData() {
 		logger = new Logger();
-		dbHelper = new MongoDBHelper(logger);
+		dbHelper = new MongoDBHelper(logger, "Example");
 
 		marketRequestMap = new HashMap<>();
 

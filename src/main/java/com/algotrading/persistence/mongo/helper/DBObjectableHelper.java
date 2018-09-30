@@ -29,6 +29,9 @@ public class DBObjectableHelper<DBOBJECTABLE extends DBObjectable> {
 	}
 
 	protected DBOBJECTABLE fromDBObject(DBObject dbObject) {
+		if (dbObject == null) {
+			return null;
+		}
 		DBOBJECTABLE dbObjectable = dbobjectSupplier.get();
 		dbObjectable.fromDBObject(dbObject);
 		return dbObjectable;

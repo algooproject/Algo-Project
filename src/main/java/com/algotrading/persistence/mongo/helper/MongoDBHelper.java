@@ -7,24 +7,27 @@ import com.mongodb.MongoClientURI;
 
 public class MongoDBHelper {
 
-	private static final String DATABASE_EXAMPLES = "Examples";
 	private final MongoClient mongoClient;
-	private final DB databaseExamples;
+	private final DB database;
 	private final MongoDBLogger mongoDbLogger;
 
 	public final DummyTickPriceDBHelper dummyTickPrice;
 	public final DailyPriceHelper dailyPrice;
 
-	public MongoDBHelper(Logger logger) {
-		this(logger, "localhost", 27017);
+	public MongoDBHelper(Logger logger, String databaseName) {
+		this(logger, "localhost", 27017, databaseName);
 	}
 
-	public MongoDBHelper(Logger logger, String hostName, int port) {
+	public MongoDBHelper(Logger logger, String hostName, int port, String databaseName) {
 		this.mongoClient = new MongoClient(new MongoClientURI("mongodb://" + hostName + ":" + port));
-		this.databaseExamples = mongoClient.getDB(DATABASE_EXAMPLES);
+		this.database = mongoClient.getDB(databaseName);
 		this.mongoDbLogger = new MongoDBLogger(logger);
-		this.dummyTickPrice = new DummyTickPriceDBHelper(databaseExamples, mongoDbLogger);
-		this.dailyPrice = new DailyPriceHelper(databaseExamples, mongoDbLogger);
+		this.dummyTickPrice = new DummyTickPriceDBHelper(database, mongoDbLogger);
+		this.dailyPrice = new DailyPriceHelper(database, mongoDbLogger);
+	}
+
+	public void dropDatabase() {
+		database.dropDatabase();
 	}
 
 }

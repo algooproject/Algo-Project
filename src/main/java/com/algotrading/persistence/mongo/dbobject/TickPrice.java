@@ -274,6 +274,106 @@ public class TickPrice implements DBObjectable {
 		return getTicker() + "_" + getTimestamp();
 	}
 
+	public void setTicker(String ticker) {
+		this.ticker = ticker;
+	}
+
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public void setTradingStatus(String tradingStatus) {
+		this.tradingStatus = tradingStatus;
+	}
+
+	public void setTransactionVolume(int transactionVolume) {
+		this.transactionVolume = transactionVolume;
+	}
+
+	public void setTransactionPrice(double transactionPrice) {
+		this.transactionPrice = transactionPrice;
+	}
+
+	public void setBidVolume1(int bidVolume1) {
+		this.bidVolume1 = bidVolume1;
+	}
+
+	public void setBidPrice1(double bidPrice1) {
+		this.bidPrice1 = bidPrice1;
+	}
+
+	public void setBidVolume2(int bidVolume2) {
+		this.bidVolume2 = bidVolume2;
+	}
+
+	public void setBidPrice2(double bidPrice2) {
+		this.bidPrice2 = bidPrice2;
+	}
+
+	public void setBidVolume3(int bidVolume3) {
+		this.bidVolume3 = bidVolume3;
+	}
+
+	public void setBidPrice3(double bidPrice3) {
+		this.bidPrice3 = bidPrice3;
+	}
+
+	public void setBidVolume4(int bidVolume4) {
+		this.bidVolume4 = bidVolume4;
+	}
+
+	public void setBidPrice4(double bidPrice4) {
+		this.bidPrice4 = bidPrice4;
+	}
+
+	public void setBidVolume5(int bidVolume5) {
+		this.bidVolume5 = bidVolume5;
+	}
+
+	public void setBidPrice5(double bidPrice5) {
+		this.bidPrice5 = bidPrice5;
+	}
+
+	public void setAskVolume1(int askVolume1) {
+		this.askVolume1 = askVolume1;
+	}
+
+	public void setAskPrice1(double askPrice1) {
+		this.askPrice1 = askPrice1;
+	}
+
+	public void setAskVolume2(int askVolume2) {
+		this.askVolume2 = askVolume2;
+	}
+
+	public void setAskPrice2(double askPrice2) {
+		this.askPrice2 = askPrice2;
+	}
+
+	public void setAskVolume3(int askVolume3) {
+		this.askVolume3 = askVolume3;
+	}
+
+	public void setAskPrice3(double askPrice3) {
+		this.askPrice3 = askPrice3;
+	}
+
+	public void setAskVolume4(int askVolume4) {
+		this.askVolume4 = askVolume4;
+	}
+
+	public void setAskPrice4(double askPrice4) {
+		this.askPrice4 = askPrice4;
+	}
+
+	public void setAskVolume5(int askVolume5) {
+		this.askVolume5 = askVolume5;
+	}
+
+	public void setAskPrice5(double askPrice5) {
+		this.askPrice5 = askPrice5;
+	}
+
 	@Override
 	public String getCollectionName() {
 		return NAME;
