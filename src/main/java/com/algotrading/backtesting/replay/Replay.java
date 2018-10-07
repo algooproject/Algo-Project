@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import com.algotrading.backtesting.portfolio.BuySellAmount;
 import com.algotrading.backtesting.portfolio.Portfolio;
@@ -23,7 +22,6 @@ public class Replay {
 	private TradingDate tradingDate;
 
 	private Portfolio portfolio;
-	private Map<String, PortfolioComponent> ticker_pc = new TreeMap<>();
 	private double totalTradedVolume = 0;
 	private double totalTrasactionCost = 0;
 
@@ -47,8 +45,6 @@ public class Replay {
 		this.availableStocks = availableStocks;
 		this.tradingDate = tradingDate;
 
-		portfolioHistoryInit();
-
 		this.portfolio = portfolioHistory.get(startDate);
 		if (this.portfolio != null) {
 			this.portfolio.addCash(initialCash);
@@ -58,7 +54,7 @@ public class Replay {
 			this.portfolioHistory.put(startDate, portfolio);
 		}
 		this.portfolioHistory.setInitValue(this.portfolio.marketValue());
-		// this.portfolio.setTicker_pc(ticker_pc);
+		portfolioHistoryInit();
 	}
 
 	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
@@ -100,7 +96,7 @@ public class Replay {
 			portfolioHistory.put(currentDate, portfolio);
 			portfolioHistory.addTransactions(portfolio.getTransactions());
 			List<BuySellAmount> currentTransactions = portfolio.getTransactions();
-			// ticker_pc = portfolio.getTicker_pc();
+			Map<String, PortfolioComponent> ticker_pc = portfolio.getTicker_pc();
 			for (int i = 0; i < currentTransactions.size(); i++) {
 				PortfolioComponent pc = currentTransactions.get(i).getPortfolioComponent().clone();
 				String ticker = pc.getStock().getTicker();
@@ -129,7 +125,6 @@ public class Replay {
 			portfolio = portfolio.clone();
 			tradingDate.rollDay();
 		}
-
 	}
 
 	public PortfolioHistory getPortfolioHistory() {
@@ -148,14 +143,11 @@ public class Replay {
 	}
 
 	private void portfolioHistoryInit() {
-		if (portfolioHistory.get(startDate) != null) {
-			Map<String, PortfolioComponent> portfolioComponents = portfolioHistory.get(startDate)
-					.getPortfolioComponents();
-			for (String key : portfolioComponents.keySet()) {
-				if (portfolioComponents.get(key).getQuantity() != 0) {
-					PortfolioComponent pc = portfolioComponents.get(key).clone();
-					ticker_pc.put(key, pc);
-				}
+		Map<String, PortfolioComponent> portfolioComponents = portfolioHistory.get(startDate).getPortfolioComponents();
+		for (String key : portfolioComponents.keySet()) {
+			if (portfolioComponents.get(key).getQuantity() != 0) {
+				PortfolioComponent pc = portfolioComponents.get(key).clone();
+				portfolio.getTicker_pc().put(key, pc);
 			}
 		}
 	}

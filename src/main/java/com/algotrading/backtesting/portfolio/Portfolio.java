@@ -162,7 +162,7 @@ public class Portfolio {
 			PortfolioComponent portfolioComponent = portfolioComponents.get(key);
 			portfolio.put(portfolioComponent.clone(date));
 		}
-		// portfolio.setTransaction(transactions);
+		portfolio.setTicker_pc(ticker_pc);
 		return portfolio;
 	}
 }
