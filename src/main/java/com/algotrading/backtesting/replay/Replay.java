@@ -2,6 +2,9 @@ package com.algotrading.backtesting.replay;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.algotrading.backtesting.portfolio.BuySellAmount;
 import com.algotrading.backtesting.portfolio.Portfolio;
@@ -18,9 +21,9 @@ public class Replay {
 	private Strategies strategies;
 	private AvailableStocks availableStocks;
 	private TradingDate tradingDate;
-	// private LotSize lotSize;
-	// private Portfolio initialPortfolio;
+
 	private Portfolio portfolio;
+	private Map<String, PortfolioComponent> ticker_pc = new TreeMap<>();
 	private double totalTradedVolume = 0;
 	private double totalTrasactionCost = 0;
 
@@ -43,7 +46,8 @@ public class Replay {
 		this.strategies = strategies;
 		this.availableStocks = availableStocks;
 		this.tradingDate = tradingDate;
-		// this.lotSize = lotSize;
+
+		portfolioHistoryInit();
 
 		this.portfolio = portfolioHistory.get(startDate);
 		if (this.portfolio != null) {
@@ -54,6 +58,7 @@ public class Replay {
 			this.portfolioHistory.put(startDate, portfolio);
 		}
 		this.portfolioHistory.setInitValue(this.portfolio.marketValue());
+		// this.portfolio.setTicker_pc(ticker_pc);
 	}
 
 	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
@@ -92,12 +97,39 @@ public class Replay {
 					portfolio.addTransaction(buySellAmount);
 				}
 			}
+			portfolioHistory.put(currentDate, portfolio);
+			portfolioHistory.addTransactions(portfolio.getTransactions());
+			List<BuySellAmount> currentTransactions = portfolio.getTransactions();
+			// ticker_pc = portfolio.getTicker_pc();
+			for (int i = 0; i < currentTransactions.size(); i++) {
+				PortfolioComponent pc = currentTransactions.get(i).getPortfolioComponent().clone();
+				String ticker = pc.getStock().getTicker();
+				if (ticker_pc.containsKey(ticker)) {
+					double buyPrice = ticker_pc.get(ticker).getUnitPrice();
+					double sellPrice = pc.getUnitPrice();
+					if (buyPrice < sellPrice) {
+						currentTransactions.get(i).setAction("TakeProfit");
+
+					} else {
+						currentTransactions.get(i).setAction("StopLoss");
+					}
+					ticker_pc.get(ticker).add(pc);
+					if (ticker_pc.get(ticker).getQuantity() == 0)
+						ticker_pc.remove(ticker);
+
+				} else {
+					currentTransactions.get(i).setAction("Open");
+					ticker_pc.put(ticker, pc);
+				}
+			}
+			portfolio.setTicker_pc(ticker_pc);
 			if (doPrint) {
 				print.record(currentDate, portfolio);
 			}
 			portfolio = portfolio.clone();
 			tradingDate.rollDay();
 		}
+
 	}
 
 	public PortfolioHistory getPortfolioHistory() {
@@ -113,6 +145,19 @@ public class Replay {
 
 	public PrintMethod getPrintMethod() {
 		return print;
+	}
+
+	private void portfolioHistoryInit() {
+		if (portfolioHistory.get(startDate) != null) {
+			Map<String, PortfolioComponent> portfolioComponents = portfolioHistory.get(startDate)
+					.getPortfolioComponents();
+			for (String key : portfolioComponents.keySet()) {
+				if (portfolioComponents.get(key).getQuantity() != 0) {
+					PortfolioComponent pc = portfolioComponents.get(key).clone();
+					ticker_pc.put(key, pc);
+				}
+			}
+		}
 	}
 
 }

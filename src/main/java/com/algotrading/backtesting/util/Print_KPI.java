@@ -8,8 +8,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import com.algotrading.backtesting.portfolio.BuySellAmount;
 import com.algotrading.backtesting.portfolio.Portfolio;
@@ -19,7 +17,6 @@ public class Print_KPI extends PrintMethod {
 
 	private PrintWriter writeKPI;
 	private PrintWriter writeTransaction;
-	private Map<String, PortfolioComponent> ticker_pc = new TreeMap<>();
 	double marketHigh;
 	Date marketHighDate;
 	double marketLow;
@@ -48,7 +45,6 @@ public class Print_KPI extends PrintMethod {
 
 			recordFirstTime = false;
 		}
-		portfolioHistory.put(currentDate, portfolio);
 		if (portfolio.marketValue() > marketHigh) {
 			marketHigh = portfolio.marketValue();
 			marketHighDate = currentDate;
@@ -59,29 +55,14 @@ public class Print_KPI extends PrintMethod {
 		}
 		List<BuySellAmount> currentTransactions = portfolio.getTransactions();
 		for (int i = 0; i < currentTransactions.size(); i++) {
-			PortfolioComponent pc = currentTransactions.get(i).getPortfolioComponent().clone();
-			String ticker = pc.getStock().getTicker();
-			if (ticker_pc.containsKey(ticker)) {
-				double buyPrice = ticker_pc.get(ticker).getUnitPrice();
-				double sellPrice = pc.getUnitPrice();
-				if (buyPrice < sellPrice) {
-					currentTransactions.get(i).setAction("TakeProfit");
-					numTakeProfit = numTakeProfit + 1;
-				} else {
-					currentTransactions.get(i).setAction("StopLoss");
-					numStopLoss = numStopLoss + 1;
-				}
-
-				ticker_pc.get(ticker).add(pc);
-				if (ticker_pc.get(ticker).getQuantity() == 0)
-					ticker_pc.remove(ticker);
-			} else {
-				currentTransactions.get(i).setAction("Open");
+			String action = currentTransactions.get(i).getAction();
+			if (action == "TakeProfit")
+				numTakeProfit = numTakeProfit + 1;
+			else if (action == "StopLoss")
+				numStopLoss = numStopLoss + 1;
+			else if (action == "Open")
 				numOpen = numOpen + 1;
-				ticker_pc.put(ticker, pc);
-			}
 		}
-		portfolioHistory.addTransactions(currentTransactions);
 
 	}
 
@@ -134,20 +115,6 @@ public class Print_KPI extends PrintMethod {
 		printKPI();
 		printTransactions();
 		System.out.println("Check the files.");
-	}
-
-	@Override
-	public void portfolioHistoryInit() {
-		if (portfolioHistory.get(startDate) != null) {
-			Map<String, PortfolioComponent> portfolioComponents = portfolioHistory.get(startDate)
-					.getPortfolioComponents();
-			for (String key : portfolioComponents.keySet()) {
-				if (portfolioComponents.get(key).getQuantity() != 0) {
-					PortfolioComponent pc = portfolioComponents.get(key).clone();
-					ticker_pc.put(key, pc);
-				}
-			}
-		}
 	}
 
 }

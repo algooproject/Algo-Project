@@ -15,6 +15,7 @@ public class Portfolio {
 	private Date date;
 	private double cash;
 	private List<BuySellAmount> transactions;
+	private Map<String, PortfolioComponent> ticker_pc = new TreeMap<>();
 
 	public Portfolio(Date date, double cash, Map<String, PortfolioComponent> portfolioComponents) {
 		this.date = date;
@@ -138,6 +139,14 @@ public class Portfolio {
 
 	public List<BuySellAmount> getTransactions() {
 		return transactions;
+	}
+
+	public Map<String, PortfolioComponent> getTicker_pc() {
+		return ticker_pc;
+	}
+
+	public void setTicker_pc(Map<String, PortfolioComponent> ticker_pc) {
+		this.ticker_pc = ticker_pc;
 	}
 
 	@Override

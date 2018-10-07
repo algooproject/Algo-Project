@@ -23,8 +23,6 @@ public abstract class PrintMethod {
 
 	public abstract void print();
 
-	public abstract void portfolioHistoryInit();
-
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -67,7 +65,6 @@ public abstract class PrintMethod {
 		this.portfolioHistory = portfolioHistory;
 		isInitialized = true;
 		duration = ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24) / 365.0);
-		portfolioHistoryInit();
 	}
 
 }

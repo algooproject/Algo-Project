@@ -7,7 +7,7 @@ import java.util.Date;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.util.Constants;
-import com.algotrading.backtesting.util.Print_KPI;
+import com.algotrading.backtesting.util.Print_Console;
 
 public class Main {
 
@@ -28,7 +28,7 @@ public class Main {
 		// new Print_KPI(Constants.SRC_MAIN_RESOURCE_FILEPATH + "KPI/");
 		// new Print_Console();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash,
-				new Print_KPI(Constants.SRC_MAIN_RESOURCE_FILEPATH + "KPI/"));
+				new Print_Console());
 		replay.simulate();
 		// replay.getPrintMethod().setNoRoundingForAll(true);
 		replay.print();

@@ -48,6 +48,9 @@ public class Strategies {
 			String[] value = line.split("\t");
 			String signalStr = value[0];
 			String costStr = value[1];
+			String remarkStr = "";
+			if (value.length > 2)
+				remarkStr = value[2];
 			StockSignal stockPattern = Interperter.toPattern(signalStr);
 			double cost = Double.parseDouble(costStr);
 			Strategy strategy = new Strategy(stockPattern, cost);

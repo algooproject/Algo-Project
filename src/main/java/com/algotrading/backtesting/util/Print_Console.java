@@ -15,8 +15,6 @@ public class Print_Console extends PrintMethod {
 	public void record(Date currentDate, Portfolio portfolio) throws ParseException {
 		if (!isInitialized)
 			throw new ParseException("Record Error: Print_Console has not been initialized.", 0);
-		portfolioHistory.put(currentDate, portfolio);
-		portfolioHistory.addTransactions(portfolio.getTransactions());
 	}
 
 	@Override
@@ -37,10 +35,6 @@ public class Print_Console extends PrintMethod {
 		System.out.println("Total Traded Volume: " + portfolioHistory.getTotalTradedVolume());
 		System.out.println("Total Transaction Cost: " + portfolioHistory.getTotalTransactionCost());
 
-	}
-
-	@Override
-	public void portfolioHistoryInit() {
 	}
 
 }
