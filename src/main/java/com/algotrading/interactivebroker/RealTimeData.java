@@ -70,7 +70,7 @@ public class RealTimeData extends BaseEWrapper {
 	/**
 	 * To send all request to ib, wrap the clientSocket and related information
 	 */
-	private final Requester requester;
+	public final Requester requester;
 
 	private MongoDBHelper dbHelper;
 
@@ -136,7 +136,9 @@ public class RealTimeData extends BaseEWrapper {
 
 	public static void main(String args[]) {
 		try {
-			new RealTimeData();
+			RealTimeData realTimeData = new RealTimeData();
+			Runtime.getRuntime()
+					.addShutdownHook(new Thread(() -> realTimeData.requester.cancelAllOrders(), "Shutdown-thread"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
