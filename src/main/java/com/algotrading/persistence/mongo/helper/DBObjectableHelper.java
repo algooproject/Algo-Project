@@ -44,6 +44,13 @@ public class DBObjectableHelper<DBOBJECTABLE extends DBObjectable> {
 		return fromDBObject(result);
 	}
 
+	public boolean existsById(String id) {
+		DBObject query = new BasicDBObject(DBObjectable.ID, id);
+		DBCursor cursor = databaseCollection.find(query);
+		DBObject result = cursor.one();
+		return result != null;
+	}
+
 	public List<DBOBJECTABLE> queryByfield(String fieldName, Object fieldValue) {
 		return queryByField(fieldName, fieldValue, null, null, null);
 	}
@@ -72,9 +79,18 @@ public class DBObjectableHelper<DBOBJECTABLE extends DBObjectable> {
 		WriteResult resultOfUpdate = databaseCollection.update(queryObject, dbObjectable.toDBObject());
 	}
 
+	/**
+	 * creates a new document when no document matches the query criteria.
+	 */
+	public void upsertById(String id, DBOBJECTABLE dbObjectable) {
+		DBObject queryObject = new BasicDBObject(DBObjectable.ID, id);
+		WriteResult resultOfUpdate = databaseCollection.update(queryObject, dbObjectable.toDBObject(), true, false);
+	}
+
 	public void removeById(String id) {
 		DBObject queryObject = new BasicDBObject(DBObjectable.ID, id);
 		// TODO execute the remove
 		WriteResult resultOfRemove = databaseCollection.remove(queryObject);
 	}
+
 }
