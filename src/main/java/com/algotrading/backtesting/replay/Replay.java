@@ -26,7 +26,6 @@ public class Replay {
 	private double totalTrasactionCost = 0;
 
 	private PrintMethod print;
-	private Boolean doPrint = false;
 
 	public double getTotalTradedVolume() {
 		return totalTradedVolume;
@@ -62,12 +61,6 @@ public class Replay {
 			throws ParseException {
 		print = printMethod;
 		print.setDatesAndHistory(startDate, endDate, portfolioHistory);
-		doPrint = true;
-		setData(startDate, endDate, portfolioHistory, strategies, availableStocks, tradingDate, initialCash);
-	}
-
-	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
-			AvailableStocks availableStocks, TradingDate tradingDate, double initialCash) {
 		setData(startDate, endDate, portfolioHistory, strategies, availableStocks, tradingDate, initialCash);
 	}
 
@@ -119,9 +112,8 @@ public class Replay {
 				}
 			}
 			portfolio.setTicker_pc(ticker_pc);
-			if (doPrint) {
-				print.record(currentDate, portfolio);
-			}
+			print.record(currentDate, portfolio);
+
 			portfolio = portfolio.clone();
 			tradingDate.rollDay();
 		}
@@ -132,10 +124,7 @@ public class Replay {
 	}
 
 	public void print() throws ParseException {
-		if (doPrint)
-			print.print();
-		else
-			throw new ParseException("Print Error: Print method has not been initiated.", 0);
+		print.print();
 	}
 
 	public PrintMethod getPrintMethod() {

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.algotrading.backtesting.pattern.MustFalseSignal;
 import com.algotrading.backtesting.pattern.MustTrueSignal;
 import com.algotrading.backtesting.pattern.StockSignal;
 import com.algotrading.backtesting.replay.AvailableStocks;
@@ -19,6 +18,7 @@ import com.algotrading.backtesting.stock.StockHistory;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.strategy.Strategy;
 import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.Print_Console;
 
 public class ReplayTest {
 
@@ -26,7 +26,6 @@ public class ReplayTest {
 	private Date endDate;
 	private Date middleDate;
 	private StockSignal mustTrueSignal;
-	private StockSignal mustFalseSignal;
 	private Strategy buyStrategy;
 	private Strategy sellStrategy;
 	private Strategies strategies;
@@ -49,7 +48,6 @@ public class ReplayTest {
 		middleDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-04-06");
 
 		mustTrueSignal = new MustTrueSignal();
-		mustFalseSignal = new MustFalseSignal();
 
 		buyStrategy = new Strategy(mustTrueSignal, 100);
 		sellStrategy = new Strategy(mustTrueSignal, 100);
@@ -89,7 +87,8 @@ public class ReplayTest {
 	@Test
 	public void test1_test() throws ParseException {
 		PortfolioHistory history = new PortfolioHistory();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 30000);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 30000,
+				new Print_Console());
 
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();

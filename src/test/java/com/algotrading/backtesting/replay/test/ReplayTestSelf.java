@@ -18,6 +18,7 @@ import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.strategy.Strategy;
 import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.Print_Console;
 
 public class ReplayTestSelf {
 
@@ -62,7 +63,8 @@ public class ReplayTestSelf {
 	public void test1_test() throws ParseException {
 		double initialCash = unitBuyCost * availableStocks.get().size();
 		PortfolioHistory history = new PortfolioHistory();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash,
+				new Print_Console());
 
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
