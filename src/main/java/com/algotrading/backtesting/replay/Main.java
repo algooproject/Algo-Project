@@ -12,9 +12,10 @@ public class Main {
 
 	public static void main(String[] args) throws IOException, ParseException {
 
-		System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " + Constants.SRC_MAIN_RESOURCE_FILEPATH);
-		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2001-01-02");
-		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2009-12-27");
+		// System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " +
+		// Constants.SRC_MAIN_RESOURCE_FILEPATH);
+		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-02-01");
+		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2017-12-27");
 		// Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-10");
 		int initialCash = 300000;
 		PortfolioHistory history = new PortfolioHistory(initialCash);
@@ -34,7 +35,7 @@ public class Main {
 		// int days = Duration.between(startDate, endDate).toDays();
 		// Date firstTradingDate = tradingDate.rollToCurrentDate(startDate,
 		// startDate);
-		System.out.println(portfolioHistory);
+		// System.out.println(portfolioHistory);
 		System.out.println("Net Profit: " + portfolioHistory.getNetProfit(lastTradingDate) + "\n");
 		System.out.println("Start: " + startDate.toString() + "; End: " + endDate.toString());
 		System.out.println("Duration: " + years + " years");

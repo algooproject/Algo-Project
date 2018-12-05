@@ -47,10 +47,10 @@ public class SMA implements ISmaCalculator {
 	public void setRecent(Date recent) {
 		if (this.datedprice.containsKey(recent) && this.line.get(recent) != null) {
 			this.recent = recent;
-			//System.out.println(recent);
+			// System.out.println(recent);
 			this.value = this.line.get(recent);
 		} else {
-			System.out.println("SMA No such date("+recent+") in record");
+			// System.out.println("SMA No such date("+recent+") in record");
 		}
 	}
 
@@ -82,12 +82,13 @@ public class SMA implements ISmaCalculator {
 																				// for
 																				// calculation
 		if (datedprice == null || magnitude < 1) {
-			System.out.println("Initialization of variables not completed yet! Cannot proceed!");
+			// System.out.println("Initialization of variables not completed
+			// yet! Cannot proceed!");
 			return false;
 		}
 
 		if (datedprice.size() < magnitude) { // check if the data is sufficient;
-			System.out.println("The length of line is out of range!");
+			// System.out.println("The length of line is out of range!");
 			return false;
 		}
 		return true;
@@ -97,7 +98,7 @@ public class SMA implements ISmaCalculator {
 	public Map<Date, Double> calculate(Map<Date, Double> datedprice, int magnitude) {
 
 		if (!readytocal(datedprice, magnitude)) {
-			return Collections.<Date, Double> emptyMap();
+			return Collections.<Date, Double>emptyMap();
 		}
 		List<Date> dates = new ArrayList<Date>();
 		// System.out.println("Initialization");

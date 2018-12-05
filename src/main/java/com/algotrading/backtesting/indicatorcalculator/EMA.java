@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.algotrading.backtesting.util.Constants;
-
 public class EMA implements IEmaCalculator {
 	// Constructors
 	public EMA(Map<Date, Double> datedprice, Date recent, int magnitude, int sma_magnitude) throws Exception {
@@ -65,7 +63,7 @@ public class EMA implements IEmaCalculator {
 			this.recent = recent;
 			this.value = this.line.get(recent);
 		} else {
-			System.out.println("EMA No such date in record");
+			// System.out.println("EMA No such date in record");
 		}
 	}
 
@@ -149,7 +147,8 @@ public class EMA implements IEmaCalculator {
 																									// for
 																									// calculation
 		if (datedprice == null || magnitude < 1) {
-			System.out.println("Initialization of variables not completed yet! Cannot proceed!");
+			// System.out.println("Initialization of variables not completed
+			// yet! Cannot proceed!");
 			return false;
 		}
 
@@ -157,7 +156,7 @@ public class EMA implements IEmaCalculator {
 																	// the data
 																	// is
 																	// sufficient;
-			System.out.println("The length of line is out of range!");
+			// System.out.println("The length of line is out of range!");
 			return false;
 		}
 		return true;
@@ -167,7 +166,7 @@ public class EMA implements IEmaCalculator {
 	public Map<Date, Double> calculate(Map<Date, Double> datedprice, int magnitude, int tail_magnitude, double alpha,
 			Map<Date, Double> boundary) {
 		if (!readytocal(datedprice, magnitude, tail_magnitude)) {
-			return Collections.<Date, Double> emptyMap();
+			return Collections.<Date, Double>emptyMap();
 		}
 		List<Date> dates = new ArrayList<Date>();
 		int pointer = 0;
@@ -180,9 +179,10 @@ public class EMA implements IEmaCalculator {
 			// .toString() + "/" + boundary.get(entry.getKey()));
 			if (pointer >= magnitude - 1 && pointer < datedprice.size() - tail_magnitude) {
 				if (boundary.get(entry.getKey()) == null) {
-					System.out.println("Insufficient boundary: " + Constants.DATE_FORMAT_YYYYMMDD.format(entry.getKey())
-							+ " is missing! ");
-					return Collections.<Date, Double> emptyMap();
+					// System.out.println("Insufficient boundary: " +
+					// Constants.DATE_FORMAT_YYYYMMDD.format(entry.getKey())
+					// + " is missing! ");
+					return Collections.<Date, Double>emptyMap();
 				}
 				pointer++;
 			}

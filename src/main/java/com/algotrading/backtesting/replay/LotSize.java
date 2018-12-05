@@ -23,6 +23,7 @@ public class LotSize {
 	}
 
 	public int getLotSize(String strStockCode) {
+		// System.out.println(strStockCode);
 		return lotSizes.get(strStockCode);
 	}
 
