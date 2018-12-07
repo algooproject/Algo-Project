@@ -1,5 +1,6 @@
 package com.algotrading.persistence.mongo.dbobject;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.mongodb.DBObject;
@@ -16,7 +17,10 @@ public interface DBObjectable {
 
 	void fromDBObject(DBObject dbObject);
 
-	String getKey();
+	default String getKey() {
+		return UUID.randomUUID()
+				.toString();
+	}
 
 	String getCollectionName();
 

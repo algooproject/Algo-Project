@@ -116,10 +116,10 @@ public class StockInfo implements DBObjectable {
 		dividend = (double) dbObject.get(FIELD_DIVEDEND);
 	}
 
-	@Override
-	public String getKey() {
-		return getTicker();
-	}
+	// @Override
+	// public String getKey() {
+	// return getTicker();
+	// }
 
 	@Override
 	public String getCollectionName() {

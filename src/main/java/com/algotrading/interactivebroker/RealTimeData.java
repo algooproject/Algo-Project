@@ -21,7 +21,11 @@ import java.util.Vector;
 import com.algotrading.interactivebroker.handler.MustBuyTickPriceHandler;
 import com.algotrading.interactivebroker.test.DummyUtil;
 import com.algotrading.interactivebroker.util.Logger;
+import com.algotrading.persistence.mongo.dbobject.AccountFieldValue;
+import com.algotrading.persistence.mongo.dbobject.AccountValue;
 import com.algotrading.persistence.mongo.dbobject.DummyTickPrice;
+import com.algotrading.persistence.mongo.dbobject.Portfolio;
+import com.algotrading.persistence.mongo.dbobject.PortfolioComponent;
 import com.algotrading.persistence.mongo.helper.MongoDBHelper;
 import com.ib.client.CommissionReport;
 import com.ib.client.Contract;
@@ -192,7 +196,8 @@ public class RealTimeData extends BaseEWrapper {
 
 		dbHelper.dummyTickPrice.insert(tickPrice);
 
-		new MustBuyTickPriceHandler().handle(requester, marketRequestMap.get(tickerId), field, price, attribs);
+		new MustBuyTickPriceHandler().handle(requester, marketRequestMap.get(tickerId), field, price, attribs,
+				dbHelper);
 	}
 
 	@Override
@@ -206,6 +211,36 @@ public class RealTimeData extends BaseEWrapper {
 	public void updateAccountValue(String key, String value, String currency, String accountName) {
 		logger.info("UpdateAccountValue. Key: " + key + ", Value: " + value + ", Currency: " + currency
 				+ ", AccountName: " + accountName);
+		if (dbHelper.accountValue.existsById(accountName)) {
+			AccountValue accountValue = dbHelper.accountValue.queryById(accountName);
+			AccountFieldValue afv = new AccountFieldValue();
+			afv.setCurrency(currency);
+			afv.setValue(value);
+			accountValue.getAccountFieldValues()
+					.put(key, afv);
+			dbHelper.accountValue.updateById(accountName, accountValue);
+		} else {
+			AccountValue av = new AccountValue();
+			av.setAccountName(accountName);
+			AccountFieldValue afv = new AccountFieldValue();
+			afv.setCurrency(currency);
+			afv.setValue(value);
+			av.getAccountFieldValues()
+					.put(key, afv);
+			dbHelper.accountValue.insert(av);
+		}
+	}
+
+	private String getContractId(Contract contract) {
+		StringBuilder builder = new StringBuilder(100);
+		builder.append(contract.symbol());
+		builder.append("-")
+				.append(contract.secType());
+		if (contract.exchange() != null) {
+			builder.append("-")
+					.append(contract.exchange());
+		}
+		return builder.toString();
 	}
 
 	@Override
@@ -215,6 +250,36 @@ public class RealTimeData extends BaseEWrapper {
 				+ contract.exchange() + ": Position: " + position + ", MarketPrice: " + marketPrice + ", MarketValue: "
 				+ marketValue + ", AverageCost: " + averageCost + ", UnrealizedPNL: " + unrealizedPNL
 				+ ", RealizedPNL: " + realizedPNL + ", AccountName: " + accountName);
+
+		if (dbHelper.portfolio.existsById(accountName)) {
+			Portfolio portfolio = dbHelper.portfolio.queryById(accountName);
+			PortfolioComponent pc = new PortfolioComponent();
+			pc.setAverageCost(averageCost);
+			pc.setMarketPrice(marketPrice);
+			pc.setMarketValue(marketValue);
+			pc.setPosition(position);
+			pc.setRealizedPNL(realizedPNL);
+			pc.setUnrealizedPNL(unrealizedPNL);
+
+			portfolio.getPortfolios()
+					.put(getContractId(contract), pc);
+			dbHelper.portfolio.updateById(accountName, portfolio);
+		} else {
+			Portfolio p = new Portfolio();
+			p.setAccountName(accountName);
+
+			PortfolioComponent pc = new PortfolioComponent();
+			pc.setAverageCost(averageCost);
+			pc.setMarketPrice(marketPrice);
+			pc.setMarketValue(marketValue);
+			pc.setPosition(position);
+			pc.setRealizedPNL(realizedPNL);
+			pc.setUnrealizedPNL(unrealizedPNL);
+
+			p.getPortfolios()
+					.put(getContractId(contract), pc);
+			dbHelper.portfolio.insert(p);
+		}
 		placeOrder(contract);
 	}
 

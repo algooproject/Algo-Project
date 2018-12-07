@@ -269,10 +269,10 @@ public class TickPrice implements DBObjectable {
 		askPrice5 = (double) dbObject.get(FIELD_ASK_PRICE_5);
 	}
 
-	@Override
-	public String getKey() {
-		return getTicker() + "_" + getTimestamp();
-	}
+	// @Override
+	// public String getKey() {
+	// return getTicker() + "_" + getTimestamp();
+	// }
 
 	public void setTicker(String ticker) {
 		this.ticker = ticker;

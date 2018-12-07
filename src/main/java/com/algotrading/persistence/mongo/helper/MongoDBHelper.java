@@ -11,6 +11,8 @@ public class MongoDBHelper {
 	private final DB database;
 	private final MongoDBLogger mongoDbLogger;
 
+	public final PortfolioHelper portfolio;
+	public final AccountValueHelper accountValue;
 	public final DummyTickPriceDBHelper dummyTickPrice;
 	public final DailyPriceHelper dailyPrice;
 	public final StockInfoHelper stockInfo;
@@ -25,6 +27,8 @@ public class MongoDBHelper {
 		this.database = mongoClient.getDB(databaseName);
 		this.mongoDbLogger = new MongoDBLogger(logger);
 		this.dummyTickPrice = new DummyTickPriceDBHelper(database, mongoDbLogger);
+		this.accountValue = new AccountValueHelper(database, mongoDbLogger);
+		this.portfolio = new PortfolioHelper(database, mongoDbLogger);
 		this.dailyPrice = new DailyPriceHelper(database, mongoDbLogger);
 		this.stockInfo = new StockInfoHelper(database, mongoDbLogger);
 		this.tickPrice = new TickPriceHelper(database, mongoDbLogger);

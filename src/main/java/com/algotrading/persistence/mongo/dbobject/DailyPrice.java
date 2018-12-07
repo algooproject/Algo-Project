@@ -146,10 +146,10 @@ public class DailyPrice implements DBObjectable {
 		turnover = (double) dbObject.get(FIELD_TURNOVER);
 	}
 
-	@Override
-	public String getKey() {
-		return getTicker() + "_" + getDate();
-	}
+	// @Override
+	// public String getKey() {
+	// return getTicker() + "_" + getDate();
+	// }
 
 	public static String createKey(String ticker, String date) {
 		return ticker + "_" + date;

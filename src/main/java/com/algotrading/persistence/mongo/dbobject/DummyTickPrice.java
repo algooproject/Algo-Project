@@ -71,10 +71,10 @@ public class DummyTickPrice implements DBObjectable {
 		return "TickPrice [date=" + date + ", ticker=" + ticker + ", price=" + price + "]";
 	}
 
-	@Override
-	public String getKey() {
-		return getTicker() + "_" + getDate();
-	}
+	// @Override
+	// public String getKey() {
+	// return getTicker() + "_" + getDate();
+	// }
 
 	@Override
 	public String getCollectionName() {
