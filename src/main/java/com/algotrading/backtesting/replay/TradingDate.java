@@ -35,13 +35,15 @@ public class TradingDate {
 	}
 
 	public void setCurrentDate(Date date) {
-//		System.out.println("tradingDates.size()" + tradingDates.size());
+		// System.out.println("tradingDates.size()" + tradingDates.size());
 		for (int i = 0; i < tradingDates.size(); i++) {
-//			System.out.println("date.toString(): " + date.toString());
-//			System.out.println("tradingDates.get(i): " + tradingDates.get(i));
+			// System.out.println("date.toString(): " + date.toString());
+			// System.out.println("tradingDates.get(i): " +
+			// tradingDates.get(i));
 			if (date.compareTo(tradingDates.get(i)) <= 0) {
-//				System.out.println("date.toString(): " + date.toString());
-//				System.out.println("tradingDates.get(i): " + tradingDates.get(i));
+				// System.out.println("date.toString(): " + date.toString());
+				// System.out.println("tradingDates.get(i): " +
+				// tradingDates.get(i));
 				currentTradingDateIndex = i;
 				break;
 			}
@@ -50,7 +52,7 @@ public class TradingDate {
 
 	public Date rollBackCurrentDate(Date date, Date noLaterThan) throws IOException {
 		for (int i = tradingDates.size() - 1; i >= 0; i--) {
-			if (date.compareTo(tradingDates.get(i)) >= 0 && noLaterThan.compareTo(tradingDates.get(i)) >=0) {
+			if (date.compareTo(tradingDates.get(i)) >= 0 && noLaterThan.compareTo(tradingDates.get(i)) >= 0) {
 				return tradingDates.get(i);
 			}
 		}
@@ -59,13 +61,13 @@ public class TradingDate {
 
 	public Date rollToCurrentDate(Date date, Date noEarlierThan) throws IOException {
 		for (int i = 0; i < tradingDates.size(); i++) {
-			if (date.compareTo(tradingDates.get(i)) <= 0 && noEarlierThan.compareTo(tradingDates.get(i)) <=0) {
+			if (date.compareTo(tradingDates.get(i)) <= 0 && noEarlierThan.compareTo(tradingDates.get(i)) <= 0) {
 				return tradingDates.get(i);
 			}
 		}
 		throw new IOException("rollBackCurrentDate Error: Later date does not exists.");
-	}	
-	
+	}
+
 	public Date currentDate() {
 		return tradingDates.get(currentTradingDateIndex);
 	}
@@ -82,10 +84,7 @@ public class TradingDate {
 		Path filePath = new File(file).toPath();
 		Charset charset = Charset.defaultCharset();
 		List<String> stringList = Files.readAllLines(filePath, charset);
-		tradingDates = stringList.stream()
-				.map(dateStr -> parseDate(dateStr))
-				.sorted()
-				.collect(Collectors.toList());
+		tradingDates = stringList.stream().map(dateStr -> parseDate(dateStr)).sorted().collect(Collectors.toList());
 	}
 
 	private Date parseDate(String dateStr) {
