@@ -51,7 +51,7 @@ public class MainForNLOPT {
 
 	public static double execute(int intRSIMagnitude, double dblRSILowerThan, int intSMAMagnitude,
 			double dblVolumeHigherThan, int intReentryRSIMagnitude, double dblReentryRSILowerThan, double dblTakeProfit,
-			double dblStopLoss) throws Exception {
+			double dblStopLoss) {
 		try {
 			System.out.print(i + " loop (" + ranNo + ")- ");
 			i++;
@@ -135,22 +135,22 @@ public class MainForNLOPT {
 			System.out.println("double dblStopLoss:" + dblStopLoss + "\n");
 			// throw pe;
 			return -2;
-			/*
-			 * } catch (Exception e) { System.out.println("Exception");
-			 * System.out.println(e.toString()); System.out.println(i + "loop");
-			 * System.out.println("int intRSIMagnitude:" + intRSIMagnitude);
-			 * System.out.println("double dblRSILowerThan:" + dblRSILowerThan);
-			 * System.out.println("int intSMAMagnitude:" + intSMAMagnitude);
-			 * System.out.println("double dblVolumeHigherThan:" +
-			 * dblVolumeHigherThan);
-			 * System.out.println("int intReentryRSIMagnitude:" +
-			 * intReentryRSIMagnitude);
-			 * System.out.println("double dblReentryRSILowerThan:" +
-			 * dblReentryRSILowerThan);
-			 * System.out.println("double dblTakeProfit:" + dblTakeProfit);
-			 * System.out.println("double dblStopLoss:" + dblStopLoss + "\n");
-			 * // throw e; return -3;
-			 */
+
+		} catch (Exception e) {
+			System.out.println("Exception");
+			System.out.println(e.toString());
+			System.out.println(i + "loop");
+			System.out.println("int intRSIMagnitude:" + intRSIMagnitude);
+			System.out.println("double dblRSILowerThan:" + dblRSILowerThan);
+			System.out.println("int intSMAMagnitude:" + intSMAMagnitude);
+			System.out.println("double dblVolumeHigherThan:" + dblVolumeHigherThan);
+			System.out.println("int intReentryRSIMagnitude:" + intReentryRSIMagnitude);
+			System.out.println("double dblReentryRSILowerThan:" + dblReentryRSILowerThan);
+			System.out.println("double dblTakeProfit:" + dblTakeProfit);
+			System.out.println("double dblStopLoss:" + dblStopLoss + "\n");
+			// throw e;
+			return -3;
+
 		}
 	}
 
