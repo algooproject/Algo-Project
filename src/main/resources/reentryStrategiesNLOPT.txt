@@ -1,1 +1,1 @@
-NOT( RSILower[ magnitude=150 sma_magnitude=0 expectedValueType=number expectedValue=30.0 ] )	0
+NOT( RSILower[ magnitude=73 sma_magnitude=0 expectedValueType=number expectedValue=35.0 ] )	0
