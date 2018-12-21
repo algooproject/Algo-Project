@@ -41,7 +41,7 @@ public class RSI implements IRsiCalculator {
 	// public RSI(Map<Date, Double> datedPrice, Date recent, int magnitude, int
 	// smaMagnitude) throws Exception {
 	public RSI(Map<Date, Double> datedPrice, Date recent, int magnitude) throws Exception {
-//		System.out.println(datedPrice);
+		// System.out.println(datedPrice);
 		// the stock
 		this.datedPrice = datedPrice;
 
@@ -102,8 +102,8 @@ public class RSI implements IRsiCalculator {
 			this.recent = recent;
 			this.value = this.line.get(recent);
 		} else {
-//			System.out.println("rsi recent: " + recent);
-			 System.out.println("RSI No such date ("+recent+") in record");
+			// System.out.println("rsi recent: " + recent);
+			// System.out.println("RSI No such date ("+recent+") in record");
 		}
 	}
 
@@ -161,14 +161,15 @@ public class RSI implements IRsiCalculator {
 		// private boolean readyToCalculate(Map<Date, Double> datedprice, int
 		// magnitude, int tail_magnitude) {
 		if (datedprice == null || magnitude < 1) {
-			System.out.println("Initialization of variables not completed yet! Cannot proceed!");
+			// System.out.println("Initialization of variables not completed
+			// yet! Cannot proceed!");
 			return false;
 		}
 
 		// check if the date is sufficient
 		// if (datedprice.size() < magnitude + tail_magnitude - 1) {
 		if (datedprice.size() < magnitude - 1) {
-			System.out.println("The length of line is out of range!");
+			// System.out.println("The length of line is out of range!");
 			return false;
 		}
 		return true;
@@ -219,8 +220,9 @@ public class RSI implements IRsiCalculator {
 			if (pointer >= magnitude - 1 && pointer < plusOrMinus.size()) {
 				if (plusOrMinus.get(entry.getKey()) == null) {
 					SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd");
-					System.out.println("Insufficient boundary: " + dateformat.format(entry.getKey()) + " is missing! ");
-					return Collections.<Date, Double> emptyMap();
+					// System.out.println("Insufficient boundary: " +
+					// dateformat.format(entry.getKey()) + " is missing! ");
+					return Collections.<Date, Double>emptyMap();
 				}
 				pointer++;
 			}
@@ -296,7 +298,7 @@ public class RSI implements IRsiCalculator {
 
 		if (!readyToCalculate(datedprice, magnitude)) {
 			// if (!readyToCalculate(datedprice, magnitude, sma_magnitude)) {
-			return Collections.<Date, Double> emptyMap();
+			return Collections.<Date, Double>emptyMap();
 		}
 		Map.Entry<Date, Double> entry = this.line.entrySet().iterator().next();
 		// Date recent = entry.getKey();
