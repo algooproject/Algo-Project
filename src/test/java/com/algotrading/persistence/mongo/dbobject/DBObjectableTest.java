@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.algotrading.interactivebroker.util.Logger;
@@ -16,6 +17,7 @@ import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
+@Ignore
 public class DBObjectableTest {
 	private static final String HOSTNAME = "localhost";
 	private static final int PORT = 27017;

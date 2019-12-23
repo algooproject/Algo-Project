@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 import java.net.UnknownHostException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mongodb.BasicDBObject;
@@ -26,6 +27,7 @@ import static org.junit.Assert.assertThat;
  * https://www.mongodb.com/blog/post/getting-started-with-mongodb-and-java-part-
  * ii
  */
+@Ignore
 public class Exercise02MongoClientTest {
 	@Test
 	public void shouldGetADatabaseFromTheMongoClient() throws Exception {

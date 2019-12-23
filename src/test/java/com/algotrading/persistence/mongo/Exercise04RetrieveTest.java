@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mongodb.BasicDBObject;
@@ -31,6 +32,7 @@ import static org.junit.Assert.assertThat;
  * https://www.mongodb.com/blog/post/getting-started-with-mongodb-and-java-part-
  * ii
  */
+@Ignore
 @SuppressWarnings("unchecked")
 public class Exercise04RetrieveTest {
 	private DB database;

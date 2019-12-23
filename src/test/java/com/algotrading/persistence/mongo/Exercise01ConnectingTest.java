@@ -3,6 +3,7 @@ package com.algotrading.persistence.mongo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mongodb.MongoClient;
@@ -21,6 +22,7 @@ import static org.junit.Assert.assertThat;
  * https://www.mongodb.com/blog/post/getting-started-with-mongodb-and-java-part-
  * ii
  */
+@Ignore
 public class Exercise01ConnectingTest {
 	@Test
 	public void shouldCreateANewMongoClientConnectedToLocalhost() throws Exception {

@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mongodb.BasicDBObject;
@@ -34,6 +35,7 @@ import static org.junit.Assert.assertThat;
  * https://www.mongodb.com/blog/post/getting-started-with-mongodb-and-java-part-
  * ii
  */
+@Ignore
 public class Exercise14RemoveTest {
 	private DB database;
 	private DBCollection collection;
