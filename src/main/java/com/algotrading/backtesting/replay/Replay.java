@@ -65,7 +65,7 @@ public class Replay {
 	}
 
 	public void simulate() throws ParseException {
-		System.out.println("Simulation started... ");
+		// System.out.println("Simulation started... ");
 		Date currentDate = startDate;
 		tradingDate.setCurrentDate(currentDate);
 		while (tradingDate.isNotLastDate() && tradingDate.currentDate().compareTo(endDate) <= 0) {

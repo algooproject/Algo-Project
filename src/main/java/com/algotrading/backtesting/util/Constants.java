@@ -8,6 +8,8 @@ public interface Constants {
 	String SRC_TEST_RESOURCE_FILEPATH = "src/test/resources/";
 	// String SRC_MAIN_RESOURCE_FILEPATH = "C:/AlgoProject/";
 	// String SRC_TEST_RESOURCE_FILEPATH = "C:/AlgoProject/";
+	String SRC_MAIN_RESOURCE_NLOPT_FILEPATH = "C:/AlgoProject/";
+	String SRC_TEST_RESOURCE_NLOPT_FILEPATH = "C:/AlgoProject/";
 	SimpleDateFormat DATE_FORMAT_YYYYMMDD = new SimpleDateFormat("yyyy-MM-dd");
 
 }
