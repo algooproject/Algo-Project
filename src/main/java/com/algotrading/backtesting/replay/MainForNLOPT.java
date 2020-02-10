@@ -10,6 +10,7 @@ import java.util.Date;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.Print_Console;
 import com.algotrading.backtesting.util.WriteToFile;
 
 public class MainForNLOPT {
@@ -43,9 +44,9 @@ public class MainForNLOPT {
 			// Date endDate =
 			// Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-10");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
-			availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH, "availableStocks2.txt");
+			availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks2.txt");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
-			tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_FILEPATH + "tradingDate.txt");
+			tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "tradingDate.txt");
 		} catch (Exception e) {
 			System.out.println("Exception: " + e.toString());
 		}
@@ -65,60 +66,74 @@ public class MainForNLOPT {
 			cal = Calendar.getInstance();
 			date = cal.getTime();
 			formattedDate = dateFormat.format(date);
-			System.out.println("Start Execute " + formattedDate);
+			System.out.println("Start_Execute " + formattedDate);
 
-			System.out.print(i + " loop (" + ranNo + ")- ");
+			// System.out.println(i + " loop (" + ranNo + ")- ");
+			System.out.println(i + " loop");
 			i++;
-			System.out.println("int intRSIMagnitude:" + intRSIMagnitude);
-			System.out.println("double dblRSILowerThan:" + dblRSILowerThan);
-			System.out.println("int intSMAMagnitude:" + intSMAMagnitude);
-			System.out.println("double dblVolumeHigherThan:" + dblVolumeHigherThan);
-			System.out.println("int intReentryRSIMagnitude:" + intReentryRSIMagnitude);
-			System.out.println("double dblReentryRSILowerThan:" + dblReentryRSILowerThan);
-			System.out.println("double dblTakeProfit:" + dblTakeProfit);
-			System.out.println("double dblStopLoss:" + dblStopLoss + "\n");
-			System.out.println(i + "loop");
+			/*
+			 * System.out.println("int intRSIMagnitude:" + intRSIMagnitude);
+			 * System.out.println("double dblRSILowerThan:" + dblRSILowerThan);
+			 * System.out.println("int intSMAMagnitude:" + intSMAMagnitude);
+			 * System.out.println("double dblVolumeHigherThan:" +
+			 * dblVolumeHigherThan);
+			 * System.out.println("int intReentryRSIMagnitude:" +
+			 * intReentryRSIMagnitude);
+			 * System.out.println("double dblReentryRSILowerThan:" +
+			 * dblReentryRSILowerThan);
+			 * System.out.println("double dblTakeProfit:" + dblTakeProfit);
+			 * System.out.println("double dblStopLoss:" + dblStopLoss + "\n");
+			 * System.out.println(i + "loop");
+			 */
 			// System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " +
 			// Constants.SRC_MAIN_RESOURCE_FILEPATH);
 			initialCash = 300000;
-			history = new PortfolioHistory(initialCash);
+			history = new PortfolioHistory();
 
 			cal = Calendar.getInstance();
 			date = cal.getTime();
 			formattedDate = dateFormat.format(date);
-			System.out.println("Write File Start Time " + formattedDate);
+			// System.out.println("Write File Start Time " + formattedDate);
 
-			toFile.buyStrategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "buyStrategiesNLOPT.txt", intRSIMagnitude,
-					dblRSILowerThan, intSMAMagnitude, dblVolumeHigherThan);
-			toFile.reentryStrategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "reentryStrategiesNLOPT.txt",
-					intReentryRSIMagnitude, dblReentryRSILowerThan);
-			toFile.sellStrategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "sellStrategiesNLOPT.txt", dblTakeProfit);
-			toFile.exitStrategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "exitStrategiesNLOPT.txt", dblStopLoss);
+			toFile.buyStrategies(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "buyStrategiesNLOPT.txt", intRSIMagnitude,
+					dblRSILowerThan, intSMAMagnitude, dblVolumeHigherThan, intReentryRSIMagnitude,
+					dblReentryRSILowerThan);
+			// toFile.reentryStrategies(Constants.SRC_MAIN_RESOURCE_FILEPATH +
+			// "reentryStrategiesNLOPT.txt",
+			// intReentryRSIMagnitude, dblReentryRSILowerThan);
+			toFile.sellStrategies(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "sellStrategiesNLOPT.txt", dblTakeProfit,
+					dblStopLoss);
+			// toFile.exitStrategies(Constants.SRC_MAIN_RESOURCE_FILEPATH +
+			// "exitStrategiesNLOPT.txt", dblStopLoss);
 
 			cal = Calendar.getInstance();
 			date = cal.getTime();
 			formattedDate = dateFormat.format(date);
-			System.out.println("Write File End Time and start read file " + formattedDate);
+			// System.out.println("Write File End Time and " + formattedDate);
 
-			strategies = new Strategies(Constants.SRC_MAIN_RESOURCE_FILEPATH + "buyStrategiesNLOPT.txt",
-					Constants.SRC_MAIN_RESOURCE_FILEPATH + "sellStrategiesNLOPT.txt",
-					Constants.SRC_MAIN_RESOURCE_FILEPATH + "exitStrategiesNLOPT.txt",
-					Constants.SRC_MAIN_RESOURCE_FILEPATH + "reentryStrategiesNLOPT.txt");
+			strategies = new Strategies(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "buyStrategiesNLOPT.txt",
+					Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "sellStrategiesNLOPT.txt");
 			// System.out.println("pass to replay");
 			// System.out.println("pass to replay: " + startDate.toString());
 
 			cal = Calendar.getInstance();
 			date = cal.getTime();
 			formattedDate = dateFormat.format(date);
-			System.out.println("Read File End Time " + formattedDate);
+			// System.out.println("Read File End Time " + formattedDate);
 
-			replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash);
+			cal = Calendar.getInstance();
+			date = cal.getTime();
+			formattedDate = dateFormat.format(date);
+			System.out.println("Replay_Start_Time " + formattedDate);
+
+			replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash,
+					new Print_Console());
 			replay.simulate();
 
 			cal = Calendar.getInstance();
 			date = cal.getTime();
 			formattedDate = dateFormat.format(date);
-			System.out.println("Replay End Time " + formattedDate);
+			System.out.println("Replay_End_Time " + formattedDate);
 
 			portfolioHistory = replay.getPortfolioHistory();
 			lastTradingDate = tradingDate.rollBackCurrentDate(endDate, endDate);
@@ -134,7 +149,8 @@ public class MainForNLOPT {
 			// endDate.toString());
 			// System.out.println("Duration: " + years + " years");
 			// System.out.println("Profit Rate: " + profitRate);
-			System.out.println("Annual Increment: " + (Math.pow(1 + profitRate, 1 / years) - 1));
+			// System.out.println("Annual Increment: " + (Math.pow(1 +
+			// profitRate, 1 / years) - 1));
 			// System.out.println("Total Traded Volume: " +
 			// replay.getTotalTradedVolume());
 			// System.out.println("Total Transaction Cost: " +
@@ -143,7 +159,7 @@ public class MainForNLOPT {
 			cal = Calendar.getInstance();
 			date = cal.getTime();
 			formattedDate = dateFormat.format(date);
-			System.out.println("End Execute " + formattedDate);
+			System.out.println("End_Execute " + formattedDate);
 
 			return 0 - portfolioHistory.getNetProfit(lastTradingDate);
 		} catch (IOException ioe) {
