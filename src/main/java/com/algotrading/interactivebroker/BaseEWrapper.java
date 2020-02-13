@@ -527,7 +527,7 @@ public abstract class BaseEWrapper implements EWrapper {
 	public void error(int id, int errorCode, String errorMsg) {
 		// Overloaded error event (from IB) with their own error
 		// codes and messages
-		System.err.println("error: " + id + "," + errorCode + "," + errorMsg);
+		System.err.println("error by Milton: " + id + "," + errorCode + "," + errorMsg);
 	}
 
 	/**
@@ -783,6 +783,8 @@ public abstract class BaseEWrapper implements EWrapper {
 	@Override
 	public void orderStatus(int orderId, String status, double filled, double remaining, double avgFillPrice,
 			int permId, int parentId, double lastFillPrice, int clientId, String whyHeld, double mktCapPrice) {
+		System.out.println(
+				"Order Status Update: orderid = " + orderId + "; filled = " + filled + "; remaining " + remaining);
 	}
 
 	@Override
