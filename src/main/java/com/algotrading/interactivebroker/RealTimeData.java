@@ -38,6 +38,7 @@ import com.ib.client.HistoricalTick;
 import com.ib.client.HistoricalTickBidAsk;
 import com.ib.client.HistoricalTickLast;
 import com.ib.client.Order;
+import com.ib.client.OrderState;
 import com.ib.client.TagValue;
 import com.ib.client.TickAttr;
 import com.ib.client.TickType;
@@ -111,6 +112,7 @@ public class RealTimeData extends BaseEWrapper {
 				// TODO move to reqXXX method below
 				requester.reqAccountUpdates(true, "DU228380");
 				requester.reqManagedAccts();
+				requester.reqOpenOrders();
 
 				// TODO delete after requester works
 				// client.reqAccountUpdates(true, "DU228380");
@@ -157,7 +159,13 @@ public class RealTimeData extends BaseEWrapper {
 	@Deprecated
 	private void placeOrder(Contract contract) {
 		Order order = DummyUtil.createTestLimitDayOrder();
-		clientSocket.placeOrder(getNextOrderId(), contract, order);
+		int nextorderid = getNextOrderId();
+		clientSocket.placeOrder(nextorderid, contract, order);
+		logger.info("Entered order " + nextorderid);
+	}
+
+	private void cancelOrder(int orderId) {
+		clientSocket.cancelOrder(orderId);
 	}
 
 	private void processMessages() {
@@ -191,8 +199,7 @@ public class RealTimeData extends BaseEWrapper {
 				+ "(" + TickType.getField(field) + "), price=" + price + ", tickAttr=" + strTickAttr(attribs));
 		logger.info("tick price updated, MustBuyTickPriceHandler start");
 
-		DummyTickPrice tickPrice = new DummyTickPrice(new Date(), marketRequestMap.get(tickerId)
-				.symbol(), price);
+		DummyTickPrice tickPrice = new DummyTickPrice(new Date(), marketRequestMap.get(tickerId).symbol(), price);
 
 		dbHelper.dummyTickPrice.insert(tickPrice);
 
@@ -216,8 +223,7 @@ public class RealTimeData extends BaseEWrapper {
 			AccountFieldValue afv = new AccountFieldValue();
 			afv.setCurrency(currency);
 			afv.setValue(value);
-			accountValue.getAccountFieldValues()
-					.put(key, afv);
+			accountValue.getAccountFieldValues().put(key, afv);
 			dbHelper.accountValue.updateById(accountName, accountValue);
 		} else {
 			AccountValue av = new AccountValue();
@@ -225,8 +231,7 @@ public class RealTimeData extends BaseEWrapper {
 			AccountFieldValue afv = new AccountFieldValue();
 			afv.setCurrency(currency);
 			afv.setValue(value);
-			av.getAccountFieldValues()
-					.put(key, afv);
+			av.getAccountFieldValues().put(key, afv);
 			dbHelper.accountValue.insert(av);
 		}
 	}
@@ -234,13 +239,27 @@ public class RealTimeData extends BaseEWrapper {
 	private String getContractId(Contract contract) {
 		StringBuilder builder = new StringBuilder(100);
 		builder.append(contract.symbol());
-		builder.append("-")
-				.append(contract.secType());
+		builder.append("-").append(contract.secType());
 		if (contract.exchange() != null) {
-			builder.append("-")
-					.append(contract.exchange());
+			builder.append("-").append(contract.exchange());
 		}
 		return builder.toString();
+	}
+
+	@Override
+	public void openOrder(int orderId, Contract contract, Order order, OrderState orderState) {
+		logger.info("Open Order ID: " + orderId + "/" + order.orderId() + "/" + orderState.getStatus() + "/"
+				+ order.lmtPrice());
+		// if (orderState.getStatus().equals("Submitted")) {
+		// // if (order.lmtPrice() > 0) {
+		// order.lmtPrice(order.lmtPrice() + 1);
+		// clientSocket.placeOrder(orderId, contract, order);
+		// logger.info("Order " + orderId + " modified. Price = " +
+		// order.lmtPrice());
+		// // cancelOrder(orderId);
+		// // logger.info("Order " + orderId + " cancelled.");
+		// }
+
 	}
 
 	@Override
@@ -261,8 +280,7 @@ public class RealTimeData extends BaseEWrapper {
 			pc.setRealizedPNL(realizedPNL);
 			pc.setUnrealizedPNL(unrealizedPNL);
 
-			portfolio.getPortfolios()
-					.put(getContractId(contract), pc);
+			portfolio.getPortfolios().put(getContractId(contract), pc);
 			dbHelper.portfolio.updateById(accountName, portfolio);
 		} else {
 			Portfolio p = new Portfolio();
@@ -276,11 +294,10 @@ public class RealTimeData extends BaseEWrapper {
 			pc.setRealizedPNL(realizedPNL);
 			pc.setUnrealizedPNL(unrealizedPNL);
 
-			p.getPortfolios()
-					.put(getContractId(contract), pc);
+			p.getPortfolios().put(getContractId(contract), pc);
 			dbHelper.portfolio.insert(p);
 		}
-		placeOrder(contract);
+		// placeOrder(contract);
 	}
 
 	@Override
