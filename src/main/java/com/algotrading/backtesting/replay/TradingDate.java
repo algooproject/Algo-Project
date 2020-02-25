@@ -38,12 +38,10 @@ public class TradingDate {
 		// System.out.println("tradingDates.size()" + tradingDates.size());
 		for (int i = 0; i < tradingDates.size(); i++) {
 			// System.out.println("date.toString(): " + date.toString());
-			// System.out.println("tradingDates.get(i): " +
-			// tradingDates.get(i));
+			// System.out.println("tradingDates.get(i): " + tradingDates.get(i));
 			if (date.compareTo(tradingDates.get(i)) <= 0) {
 				// System.out.println("date.toString(): " + date.toString());
-				// System.out.println("tradingDates.get(i): " +
-				// tradingDates.get(i));
+				// System.out.println("tradingDates.get(i): " + tradingDates.get(i));
 				currentTradingDateIndex = i;
 				break;
 			}
@@ -81,9 +79,11 @@ public class TradingDate {
 	}
 
 	public void read() throws IOException, ParseException {
+		// System.out.println(file);
 		Path filePath = new File(file).toPath();
 		Charset charset = Charset.defaultCharset();
 		List<String> stringList = Files.readAllLines(filePath, charset);
+		// System.out.println(stringList);
 		tradingDates = stringList.stream().map(dateStr -> parseDate(dateStr)).sorted().collect(Collectors.toList());
 	}
 
