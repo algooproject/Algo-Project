@@ -1,7 +1,5 @@
 package com.algotrading.interactivebroker;
 
-import static com.algotrading.interactivebroker.util.ToStringUtil.strTickAttr;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +16,9 @@ import java.util.Map;
 // https://www.interactivebrokers.com/en/index.php?f=5041
 import java.util.Vector;
 
-import com.algotrading.interactivebroker.handler.MustBuyTickPriceHandler;
+import com.algotrading.interactivebroker.builder.OrderBuilder;
 import com.algotrading.interactivebroker.test.DummyUtil;
 import com.algotrading.interactivebroker.util.Logger;
-import com.algotrading.persistence.mongo.dbobject.DummyTickPrice;
 import com.ib.client.CommissionReport;
 import com.ib.client.Contract;
 import com.ib.client.EClientSocket;
@@ -34,9 +31,12 @@ import com.ib.client.HistoricalTickBidAsk;
 import com.ib.client.HistoricalTickLast;
 import com.ib.client.Order;
 import com.ib.client.OrderState;
+import com.ib.client.OrderType;
 import com.ib.client.TagValue;
 import com.ib.client.TickAttr;
 import com.ib.client.TickType;
+import com.ib.client.Types.Action;
+import com.ib.client.Types.TimeInForce;
 import com.ib.controller.AccountSummaryTag;
 
 public class RealTimeData extends BaseEWrapper {
@@ -133,11 +133,15 @@ public class RealTimeData extends BaseEWrapper {
 		// client.reqHistoricalTicks(18001, DummyUtil.createContract(),
 		// "20170712 21:39:33", null, 10, "TRADES", 1, true,
 		// null);
+
 	}
 
 	public static void main(String args[]) {
 		try {
 			RealTimeData realTimeData = new RealTimeData();
+			Order order = new OrderBuilder().action(Action.BUY).orderType(OrderType.LMT).tif(TimeInForce.DAY)
+					.totalQuantity(1000).lmtPrice(56).build();
+			realTimeData.requester.placeOrder(realTimeData.marketRequestMap.get(0), order);
 			Runtime.getRuntime()
 					.addShutdownHook(new Thread(() -> realTimeData.requester.cancelAllOrders(), "Shutdown-thread"));
 		} catch (Exception e) {
@@ -190,13 +194,20 @@ public class RealTimeData extends BaseEWrapper {
 			movingAverage = priceTotal / numberOfPrices;
 			logger.info("tickPrice: " + tickerId + "," + field + "," + price + ", " + movingAverage);
 		}
-		logger.info("===" + marketRequestMap.get(tickerId) + " tickPrice(): tickerId=" + tickerId + ", field=" + field
-				+ "(" + TickType.getField(field) + "), price=" + price + ", tickAttr=" + strTickAttr(attribs));
-		logger.info("tick price updated, MustBuyTickPriceHandler start");
 
-		DummyTickPrice tickPrice = new DummyTickPrice(new Date(), marketRequestMap.get(tickerId).symbol(), price);
-
-		new MustBuyTickPriceHandler().handle(requester, marketRequestMap.get(tickerId), field, price, attribs);
+		/*
+		 * logger.info("===" + marketRequestMap.get(tickerId) +
+		 * " tickPrice(): tickerId=" + tickerId + ", field=" + field + "(" +
+		 * TickType.getField(field) + "), price=" + price + ", tickAttr=" +
+		 * strTickAttr(attribs));
+		 * logger.info("tick price updated, MustBuyTickPriceHandler start");
+		 * 
+		 * DummyTickPrice tickPrice = new DummyTickPrice(new Date(),
+		 * marketRequestMap.get(tickerId) .symbol(), price);
+		 * 
+		 * new MustBuyTickPriceHandler().handle(requester,
+		 * marketRequestMap.get(tickerId), field, price, attribs);
+		 */
 	}
 
 	@Override

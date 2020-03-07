@@ -13,12 +13,11 @@ public class MustBuyTickPriceHandler implements TickPriceHandler {
 
 	@Override
 	public void handle(Requester requester, Contract contract, int field, double price, TickAttr attribs) {
-		Order order = new OrderBuilder().action(Action.BUY)
-				.orderType(OrderType.LMT)
-				.tif(TimeInForce.DAY)
-				.totalQuantity(1)
-				.lmtPrice(price)
-				.build();
+//		Order order = new OrderBuilder().action(Action.BUY).orderType(OrderType.LMT).tif(TimeInForce.DAY)
+//				.totalQuantity(50000).lmtPrice(price).build();
+		Order order = new OrderBuilder().action(Action.BUY).orderType(OrderType.MKT).tif(TimeInForce.DAY)
+				.totalQuantity(1000).build();
+
 		requester.placeOrder(contract, order);
 	}
 
