@@ -93,6 +93,8 @@ public abstract class BaseEWrapper implements EWrapper {
 	@Override
 	public void accountUpdateMulti(int reqId, String account, String modelCode, String key, String value,
 			String currency) {
+		System.out.println("accountUpdateMulti: reqId: " + reqId + ". account: " + account + ". modelCode: " + modelCode
+				+ ". key: " + key + ". value: " + value + ". currency: " + currency);
 	}
 
 	@Override
@@ -267,6 +269,8 @@ public abstract class BaseEWrapper implements EWrapper {
 	 */
 	@Override
 	public void accountSummary(int reqId, String account, String tag, String value, String currency) {
+		System.out.println("accountSummary: reqId: " + reqId + ". account: " + account + ". tag: " + tag + ". value: "
+				+ value + ". currency: " + currency);
 	}
 
 	/**
@@ -783,8 +787,9 @@ public abstract class BaseEWrapper implements EWrapper {
 	@Override
 	public void orderStatus(int orderId, String status, double filled, double remaining, double avgFillPrice,
 			int permId, int parentId, double lastFillPrice, int clientId, String whyHeld, double mktCapPrice) {
-		System.out.println(
-				"Order Status Update: orderid = " + orderId + "; filled = " + filled + "; remaining " + remaining);
+		// System.out.println(
+		// "Order Status Update: orderid = " + orderId + "; filled = " + filled
+		// + "; remaining " + remaining);
 	}
 
 	@Override
@@ -892,6 +897,8 @@ public abstract class BaseEWrapper implements EWrapper {
 	 */
 	@Override
 	public void updateAccountValue(String key, String value, String currency, String accountName) {
+		System.out.println("updateAccountValue: key: " + key + ". value: " + value + ". currency: " + currency
+				+ ". accountName: " + accountName);
 	}
 
 	/**
@@ -914,6 +921,9 @@ public abstract class BaseEWrapper implements EWrapper {
 	@Override
 	public void updatePortfolio(Contract contract, double position, double marketPrice, double marketValue,
 			double averageCost, double unrealizedPNL, double realizedPNL, String accountName) {
+		System.out.println("updatePortfolio: contract: " + contract + ". position: " + position + ". marketPrice: "
+				+ marketPrice + ". marketValue: " + marketValue + ". averageCost: " + averageCost + ". unrealizedPNL: "
+				+ unrealizedPNL + ". realizedPNL: " + realizedPNL + ". accountName: " + accountName);
 	}
 
 	// EClientSocket::reqExecutions

@@ -37,6 +37,7 @@ import com.ib.client.OrderState;
 import com.ib.client.TagValue;
 import com.ib.client.TickAttr;
 import com.ib.client.TickType;
+import com.ib.controller.AccountSummaryTag;
 
 public class RealTimeData extends BaseEWrapper {
 
@@ -102,13 +103,15 @@ public class RealTimeData extends BaseEWrapper {
 
 				// TODO really DU228380? what does that mean?
 				// TODO move to reqXXX method below
-				requester.reqAccountUpdates(true, "DU228380");
+				requester.reqAccountUpdates(true, "DU228378");
 				requester.reqManagedAccts();
 				requester.reqOpenOrders();
+				requester.reqAccountSummary(111111, "All", AccountSummaryTag.TotalCashValue.name() + ","
+						+ AccountSummaryTag.AccruedCash.name() + "," + AccountSummaryTag.BuyingPower.name());
 
 				// TODO delete after requester works
-				// client.reqAccountUpdates(true, "DU228380");
-				// client.reqManagedAccts();
+				// requester.reqAccountUpdates(true, "DU228380");
+				// requester.reqManagedAccts();
 
 				processMessages();
 			}
@@ -191,8 +194,7 @@ public class RealTimeData extends BaseEWrapper {
 				+ "(" + TickType.getField(field) + "), price=" + price + ", tickAttr=" + strTickAttr(attribs));
 		logger.info("tick price updated, MustBuyTickPriceHandler start");
 
-		DummyTickPrice tickPrice = new DummyTickPrice(new Date(), marketRequestMap.get(tickerId)
-				.symbol(), price);
+		DummyTickPrice tickPrice = new DummyTickPrice(new Date(), marketRequestMap.get(tickerId).symbol(), price);
 
 		new MustBuyTickPriceHandler().handle(requester, marketRequestMap.get(tickerId), field, price, attribs);
 	}
@@ -213,11 +215,9 @@ public class RealTimeData extends BaseEWrapper {
 	private String getContractId(Contract contract) {
 		StringBuilder builder = new StringBuilder(100);
 		builder.append(contract.symbol());
-		builder.append("-")
-				.append(contract.secType());
+		builder.append("-").append(contract.secType());
 		if (contract.exchange() != null) {
-			builder.append("-")
-					.append(contract.exchange());
+			builder.append("-").append(contract.exchange());
 		}
 		return builder.toString();
 	}
