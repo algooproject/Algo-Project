@@ -20,12 +20,17 @@ public class Replay {
 	private Strategies strategies;
 	private AvailableStocks availableStocks;
 	private TradingDate tradingDate;
+	private Boolean recordSwitch = true;
 
 	private Portfolio portfolio;
 	private double totalTradedVolume = 0;
 	private double totalTrasactionCost = 0;
 
 	private PrintMethod print;
+
+	public void setRecordSwitch(Boolean flag) {
+		recordSwitch = flag;
+	}
 
 	public double getTotalTradedVolume() {
 		return totalTradedVolume;
@@ -88,34 +93,35 @@ public class Replay {
 					portfolio.addTransaction(buySellAmount);
 				}
 			}
-			portfolioHistory.put(currentDate, portfolio);
-			portfolioHistory.addTransactions(portfolio.getTransactions());
-			List<BuySellAmount> currentTransactions = portfolio.getTransactions();
-			Map<String, PortfolioComponent> ticker_pc = portfolio.getTicker_pc();
-			for (int i = 0; i < currentTransactions.size(); i++) {
-				PortfolioComponent pc = currentTransactions.get(i).getPortfolioComponent().clone();
-				String ticker = pc.getStock().getTicker();
-				if (ticker_pc.containsKey(ticker)) {
-					double buyPrice = ticker_pc.get(ticker).getUnitPrice();
-					double sellPrice = pc.getUnitPrice();
-					if (buyPrice < sellPrice) {
-						currentTransactions.get(i).setAction("TakeProfit");
+			if (recordSwitch) {
+				portfolioHistory.put(currentDate, portfolio);
+				portfolioHistory.addTransactions(portfolio.getTransactions());
+				List<BuySellAmount> currentTransactions = portfolio.getTransactions();
+				Map<String, PortfolioComponent> ticker_pc = portfolio.getTicker_pc();
+				for (int i = 0; i < currentTransactions.size(); i++) {
+					PortfolioComponent pc = currentTransactions.get(i).getPortfolioComponent().clone();
+					String ticker = pc.getStock().getTicker();
+					if (ticker_pc.containsKey(ticker)) {
+						double buyPrice = ticker_pc.get(ticker).getUnitPrice();
+						double sellPrice = pc.getUnitPrice();
+						if (buyPrice < sellPrice) {
+							currentTransactions.get(i).setAction("TakeProfit");
+
+						} else {
+							currentTransactions.get(i).setAction("StopLoss");
+						}
+						ticker_pc.get(ticker).add(pc);
+						if (ticker_pc.get(ticker).getQuantity() == 0)
+							ticker_pc.remove(ticker);
 
 					} else {
-						currentTransactions.get(i).setAction("StopLoss");
+						currentTransactions.get(i).setAction("Open");
+						ticker_pc.put(ticker, pc);
 					}
-					ticker_pc.get(ticker).add(pc);
-					if (ticker_pc.get(ticker).getQuantity() == 0)
-						ticker_pc.remove(ticker);
-
-				} else {
-					currentTransactions.get(i).setAction("Open");
-					ticker_pc.put(ticker, pc);
 				}
+				portfolio.setTicker_pc(ticker_pc);
+				print.record(currentDate, portfolio);
 			}
-			portfolio.setTicker_pc(ticker_pc);
-			print.record(currentDate, portfolio);
-
 			portfolio = portfolio.clone();
 			tradingDate.rollDay();
 		}
@@ -123,6 +129,10 @@ public class Replay {
 
 	public PortfolioHistory getPortfolioHistory() {
 		return portfolioHistory;
+	}
+
+	public Portfolio getPortfolio() {
+		return portfolio;
 	}
 
 	public void print() throws ParseException {

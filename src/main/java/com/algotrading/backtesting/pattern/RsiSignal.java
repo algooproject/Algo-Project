@@ -30,6 +30,7 @@ public abstract class RsiSignal implements StockSignal {
 	protected Map<Date, Double> closingHistory;
 	protected Map<String, RSI> initiatedRSI = new HashMap<String, RSI>();
 	protected RSI rsi;
+
 	// public RsiSignal(int magnitude, int sma_magnitude, String
 	// expectedValueType, String expectedValue, double multiplier) throws
 	// ParseException {
@@ -46,14 +47,14 @@ public abstract class RsiSignal implements StockSignal {
 		// settestValue();
 	}
 
-	public void setExpectedValue(String value){
+	public void setExpectedValue(String value) {
 		expectedValue = value;
 	}
-	
-	public Map<String, RSI> getInitiatedRSI(){
+
+	public Map<String, RSI> getInitiatedRSI() {
 		return initiatedRSI;
 	}
-	
+
 	public int getMagnitude() {
 		return magnitude;
 	}
@@ -96,19 +97,18 @@ public abstract class RsiSignal implements StockSignal {
 				e.printStackTrace();
 				return false;
 			}
-		}
-		else{
+		} else {
 			rsi = initiatedRSI.get(stock.getTicker());
-			closingHistory = storedClosingHistory.get(stock.getTicker());			
+			closingHistory = storedClosingHistory.get(stock.getTicker());
 		}
 		try {
 			// RSI rsi = new RSI(closingHistory, date, magnitude,
 			// sma_magnitude);
 			rsi.setRecent(date);
-//			 System.out.println("date: " + date.toString());
+			// System.out.println("date: " + date.toString());
 			settestValue(date);
 			double value = rsi.getValue();
-//			 System.out.println("rsi.getValue(): " + rsi.getValue());
+			// System.out.println("rsi.getValue(): " + rsi.getValue());
 			return determine(value);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
