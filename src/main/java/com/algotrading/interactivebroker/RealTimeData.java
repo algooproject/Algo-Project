@@ -37,6 +37,7 @@ import com.ib.client.TickAttr;
 import com.ib.client.TickType;
 import com.ib.client.Types.Action;
 import com.ib.client.Types.TimeInForce;
+import com.ib.controller.AccountSummaryTag;
 
 public class RealTimeData extends BaseEWrapper {
 
@@ -44,7 +45,8 @@ public class RealTimeData extends BaseEWrapper {
 	private final EJavaSignal signal = new EJavaSignal();
 
 	/**
-	 * Captures incoming messages to the API client and places them into a queue.
+	 * Captures incoming messages to the API client and places them into a
+	 * queue.
 	 */
 	private final EReader reader;
 
@@ -101,13 +103,15 @@ public class RealTimeData extends BaseEWrapper {
 
 				// TODO really DU228380? what does that mean?
 				// TODO move to reqXXX method below
-				requester.reqAccountUpdates(true, "DU228380");
+				requester.reqAccountUpdates(true, "DU228378");
 				requester.reqManagedAccts();
 				requester.reqOpenOrders();
+				requester.reqAccountSummary(111111, "All", AccountSummaryTag.TotalCashValue.name() + ","
+						+ AccountSummaryTag.AccruedCash.name() + "," + AccountSummaryTag.BuyingPower.name());
 
 				// TODO delete after requester works
-				// client.reqAccountUpdates(true, "DU228380");
-				// client.reqManagedAccts();
+				// requester.reqAccountUpdates(true, "DU228380");
+				// requester.reqManagedAccts();
 
 				processMessages();
 			}
@@ -190,6 +194,7 @@ public class RealTimeData extends BaseEWrapper {
 			movingAverage = priceTotal / numberOfPrices;
 			logger.info("tickPrice: " + tickerId + "," + field + "," + price + ", " + movingAverage);
 		}
+
 		/*
 		 * logger.info("===" + marketRequestMap.get(tickerId) +
 		 * " tickPrice(): tickerId=" + tickerId + ", field=" + field + "(" +
