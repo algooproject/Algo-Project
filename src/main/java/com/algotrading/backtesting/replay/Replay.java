@@ -18,7 +18,8 @@ public class Replay {
 	private Date endDate;
 	private PortfolioHistory portfolioHistory;
 	private Strategies strategies;
-	private AvailableStocks availableStocks;
+//	private AvailableStocks availableStocks;
+	private AvailableStocksWithYearChange availableStocksWithYearChange;
 	private TradingDate tradingDate;
 	private Boolean recordSwitch = true;
 
@@ -41,12 +42,12 @@ public class Replay {
 	}
 
 	private void setData(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
-			AvailableStocks availableStocks, TradingDate tradingDate, double initialCash) {
+						 AvailableStocksWithYearChange availableStocksWithYearChange, TradingDate tradingDate, double initialCash) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.portfolioHistory = portfolioHistory;
 		this.strategies = strategies;
-		this.availableStocks = availableStocks;
+		this.availableStocksWithYearChange = availableStocksWithYearChange;
 		this.tradingDate = tradingDate;
 
 		this.portfolio = portfolioHistory.get(startDate);
@@ -62,11 +63,11 @@ public class Replay {
 	}
 
 	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
-			AvailableStocks availableStocks, TradingDate tradingDate, double initialCash, PrintMethod printMethod)
+				  AvailableStocksWithYearChange availableStocksWithYearChange, TradingDate tradingDate, double initialCash, PrintMethod printMethod)
 			throws ParseException {
 		print = printMethod;
 		print.setDatesAndHistory(startDate, endDate, portfolioHistory);
-		setData(startDate, endDate, portfolioHistory, strategies, availableStocks, tradingDate, initialCash);
+		setData(startDate, endDate, portfolioHistory, strategies, availableStocksWithYearChange, tradingDate, initialCash);
 	}
 
 	public void simulate() throws ParseException {
@@ -78,6 +79,7 @@ public class Replay {
 		while (tradingDate.isNotLastDate() && tradingDate.currentDate().compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
 			portfolio.setDate(currentDate);
+			AvailableStocks availableStocks = availableStocksWithYearChange.get(currentDate);
 			for (Stock stock : availableStocks.get()) {
 				// System.out.println("simulate: " + currentDate);
 				BuySellAmount buySellAmount = strategies.buySellAmount(stock, currentDate, portfolio);

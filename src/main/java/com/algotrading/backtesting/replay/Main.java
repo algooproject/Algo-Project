@@ -32,12 +32,13 @@ public class Main {
 		System.out.println("RunTime after strategies= " + startTime.until(midTime1, MILLIS));
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH,
 				"availableStocks1.txt");
+		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(Constants.SRC_MAIN_RESOURCE_FILEPATH, "availablestockdate.txt");
 
 		LocalTime midTime2 = LocalTime.now();
 		System.out.println("RunTime after availableStocks= " + startTime.until(midTime2, MILLIS));
 		// new Print_KPI(Constants.SRC_MAIN_RESOURCE_FILEPATH + "KPI/");
 		// new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash,
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate, initialCash,
 				new Print_Console());
 		LocalTime midTime3 = LocalTime.now();
 		System.out.println("RunTime after replay construct = " + startTime.until(midTime3, MILLIS));

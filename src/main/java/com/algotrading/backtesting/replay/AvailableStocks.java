@@ -12,14 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.algotrading.backtesting.stock.Stock;
+import com.sun.tools.javac.code.Attribute;
 
 public class AvailableStocks {
 
 	private Map<String, Stock> stocks;
-
-	public AvailableStocks(String fileList) throws IOException, ParseException {
-		read(fileList);
-	}
 
 	public AvailableStocks(String filePath, String fileName) throws IOException, ParseException {
 		read(filePath, fileName);
@@ -70,4 +67,7 @@ public class AvailableStocks {
 		stocks.put(stock.getTicker(), stock);
 	}
 
+	public String toString() {
+		return stocks.values().toString();
+	}
 }
