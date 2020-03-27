@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.algotrading.backtesting.stock.Stock;
-import com.sun.tools.javac.code.Attribute;
 
 public class AvailableStocks {
 
@@ -67,7 +66,9 @@ public class AvailableStocks {
 		stocks.put(stock.getTicker(), stock);
 	}
 
+	@Override
 	public String toString() {
-		return stocks.values().toString();
+		return stocks.values()
+				.toString();
 	}
 }

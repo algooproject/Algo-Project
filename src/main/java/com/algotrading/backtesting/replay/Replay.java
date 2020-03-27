@@ -2,8 +2,11 @@ package com.algotrading.backtesting.replay;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.algotrading.backtesting.portfolio.BuySellAmount;
 import com.algotrading.backtesting.portfolio.Portfolio;
@@ -18,7 +21,7 @@ public class Replay {
 	private Date endDate;
 	private PortfolioHistory portfolioHistory;
 	private Strategies strategies;
-//	private AvailableStocks availableStocks;
+	// private AvailableStocks availableStocks;
 	private AvailableStocksWithYearChange availableStocksWithYearChange;
 	private TradingDate tradingDate;
 	private Boolean recordSwitch = true;
@@ -42,7 +45,7 @@ public class Replay {
 	}
 
 	private void setData(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
-						 AvailableStocksWithYearChange availableStocksWithYearChange, TradingDate tradingDate, double initialCash) {
+			AvailableStocksWithYearChange availableStocksWithYearChange, TradingDate tradingDate, double initialCash) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.portfolioHistory = portfolioHistory;
@@ -63,11 +66,12 @@ public class Replay {
 	}
 
 	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
-				  AvailableStocksWithYearChange availableStocksWithYearChange, TradingDate tradingDate, double initialCash, PrintMethod printMethod)
-			throws ParseException {
+			AvailableStocksWithYearChange availableStocksWithYearChange, TradingDate tradingDate, double initialCash,
+			PrintMethod printMethod) throws ParseException {
 		print = printMethod;
 		print.setDatesAndHistory(startDate, endDate, portfolioHistory);
-		setData(startDate, endDate, portfolioHistory, strategies, availableStocksWithYearChange, tradingDate, initialCash);
+		setData(startDate, endDate, portfolioHistory, strategies, availableStocksWithYearChange, tradingDate,
+				initialCash);
 	}
 
 	public void simulate() throws ParseException {
@@ -76,11 +80,24 @@ public class Replay {
 		// System.out.println();
 		// System.out.println(startDate);
 		tradingDate.setCurrentDate(currentDate);
-		while (tradingDate.isNotLastDate() && tradingDate.currentDate().compareTo(endDate) <= 0) {
+		while (tradingDate.isNotLastDate() && tradingDate.currentDate()
+				.compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
 			portfolio.setDate(currentDate);
 			AvailableStocks availableStocks = availableStocksWithYearChange.get(currentDate);
-			for (Stock stock : availableStocks.get()) {
+			Map<String, Stock> allAvailableStocks = availableStocksWithYearChange.getAllAvailableStocks(); // stocks
+																											// for
+																											// all
+																											// years
+
+			Set<Stock> availableStocksWithPortfolio = new LinkedHashSet<>();
+			availableStocksWithPortfolio.addAll(availableStocks.get());
+			availableStocksWithPortfolio.addAll(portfolio.getAllTickerName()
+					.stream()
+					.map(ticker -> allAvailableStocks.get(ticker))
+					.collect(Collectors.toSet()));
+
+			for (Stock stock : availableStocksWithPortfolio) {
 				// System.out.println("simulate: " + currentDate);
 				BuySellAmount buySellAmount = strategies.buySellAmount(stock, currentDate, portfolio);
 				PortfolioComponent component = buySellAmount.getPortfolioComponent();
@@ -101,23 +118,32 @@ public class Replay {
 				List<BuySellAmount> currentTransactions = portfolio.getTransactions();
 				Map<String, PortfolioComponent> ticker_pc = portfolio.getTicker_pc();
 				for (int i = 0; i < currentTransactions.size(); i++) {
-					PortfolioComponent pc = currentTransactions.get(i).getPortfolioComponent().clone();
-					String ticker = pc.getStock().getTicker();
+					PortfolioComponent pc = currentTransactions.get(i)
+							.getPortfolioComponent()
+							.clone();
+					String ticker = pc.getStock()
+							.getTicker();
 					if (ticker_pc.containsKey(ticker)) {
-						double buyPrice = ticker_pc.get(ticker).getUnitPrice();
+						double buyPrice = ticker_pc.get(ticker)
+								.getUnitPrice();
 						double sellPrice = pc.getUnitPrice();
 						if (buyPrice < sellPrice) {
-							currentTransactions.get(i).setAction("TakeProfit");
+							currentTransactions.get(i)
+									.setAction("TakeProfit");
 
 						} else {
-							currentTransactions.get(i).setAction("StopLoss");
+							currentTransactions.get(i)
+									.setAction("StopLoss");
 						}
-						ticker_pc.get(ticker).add(pc);
-						if (ticker_pc.get(ticker).getQuantity() == 0)
+						ticker_pc.get(ticker)
+								.add(pc);
+						if (ticker_pc.get(ticker)
+								.getQuantity() == 0)
 							ticker_pc.remove(ticker);
 
 					} else {
-						currentTransactions.get(i).setAction("Open");
+						currentTransactions.get(i)
+								.setAction("Open");
 						ticker_pc.put(ticker, pc);
 					}
 				}
@@ -146,11 +172,15 @@ public class Replay {
 	}
 
 	private void portfolioHistoryInit() {
-		Map<String, PortfolioComponent> portfolioComponents = portfolioHistory.get(startDate).getPortfolioComponents();
+		Map<String, PortfolioComponent> portfolioComponents = portfolioHistory.get(startDate)
+				.getPortfolioComponents();
 		for (String key : portfolioComponents.keySet()) {
-			if (portfolioComponents.get(key).getQuantity() != 0) {
-				PortfolioComponent pc = portfolioComponents.get(key).clone();
-				portfolio.getTicker_pc().put(key, pc);
+			if (portfolioComponents.get(key)
+					.getQuantity() != 0) {
+				PortfolioComponent pc = portfolioComponents.get(key)
+						.clone();
+				portfolio.getTicker_pc()
+						.put(key, pc);
 			}
 		}
 	}
