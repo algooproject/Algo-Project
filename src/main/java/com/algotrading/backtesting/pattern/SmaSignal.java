@@ -26,6 +26,9 @@ public abstract class SmaSignal implements StockSignal {
 	protected Map<String, SMA> initiatedSMA = new HashMap<String, SMA>();
 	protected SMA sma;
 
+	private long initationTime = 0;
+	private long numOfInitiation = 0;
+
 	public SmaSignal(int magnitude, String expectedValueType, String expectedValue, double multiplier) {
 		this.magnitude = magnitude;
 		this.expectedValueType = expectedValueType;
@@ -35,14 +38,14 @@ public abstract class SmaSignal implements StockSignal {
 		// settestValue();
 	}
 
-	public void setExpectedValue(String value){
+	public void setExpectedValue(String value) {
 		expectedValue = value;
 	}
-	
-	public Map<String, SMA> getInitiatedSMA(){
+
+	public Map<String, SMA> getInitiatedSMA() {
 		return initiatedSMA;
-	}		
-	
+	}
+
 	public int getMagnitude() {
 		return magnitude;
 	}
@@ -61,9 +64,25 @@ public abstract class SmaSignal implements StockSignal {
 
 	@Override
 	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) throws ParseException {
+		// Long startTime = System.nanoTime();
+
+		boolean extracted = extracted(stock, date);
+		// Long endTime = System.nanoTime();
+		// initationTime = initationTime + (endTime - startTime) / 1000000;
+		// if (numOfInitiation == 0 || numOfInitiation == 45367) {
+		// System.out.println("SMA Accumulated Initiation Time = " + initationTime + ":"
+		// + this.toString());
+		// }
+		// numOfInitiation++;
+		// System.out.println("Number of Initiations = " + numOfInitiation);
+
+		return extracted;
+	}
+
+	private boolean extracted(Stock stock, Date date) throws ParseException {
 		if (initiatedSMA.get(stock.getTicker()) == null) {
 			closingHistory = new TreeMap<Date, Double>();
-			
+
 			Map<Date, StockHistory> history = stock.getHistory();
 			for (Map.Entry<Date, StockHistory> entry : history.entrySet()) {
 //				System.out.println(entry.getKey().toString());
@@ -80,11 +99,10 @@ public abstract class SmaSignal implements StockSignal {
 				e.printStackTrace();
 				return false;
 			}
-		}
-		else{
+		} else {
 			sma = initiatedSMA.get(stock.getTicker());
 			closingHistory = storedClosingHistory.get(stock.getTicker());
-		}			
+		}
 		sma.setRecent(date);
 		settestValue(date);
 		try {
@@ -107,7 +125,7 @@ public abstract class SmaSignal implements StockSignal {
 		case "variable":
 			switch (expectedValue) {
 			case "closing":
-				//System.out.println(date.toString() + " Hitting Closing");
+				// System.out.println(date.toString() + " Hitting Closing");
 //				System.out.println(closingHistory);
 //				System.out.println(date);
 //				System.out.println(closingHistory.get(date));

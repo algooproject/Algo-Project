@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.strategy.Strategies;
@@ -34,17 +36,18 @@ public class MainForNLOPT {
 	static DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	static String formattedDate;
 	private static MainForNLOPT instance = null;
+	static LinkedList<Double> queue = new LinkedList<Double>();
 
 	private MainForNLOPT() {
 		try {
 			ranNo = Math.random();
 			startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-04");
 			// System.out.println("init: " + startDate);
-			endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2020-02-21");
+			endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-03-25");
 			// Date endDate =
 			// Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-10");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
-			availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks2.txt");
+			availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks4.txt");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
 			tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "tradingDate.txt");
 		} catch (Exception e) {
@@ -169,6 +172,39 @@ public class MainForNLOPT {
 			// formattedDate = dateFormat.format(date);
 			// System.out.println(formattedDate);
 			// System.out.println("xxxxx" + formattedDate + " End_Execute");
+
+			if (queue.size() < 11) {
+				queue.offer(Math.pow(1 + profitRate, 1 / years) - 1);
+				// queue.offer(1.1);
+			} else {
+				queue.remove();
+				queue.offer(Math.pow(1 + profitRate, 1 / years) - 1);
+			}
+			// System.out.println(queue.size());
+			if (queue.size() == 11) {
+				Iterator it = queue.iterator();
+				double first = (double) it.next();
+				// System.out.println("first: " + first);
+				boolean exit = true;
+				double other = 0;
+				while (it.hasNext()) {
+					other = (double) it.next();
+					// System.out.println("other: " + other);
+					if (Math.abs(first - other) > Math.abs(first / 100)) {
+						exit = false;
+						break;
+					}
+				}
+				// System.out.println(exit);
+				if (exit) {
+					// System.out.println("return -3");
+					return -3;
+				}
+			}
+			// cal = Calendar.getInstance();
+			// date = cal.getTime();
+			// formattedDate = dateFormat.format(date);
+			// System.out.println(formattedDate);
 
 			return 0 - (Math.pow(1 + profitRate, 1 / years) - 1);
 		} catch (IOException ioe) {

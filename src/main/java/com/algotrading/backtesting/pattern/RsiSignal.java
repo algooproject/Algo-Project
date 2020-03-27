@@ -1,7 +1,5 @@
 package com.algotrading.backtesting.pattern;
 
-import static java.time.temporal.ChronoUnit.MILLIS;
-
 // next step: -implement in a way that RSI of the same stock does not need to be created every time. 
 //            -may want to modify the way to get an element particular field (eg. Volume) using date.
 // find the index of an element of a list: List.indexOf(elm)
@@ -9,7 +7,6 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 // How should we write in buyStrategies.txt
 
 import java.text.ParseException;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +32,7 @@ public abstract class RsiSignal implements StockSignal {
 	protected RSI rsi;
 
 	private long initationTime = 0;
-	private short numOfInitiation = 0;
+	private int numOfInitiation = 0;
 
 	// public RsiSignal(int magnitude, int sma_magnitude, String
 	// expectedValueType, String expectedValue, double multiplier) throws
@@ -83,6 +80,23 @@ public abstract class RsiSignal implements StockSignal {
 
 	@Override
 	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) throws ParseException {
+		// Long startTime = System.nanoTime();
+
+		boolean extracted = extracted(stock, date);
+		// Long endTime = System.nanoTime();
+		// initationTime = initationTime + (endTime - startTime) / 1000000;
+		// if (numOfInitiation == 0 || numOfInitiation == 17407 || numOfInitiation ==
+		// 167757) {
+		// System.out.println("RSI Accumulated Initiation Time = " + initationTime + ":"
+		// + this.toString());
+		// }
+		// numOfInitiation++;
+		// System.out.println("Number of Initiations = " + numOfInitiation);
+
+		return extracted;
+	}
+
+	private boolean extracted(Stock stock, Date date) {
 		// System.out.println(stock.getTicker());
 		if (initiatedRSI.get(stock.getTicker()) == null) {
 			Map<Date, StockHistory> history = stock.getHistory();
@@ -96,14 +110,9 @@ public abstract class RsiSignal implements StockSignal {
 			try {
 				// rsi = new RSI(closingHistory, date, magnitude,
 				// sma_magnitude);
-				System.out.println(stock.getTicker() + "; Magnitude = " + magnitude);
-				LocalTime startTime = LocalTime.now();
+				// System.out.println(stock.getTicker() + "; Magnitude = " + magnitude);
 				rsi = new RSI(closingHistory, date, magnitude);
-				LocalTime endTime = LocalTime.now();
-				initationTime = initationTime + startTime.until(endTime, MILLIS);
-				System.out.println("Accumulated Initiation Time = " + initationTime);
-				numOfInitiation++;
-				System.out.println("Number of Initiations = " + numOfInitiation);
+
 				initiatedRSI.put(stock.getTicker(), rsi);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

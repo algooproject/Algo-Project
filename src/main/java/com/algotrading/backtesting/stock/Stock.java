@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -17,6 +18,19 @@ public class Stock {
 	private Map<Date, StockHistory> history;
 	private int lotSize; // default to be 1 if not specified when instantiated;
 	private Boolean status = true;
+
+	Map<Integer, Date> pointerDate = new HashMap<Integer, Date>();
+	Map<Date, Integer> datePointer = new HashMap<Date, Integer>();
+
+	public void initialDate() {
+		int i = 1;
+		for (Map.Entry<Date, StockHistory> entry : getHistory().entrySet()) {
+			pointerDate.put(i, entry.getKey());
+			datePointer.put(entry.getKey(), i);
+			i++;
+		}
+
+	}
 
 	public Stock(String ticker, Map<Date, StockHistory> history) {
 		this(ticker, history, 1);
@@ -114,6 +128,15 @@ public class Stock {
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
+		initialDate();
+	}
+
+	public Map<Integer, Date> getPointerDate() {
+		return pointerDate;
+	}
+
+	public Map<Date, Integer> getDatePointer() {
+		return datePointer;
 	}
 
 	public String getTicker() {

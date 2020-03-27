@@ -62,7 +62,8 @@ public class Strategy {
 		String action = unitPrice > pc.getUnitPrice() ? "Profit" : "Exit";
 		int sellVolumeAfterLotSize = (sellVolumeBeforeLotSize / stock.getLotSize()) * stock.getLotSize();
 		int sellVolumeAfterPossibleSoldAll = buyCostIfMatch == 0
-				? portfolio.getPortfolioComponent(stock.getTicker()).getQuantity() : sellVolumeAfterLotSize;
+				? portfolio.getPortfolioComponent(stock.getTicker()).getQuantity()
+				: sellVolumeAfterLotSize;
 		return new PortfolioComponent(stock, 0 - sellVolumeAfterPossibleSoldAll, unitPrice, date,
 				Transaction.getTranscationCost(stock, sellVolumeBeforeLotSize * unitPrice), action);
 	}
