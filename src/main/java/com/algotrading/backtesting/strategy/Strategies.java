@@ -1,11 +1,14 @@
 package com.algotrading.backtesting.strategy;
 
+import static java.time.temporal.ChronoUnit.MILLIS;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +21,11 @@ import com.algotrading.backtesting.portfolio.PortfolioComponent;
 import com.algotrading.backtesting.stock.Stock;
 
 public class Strategies {
+
 	private List<Strategy> buySignal;
 	private List<Strategy> sellSignal;
+	public Long buyAmountTime = 0l;
+	public Long sellAmountTime = 0l;
 
 	public Strategies() {
 		buySignal = new ArrayList<>();
@@ -60,9 +66,13 @@ public class Strategies {
 	}
 
 	public BuySellAmount buySellAmount(Stock stock, Date date, Portfolio portfolio) throws ParseException {
+		LocalTime startTime, endTime;
 		for (Strategy strategy : buySignal) {
-			if (strategy.shouldPutOrder(stock, date,
-					portfolio)/* && !portfolio.containsStock(stock) */) {
+			startTime = LocalTime.now();
+			boolean shouldPutOrder = strategy.shouldPutOrder(stock, date, portfolio);
+			endTime = LocalTime.now();
+			buyAmountTime = buyAmountTime + startTime.until(endTime, MILLIS);
+			if (shouldPutOrder/* && !portfolio.containsStock(stock) */) {
 				PortfolioComponent buyAmount = strategy.buyAmount(stock, date, portfolio);
 				// sellAmount.getQuantity() should be positive as portfolio
 				// increase stock
@@ -73,7 +83,11 @@ public class Strategies {
 			}
 		}
 		for (Strategy strategy : sellSignal) {
-			if (strategy.shouldPutOrder(stock, date, portfolio) && portfolio.containsStock(stock)) {
+			startTime = LocalTime.now();
+			boolean shouldPutOrder = strategy.shouldPutOrder(stock, date, portfolio);
+			endTime = LocalTime.now();
+			sellAmountTime = sellAmountTime + startTime.until(endTime, MILLIS);
+			if (shouldPutOrder && portfolio.containsStock(stock)) {
 				PortfolioComponent sellAmount = strategy.sellAmount(stock, date, portfolio);
 
 				// sellAmount.getQuantity() should be negative as portfolio

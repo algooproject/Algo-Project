@@ -3,8 +3,8 @@ package com.algotrading.backtesting.pattern;
 import java.util.Date;
 import java.util.Map;
 
-import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.portfolio.Portfolio;
+import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
 
 public abstract class ClosingSignal implements StockSignal {
@@ -16,6 +16,9 @@ public abstract class ClosingSignal implements StockSignal {
 	protected int expectedLag; // positive integer
 	protected double multiplier;
 	protected double calExpectedValue;
+
+	private long initationTime = 0;
+	private int numOfInitiation = 0;
 
 	public ClosingSignal(String expectedValueType, String expectedValue, int expectedLag, double multiplier) {
 		this.expectedValueType = expectedValueType;
@@ -42,6 +45,24 @@ public abstract class ClosingSignal implements StockSignal {
 
 	@Override
 	public boolean signal(Stock stock, Date date, Portfolio portfolio, double buyCostIfMatch) {
+
+		// Long startTime = System.nanoTime();
+
+		boolean extracted = extracted(stock, date, portfolio);
+		// Long endTime = System.nanoTime();
+		// initationTime = initationTime + (endTime - startTime) / 1000000;
+		// if (numOfInitiation == 0 || numOfInitiation == 30562 || numOfInitiation ==
+		// 30425) {
+		// System.out.println("Closing Accumulated Initiation Time = " + initationTime +
+		// ":" + this.toString());
+		// }
+		// numOfInitiation++;
+		// System.out.println("Number of Initiations = " + numOfInitiation);
+
+		return extracted;
+	}
+
+	private boolean extracted(Stock stock, Date date, Portfolio portfolio) {
 		Double dblExpectedValue;
 		if (!portfolio.containsStock(stock)) {
 			// System.out.println("Not contain " + stock.getTicker());

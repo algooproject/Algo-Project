@@ -1,6 +1,9 @@
 package com.algotrading.backtesting.replay;
 
+import static java.time.temporal.ChronoUnit.MILLIS;
+
 import java.text.ParseException;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +20,7 @@ public class Replay {
 	private Date startDate;
 	private Date endDate;
 	private PortfolioHistory portfolioHistory;
-	private Strategies strategies;
+	public Strategies strategies;
 	private AvailableStocks availableStocks;
 	private TradingDate tradingDate;
 	private Boolean recordSwitch = true;
@@ -27,6 +30,8 @@ public class Replay {
 	private double totalTrasactionCost = 0;
 
 	private PrintMethod print;
+
+	public Long buySellAmountTime = 0l;
 
 	public void setRecordSwitch(Boolean flag) {
 		recordSwitch = flag;
@@ -70,6 +75,7 @@ public class Replay {
 	}
 
 	public void simulate() throws ParseException {
+		LocalTime startTime, endTime;
 		// System.out.println("Simulation started... ");
 		Date currentDate = startDate;
 		// System.out.println();
@@ -80,7 +86,10 @@ public class Replay {
 			portfolio.setDate(currentDate);
 			for (Stock stock : availableStocks.get()) {
 				// System.out.println("simulate: " + currentDate);
+				startTime = LocalTime.now();
 				BuySellAmount buySellAmount = strategies.buySellAmount(stock, currentDate, portfolio);
+				endTime = LocalTime.now();
+				buySellAmountTime = buySellAmountTime + startTime.until(endTime, MILLIS);
 				PortfolioComponent component = buySellAmount.getPortfolioComponent();
 				if (component.getQuantity() != 0) {
 					totalTradedVolume = totalTradedVolume

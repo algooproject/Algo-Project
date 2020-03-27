@@ -19,8 +19,8 @@ public class Main {
 		// System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " +
 		// Constants.SRC_MAIN_RESOURCE_FILEPATH);
 		TradingDate tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_FILEPATH + "tradingDate.txt");
-		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2013-01-02");
-		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2017-12-27");
+		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-04");
+		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2020-03-25");
 		endDate = tradingDate.rollBackCurrentDate(endDate, endDate);
 		// startDate = tradingDate.rollToCurrentDate(startDate, endDate);
 		int initialCash = 300000;
@@ -31,7 +31,7 @@ public class Main {
 		LocalTime midTime1 = LocalTime.now();
 		System.out.println("RunTime after strategies= " + startTime.until(midTime1, MILLIS));
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH,
-				"availableStocks1.txt");
+				"availableStocks4.txt");
 
 		LocalTime midTime2 = LocalTime.now();
 		System.out.println("RunTime after availableStocks= " + startTime.until(midTime2, MILLIS));
@@ -41,12 +41,15 @@ public class Main {
 				new Print_Console());
 		LocalTime midTime3 = LocalTime.now();
 		System.out.println("RunTime after replay construct = " + startTime.until(midTime3, MILLIS));
-		replay.setRecordSwitch(false);
+		replay.setRecordSwitch(true);
 		replay.simulate();
 		history.put(endDate, replay.getPortfolio());
 		// replay.getPrintMethod().setNoRoundingForAll(true);
 		replay.print();
 		LocalTime endTime = LocalTime.now();
+		System.out.println("buyAmountTime = " + replay.strategies.buyAmountTime);
+		System.out.println("sellAmountTime = " + replay.strategies.sellAmountTime);
+		System.out.println("buySellAmountTime = " + replay.buySellAmountTime);
 		System.out.println("RunTime = " + startTime.until(endTime, MILLIS));
 	}
 
