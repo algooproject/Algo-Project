@@ -25,7 +25,7 @@ public class Replay {
 	private PortfolioHistory portfolioHistory;
 	public Strategies strategies;
 	// private AvailableStocks availableStocks;
-	private AvailableStocksWithYearChange availableStocksWithYearChange;
+	private DynamicAvailableStocks dynamicAvailableStocks;
 	private TradingDate tradingDate;
 	private Boolean recordSwitch = true;
 
@@ -50,12 +50,12 @@ public class Replay {
 	}
 
 	private void setData(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
-			AvailableStocksWithYearChange availableStocksWithYearChange, TradingDate tradingDate, double initialCash) {
+			DynamicAvailableStocks dynamicAvailableStocks, TradingDate tradingDate, double initialCash) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.portfolioHistory = portfolioHistory;
 		this.strategies = strategies;
-		this.availableStocksWithYearChange = availableStocksWithYearChange;
+		this.dynamicAvailableStocks = dynamicAvailableStocks;
 		this.tradingDate = tradingDate;
 
 		this.portfolio = portfolioHistory.get(startDate);
@@ -71,11 +71,11 @@ public class Replay {
 	}
 
 	public Replay(Date startDate, Date endDate, PortfolioHistory portfolioHistory, Strategies strategies,
-			AvailableStocksWithYearChange availableStocksWithYearChange, TradingDate tradingDate, double initialCash,
-			PrintMethod printMethod) throws ParseException {
+				  DynamicAvailableStocks dynamicAvailableStocks, TradingDate tradingDate, double initialCash,
+				  PrintMethod printMethod) throws ParseException {
 		print = printMethod;
 		print.setDatesAndHistory(startDate, endDate, portfolioHistory);
-		setData(startDate, endDate, portfolioHistory, strategies, availableStocksWithYearChange, tradingDate,
+		setData(startDate, endDate, portfolioHistory, strategies, dynamicAvailableStocks, tradingDate,
 				initialCash);
 	}
 
@@ -90,8 +90,8 @@ public class Replay {
 				.compareTo(endDate) <= 0) {
 			currentDate = tradingDate.currentDate();
 			portfolio.setDate(currentDate);
-			AvailableStocks availableStocks = availableStocksWithYearChange.get(currentDate);
-			Map<String, Stock> allAvailableStocks = availableStocksWithYearChange.getAllAvailableStocks(); // stocks
+			AvailableStocks availableStocks = dynamicAvailableStocks.get(currentDate);
+			Map<String, Stock> allAvailableStocks = dynamicAvailableStocks.getAllAvailableStocks(); // stocks
 																											// for
 																											// all
 																											// years

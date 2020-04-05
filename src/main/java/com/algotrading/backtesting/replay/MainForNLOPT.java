@@ -22,7 +22,7 @@ public class MainForNLOPT {
 	static int initialCash;
 	static PortfolioHistory history;
 	static WriteToFile toFile = new WriteToFile();
-	static AvailableStocks availableStocks;
+	static DynamicAvailableStocks availableStocks;
 	static TradingDate tradingDate;
 	static PortfolioHistory portfolioHistory;
 	static Date lastTradingDate;
@@ -47,7 +47,7 @@ public class MainForNLOPT {
 			// Date endDate =
 			// Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-10");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
-			availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks4.txt");
+			availableStocks = new FixedAvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks4.txt");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
 			tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "tradingDate.txt");
 		} catch (Exception e) {
@@ -249,7 +249,7 @@ public class MainForNLOPT {
 			 * dblReentryRSILowerThan); System.out.println("double dblTakeProfit:" +
 			 * dblTakeProfit); System.out.println("double dblStopLoss:" + dblStopLoss +
 			 * "\n"); // throw e; return -3;
-			 * 
+			 *
 			 * }
 			 */
 	}

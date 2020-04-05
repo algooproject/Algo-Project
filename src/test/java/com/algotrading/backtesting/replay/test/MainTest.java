@@ -7,14 +7,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
+import com.algotrading.backtesting.replay.*;
 import org.junit.Test;
 
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
-import com.algotrading.backtesting.replay.AvailableStocks;
-import com.algotrading.backtesting.replay.LotSize;
-import com.algotrading.backtesting.replay.Replay;
-import com.algotrading.backtesting.replay.TradingDate;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.strategy.Strategies;
@@ -34,7 +31,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -66,7 +63,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -91,7 +88,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks3.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks3.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -116,7 +113,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks4.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks4.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -141,7 +138,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks5.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks5.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -173,7 +170,7 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks6.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks6.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
@@ -206,7 +203,7 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks7.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks7.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
@@ -240,7 +237,7 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks8.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks8.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
@@ -270,7 +267,7 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies9.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks9.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks9.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
@@ -308,7 +305,7 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies10.txt",
 				RESOURCE_PATH_NAME + "sellStrategies10.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks10.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks10.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate10.txt");
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0,
 				new Print_Console());

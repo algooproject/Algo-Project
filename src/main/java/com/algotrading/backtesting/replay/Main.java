@@ -32,7 +32,7 @@ public class Main {
 		System.out.println("RunTime after strategies= " + startTime.until(midTime1, MILLIS));
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH,
 				"availableStocks4.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(Constants.SRC_MAIN_RESOURCE_FILEPATH, "availablestockdate.txt");
+		DynamicAvailableStocks availableStocksWithYearChange = new AvailableStocksWithYearChange(Constants.SRC_MAIN_RESOURCE_FILEPATH, "availablestockdate.txt");
 
 		LocalTime midTime2 = LocalTime.now();
 		System.out.println("RunTime after availableStocks= " + startTime.until(midTime2, MILLIS));

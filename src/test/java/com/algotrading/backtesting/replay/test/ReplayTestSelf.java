@@ -6,14 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.algotrading.backtesting.replay.*;
 import org.junit.Test;
 
 import com.algotrading.backtesting.pattern.SmaCrossHigherThanSignal;
 import com.algotrading.backtesting.pattern.SmaCrossLowerThanSignal;
 import com.algotrading.backtesting.pattern.StockSignal;
-import com.algotrading.backtesting.replay.AvailableStocks;
-import com.algotrading.backtesting.replay.Replay;
-import com.algotrading.backtesting.replay.TradingDate;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.strategy.Strategy;
@@ -31,6 +29,7 @@ public class ReplayTestSelf {
 	private Strategies strategies;
 	private TradingDate tradingDate;
 	private AvailableStocks availableStocks;
+	private DynamicAvailableStocks dynamicAvailableStocks;
 	private double unitBuyCost = 1000000;
 
 	public ReplayTestSelf() throws ParseException, IOException {
@@ -57,13 +56,14 @@ public class ReplayTestSelf {
 				"availableStocks.txt");
 
 		availableStocks.get().forEach(stock -> stock.setLotSize(lotSizes.get(stock.getTicker())));
+		dynamicAvailableStocks = new FixedAvailableStocks(availableStocks);
 	}
 
 	@Test
 	public void test1_test() throws ParseException {
 		double initialCash = unitBuyCost * availableStocks.get().size();
 		PortfolioHistory history = new PortfolioHistory();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash,
+		Replay replay = new Replay(startDate, endDate, history, strategies, dynamicAvailableStocks, tradingDate, initialCash,
 				new Print_Console());
 
 		replay.simulate();
