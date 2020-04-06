@@ -5,11 +5,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-//@formatter:off
-@SuiteClasses({ 
-	StockReadTest.class
-})
-//@formatter:on
+// @formatter:off
+@SuiteClasses({ StockReadTest.class })
+// @formatter:on
 public class StockReadTestSuite {
 
 }

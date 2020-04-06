@@ -5,14 +5,10 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-//@formatter:off
-@SuiteClasses({ 
-	AvailableStocksTest.class, 
-	ReplayTest.class,
-	TradingDateTest.class,
-	MainTest.class
-})
-//@formatter:on
+// @formatter:off
+@SuiteClasses({ AvailableStocksTest.class, ReplayTest.class, TradingDateTest.class, MainTest.class,
+		DynamicStockListTest.class })
+// @formatter:on
 public class ReplayTestSuite {
 
 }
