@@ -23,8 +23,12 @@ public class LotSize {
 	}
 
 	public int getLotSize(String strStockCode) {
-		// System.out.println(strStockCode);
-		return lotSizes.get(strStockCode);
+		if (lotSizes.containsKey(strStockCode)) {
+			return lotSizes.get(strStockCode);
+		} else {
+			// System.out.println(strStockCode);
+			return 0;
+		}
 	}
 
 	public void read() throws IOException, ParseException {

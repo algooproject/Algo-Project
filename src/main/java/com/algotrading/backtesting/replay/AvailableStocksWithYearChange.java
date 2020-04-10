@@ -34,7 +34,7 @@ public class AvailableStocksWithYearChange {
 		List<String> stringList = Files.readAllLines(file, charset);
 		map = new TreeMap<>();
 		for (String line : stringList) {
-			System.out.println("###" + line);
+			// System.out.println("###" + line);
 			AvailableStocks availableStocks = new AvailableStocks(filePath, line + ".txt");
 			map.put(line, availableStocks);
 			for (Stock s : availableStocks.get()) {
@@ -49,7 +49,7 @@ public class AvailableStocksWithYearChange {
 		Collections.reverse(list);
 		for (String d : list) {
 			if (dateStr.compareTo(d) > 0) {
-				System.out.println("Getting: " + d + " from " + dateStr);
+				// System.out.println("Getting: " + d + " from " + dateStr);
 				return map.get(d);
 			}
 		}
@@ -64,8 +64,7 @@ public class AvailableStocksWithYearChange {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (String str : map.keySet()) {
-			sb.append(str + ", " + map.get(str))
-					.append("\n");
+			sb.append(str + ", " + map.get(str)).append("\n");
 		}
 		return sb.toString();
 	}
@@ -73,14 +72,14 @@ public class AvailableStocksWithYearChange {
 	public static void main(String[] args) throws IOException, ParseException {
 		AvailableStocksWithYearChange a = new AvailableStocksWithYearChange(Constants.SRC_MAIN_RESOURCE_FILEPATH,
 				"availablestocksdate.txt");
-		System.out.println(a.toString());
+		// System.out.println(a.toString());
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = sdf.parse("20200321");
-		System.out.println(a.get(date));
+		// System.out.println(a.get(date));
 
 		Date date2 = sdf.parse("20190101");
-		System.out.println(a.get(date2));
+		// System.out.println(a.get(date2));
 	}
 
 }

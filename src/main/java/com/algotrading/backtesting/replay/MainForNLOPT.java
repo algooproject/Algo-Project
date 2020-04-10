@@ -23,6 +23,7 @@ public class MainForNLOPT {
 	static PortfolioHistory history;
 	static WriteToFile toFile = new WriteToFile();
 	static AvailableStocks availableStocks;
+	static AvailableStocksWithYearChange availableStocksWithYearChange;
 	static TradingDate tradingDate;
 	static PortfolioHistory portfolioHistory;
 	static Date lastTradingDate;
@@ -39,6 +40,10 @@ public class MainForNLOPT {
 	static LinkedList<Double> queue = new LinkedList<Double>();
 
 	private MainForNLOPT() {
+		cal = Calendar.getInstance();
+		date = cal.getTime();
+		formattedDate = dateFormat.format(date);
+		System.out.println("start init: " + formattedDate);
 		try {
 			ranNo = Math.random();
 			startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-04");
@@ -48,12 +53,18 @@ public class MainForNLOPT {
 			// Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-10");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
 			availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks4.txt");
+			availableStocksWithYearChange = new AvailableStocksWithYearChange(
+					Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
 			tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "tradingDate.txt");
 		} catch (Exception e) {
 			System.out.println("Exception: " + e.toString() + e.getMessage());
 			e.printStackTrace();
 		}
+		cal = Calendar.getInstance();
+		date = cal.getTime();
+		formattedDate = dateFormat.format(date);
+		System.out.println("finish init: " + formattedDate);
 	}
 
 	public static MainForNLOPT getInstance() {
@@ -93,6 +104,10 @@ public class MainForNLOPT {
 			System.out.print(intRSIMagnitude + "," + dblRSILowerThan + "," + intSMAMagnitude + "," + dblVolumeHigherThan
 					+ "," + intReentryRSIMagnitude + "," + dblReentryRSILowerThan + "," + dblTakeProfit + ","
 					+ dblStopLoss + ",");
+			cal = Calendar.getInstance();
+			date = cal.getTime();
+			formattedDate = dateFormat.format(date);
+			System.out.print(formattedDate + ",");
 			// System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " +
 			// Constants.SRC_MAIN_RESOURCE_FILEPATH);
 			initialCash = 300000;
@@ -129,14 +144,10 @@ public class MainForNLOPT {
 			// formattedDate = dateFormat.format(date);
 			// System.out.println("Read File End Time " + formattedDate);
 
-			cal = Calendar.getInstance();
-			date = cal.getTime();
-			formattedDate = dateFormat.format(date);
-			System.out.print(formattedDate + ",");
 			// System.out.println("xxxxx" + formattedDate + " Replay_Start_Time");
 			// System.out.println(tradingDate);
-			replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash,
-					new Print_Console());
+			replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
+					initialCash, new Print_Console());
 			replay.simulate();
 
 			cal = Calendar.getInstance();
@@ -255,9 +266,16 @@ public class MainForNLOPT {
 	}
 
 	public static void main(String[] args) throws IOException, ParseException, Exception {
+		Long startTime = System.nanoTime();
+		System.out.println(Calendar.getInstance().getTime());
+		System.out.println(startTime);
 		MainForNLOPT mainForNLOPT = MainForNLOPT.getInstance();
 		System.out.println("Print from Main: "
 				+ mainForNLOPT.execute(random(9, 250), random(2000, 4000) / 100, random(30, 90), random(120, 200) / 100,
 						random(9, 300), random(2000, 5000) / 100, random(105, 135) / 100, random(75, 95) / 100));
+		Long endTime = System.nanoTime();
+		System.out.println(endTime);
+		System.out.println(Calendar.getInstance().getTime());
+		System.out.println((endTime - startTime) / 1000000);
 	}
 }

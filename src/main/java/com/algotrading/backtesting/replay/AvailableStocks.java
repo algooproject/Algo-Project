@@ -33,7 +33,7 @@ public class AvailableStocks {
 		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
 		for (String line : stringList) {
 			Stock stock = new Stock(line, lotSize.getLotSize(line));
-			// System.out.println("Reading " + stock.getTicker());
+			System.out.println("Reading " + stock.getTicker());
 			stock.read();
 			add(stock);
 		}
@@ -49,8 +49,14 @@ public class AvailableStocks {
 			// System.out.println(line);
 			Stock stock = new Stock(line, lotSize.getLotSize(line));
 			// System.out.println("Reading " + stock.getTicker());
-			stock.read(filePath);
-			add(stock);
+			File tempFile = new File(filePath + stock.getTicker() + ".csv");
+			boolean exists = tempFile.exists();
+			// System.out.println(filePath + stock.getTicker() + ".csv");
+			// System.out.println(exists);
+			if (exists) {
+				stock.read(filePath);
+				add(stock);
+			}
 		}
 	}
 
@@ -68,7 +74,6 @@ public class AvailableStocks {
 
 	@Override
 	public String toString() {
-		return stocks.values()
-				.toString();
+		return stocks.values().toString();
 	}
 }

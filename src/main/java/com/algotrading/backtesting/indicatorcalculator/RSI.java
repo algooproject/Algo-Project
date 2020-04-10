@@ -58,7 +58,8 @@ public class RSI implements IRsiCalculator {
 		if (!readyToCalculate(this.datedPrice, this.magnitude)) {
 			// if (!readyToCalculate(this.datedPrice, this.magnitude,
 			// this.smaMagnitude)) {
-			throw new Exception("SMA Instantiation failed!");
+			// return;
+			throw new Exception("RSI Instantiation failed!");
 		}
 
 		// extracting the positive and negative increment
@@ -128,11 +129,10 @@ public class RSI implements IRsiCalculator {
 
 	/** setting the default alpha used in those EMA's (2/N) */
 	/*
-	 * public void setAutoAlpha() { if (this.alpha !=
-	 * this.emaPlus.getAutoAlpha()) { this.alpha = this.emaPlus.getAutoAlpha();
-	 * this.emaPlus.setAlpha(alpha); this.emaMinus.setAlpha(alpha); this.line =
-	 * calLine(this.emaPlus.getLine(), this.emaMinus.getLine()); this.value =
-	 * this.line.get(this.recent); } }
+	 * public void setAutoAlpha() { if (this.alpha != this.emaPlus.getAutoAlpha()) {
+	 * this.alpha = this.emaPlus.getAutoAlpha(); this.emaPlus.setAlpha(alpha);
+	 * this.emaMinus.setAlpha(alpha); this.line = calLine(this.emaPlus.getLine(),
+	 * this.emaMinus.getLine()); this.value = this.line.get(this.recent); } }
 	 */
 
 	public Date getRecent() {
@@ -248,9 +248,8 @@ public class RSI implements IRsiCalculator {
 
 		// for (int i = magnitude; i < dates.size(); i++) {
 		/*
-		 * for (int i = dates.size() - magnitude - 1; i >= magnitude - 1; i--) {
-		 * pointer -= 1;
-		 * System.out.println("***************************************");
+		 * for (int i = dates.size() - magnitude - 1; i >= magnitude - 1; i--) { pointer
+		 * -= 1; System.out.println("***************************************");
 		 * System.out.println(dates);
 		 * System.out.println("***************************************");
 		 * System.out.println(pointer);

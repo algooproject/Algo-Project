@@ -1,5 +1,6 @@
 package com.algotrading.backtesting.replay.test;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import com.algotrading.backtesting.pattern.MustTrueSignal;
 import com.algotrading.backtesting.pattern.StockSignal;
 import com.algotrading.backtesting.replay.AvailableStocks;
+import com.algotrading.backtesting.replay.AvailableStocksWithYearChange;
 import com.algotrading.backtesting.replay.Replay;
 import com.algotrading.backtesting.replay.TradingDate;
 import com.algotrading.backtesting.stock.PortfolioHistory;
@@ -31,6 +33,7 @@ public class ReplayTest {
 	private Strategies strategies;
 	private TradingDate tradingDate;
 	private AvailableStocks availableStocks;
+	private AvailableStocksWithYearChange availableStocksWithYearChange;
 
 	private StockHistory stockHistory1382StartDate;
 	private StockHistory stockHistory1382MiddleDate;
@@ -82,13 +85,20 @@ public class ReplayTest {
 		availableStocks = new AvailableStocks();
 		availableStocks.add(stock1382);
 		availableStocks.add(stock0281);
+		try {
+			availableStocksWithYearChange = new AvailableStocksWithYearChange(
+					Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Test
 	public void test1_test() throws ParseException {
 		PortfolioHistory history = new PortfolioHistory();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 30000,
-				new Print_Console());
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
+				30000, new Print_Console());
 
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();

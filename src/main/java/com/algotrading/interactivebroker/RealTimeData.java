@@ -45,8 +45,7 @@ public class RealTimeData extends BaseEWrapper {
 	private final EJavaSignal signal = new EJavaSignal();
 
 	/**
-	 * Captures incoming messages to the API client and places them into a
-	 * queue.
+	 * Captures incoming messages to the API client and places them into a queue.
 	 */
 	private final EReader reader;
 
@@ -103,7 +102,7 @@ public class RealTimeData extends BaseEWrapper {
 
 				// TODO really DU228380? what does that mean?
 				// TODO move to reqXXX method below
-				requester.reqAccountUpdates(true, "DU228378");
+				requester.reqAccountUpdates(true, "DU229339");
 				requester.reqManagedAccts();
 				requester.reqOpenOrders();
 				requester.reqAccountSummary(111111, "All", AccountSummaryTag.TotalCashValue.name() + ","
@@ -112,21 +111,31 @@ public class RealTimeData extends BaseEWrapper {
 				// TODO delete after requester works
 				// requester.reqAccountUpdates(true, "DU228380");
 				// requester.reqManagedAccts();
+				requester.reqPositions();
 
 				processMessages();
 			}
 		}.start();
 
 		Contract contract = DummyUtil.createContract();
-
+		Contract currency = new Contract();
+		currency.conid(12345777);
+		currency.symbol("USD");
+		currency.secType("CASH");
+		currency.currency("HKD");
+		currency.localSymbol("USD.HKD");
+		currency.tradingClass("USD.HKD");
+		currency.exchange("IDEALPRO");
+		// System.out.println(contract.symbol());
 		// TODO remove it and have a class to determine to place order
 		// placeOrder(contract);
 
 		Vector<TagValue> mktDataOptions = new Vector<TagValue>();
+		Vector<TagValue> mktDepthOptions = new Vector<TagValue>();
 		requester.reqMarketDataType(3);
-		requester.reqMktData(0, contract, null, false, false, mktDataOptions);
+		requester.reqMktData(0, currency, null, false, false, mktDataOptions);
 		requester.reqHistoricalTicks(18001, contract, "20170712 21:39:33", null, 10, "TRADES", 1, true, null);
-
+		requester.reqMktDepth(0, currency, 3, mktDepthOptions);
 		// TODO to remove after requester works
 		// client.reqMarketDataType(3);
 		// client.reqMktData(0, contract, null, false, false, mktDataOptions);
@@ -219,8 +228,9 @@ public class RealTimeData extends BaseEWrapper {
 
 	@Override
 	public void updateAccountValue(String key, String value, String currency, String accountName) {
-		logger.info("UpdateAccountValue. Key: " + key + ", Value: " + value + ", Currency: " + currency
-				+ ", AccountName: " + accountName);
+		// System.out.println("UpdateAccountValue. Key: " + key + ", Value: " + value +
+		// ", Currency: " + currency
+		// + ", AccountName: " + accountName);
 	}
 
 	private String getContractId(Contract contract) {
@@ -252,10 +262,18 @@ public class RealTimeData extends BaseEWrapper {
 	@Override
 	public void updatePortfolio(Contract contract, double position, double marketPrice, double marketValue,
 			double averageCost, double unrealizedPNL, double realizedPNL, String accountName) {
-		logger.info(new Date() + " : UpdatePortfolio. " + contract.symbol() + ", " + contract.secType() + " @ "
+		/*
+		 * logger.info(new Date() + " : UpdatePortfolio. " + contract.symbol() + ", " +
+		 * contract.secType() + " @ " + contract.exchange() + ": Position: " + position
+		 * + ", MarketPrice: " + marketPrice + ", MarketValue: " + marketValue +
+		 * ", AverageCost: " + averageCost + ", UnrealizedPNL: " + unrealizedPNL +
+		 * ", RealizedPNL: " + realizedPNL + ", AccountName: " + accountName);
+		 */
+		System.out.println(new Date() + " : UpdatePortfolio. " + contract.symbol() + ", " + contract.secType() + " @ "
 				+ contract.exchange() + ": Position: " + position + ", MarketPrice: " + marketPrice + ", MarketValue: "
 				+ marketValue + ", AverageCost: " + averageCost + ", UnrealizedPNL: " + unrealizedPNL
 				+ ", RealizedPNL: " + realizedPNL + ", AccountName: " + accountName);
+
 		// placeOrder(contract);
 	}
 
