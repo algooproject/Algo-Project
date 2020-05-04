@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
+import com.algotrading.backtesting.replay.*;
 import org.junit.Test;
 
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
 import com.algotrading.backtesting.replay.AvailableStocks;
-import com.algotrading.backtesting.replay.AvailableStocksWithYearChange;
 import com.algotrading.backtesting.replay.LotSize;
 import com.algotrading.backtesting.replay.Replay;
 import com.algotrading.backtesting.replay.TradingDate;
@@ -35,14 +35,12 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				300000, print);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Date triggeredDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-29");
@@ -69,14 +67,12 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				300000, print);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
@@ -96,14 +92,12 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks3.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks3.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				300000, print);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
@@ -123,14 +117,12 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks4.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks4.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				300000, print);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
@@ -150,14 +142,12 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks5.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks5.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				300000, print);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
@@ -184,13 +174,10 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks6.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks6.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				0, print);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));
@@ -220,13 +207,10 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks7.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks7.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				0, print);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));
@@ -257,13 +241,10 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks8.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks8.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				0, print);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161019 = portfolioHistory.get(endDate);
@@ -290,13 +271,10 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies9.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks9.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks9.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				0, print);
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));
@@ -331,12 +309,10 @@ public class MainTest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies10.txt",
 				RESOURCE_PATH_NAME + "sellStrategies10.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks10.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks10.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate10.txt");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				0, new Print_Console());
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0,
+				new Print_Console());
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20161013 = portfolioHistory.get(Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-13"));

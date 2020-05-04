@@ -72,6 +72,10 @@ public class AvailableStocks {
 		stocks.put(stock.getTicker(), stock);
 	}
 
+	public Map<String, Stock> getAllAvailableStocks() {
+		return stocks;
+	}
+
 	@Override
 	public String toString() {
 		return stocks.values().toString();

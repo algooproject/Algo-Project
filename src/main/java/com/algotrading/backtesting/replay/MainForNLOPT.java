@@ -22,8 +22,7 @@ public class MainForNLOPT {
 	static int initialCash;
 	static PortfolioHistory history;
 	static WriteToFile toFile = new WriteToFile();
-	static AvailableStocks availableStocks;
-	static AvailableStocksWithYearChange availableStocksWithYearChange;
+	static DynamicAvailableStocks availableStocks;
 	static TradingDate tradingDate;
 	static PortfolioHistory portfolioHistory;
 	static Date lastTradingDate;
@@ -52,9 +51,7 @@ public class MainForNLOPT {
 			// Date endDate =
 			// Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-10");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
-			availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks4.txt");
-			availableStocksWithYearChange = new AvailableStocksWithYearChange(
-					Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+			availableStocks = new FixedAvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks4.txt");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
 			tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "tradingDate.txt");
 		} catch (Exception e) {
@@ -144,10 +141,14 @@ public class MainForNLOPT {
 			// formattedDate = dateFormat.format(date);
 			// System.out.println("Read File End Time " + formattedDate);
 
+			cal = Calendar.getInstance();
+			date = cal.getTime();
+			formattedDate = dateFormat.format(date);
+			System.out.print(formattedDate + ",");
 			// System.out.println("xxxxx" + formattedDate + " Replay_Start_Time");
 			// System.out.println(tradingDate);
-			replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-					initialCash, new Print_Console());
+			replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, initialCash,
+					new Print_Console());
 			replay.simulate();
 
 			cal = Calendar.getInstance();

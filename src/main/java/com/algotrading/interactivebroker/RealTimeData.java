@@ -1,5 +1,6 @@
 package com.algotrading.interactivebroker;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,11 +42,14 @@ import com.ib.controller.AccountSummaryTag;
 
 public class RealTimeData extends BaseEWrapper {
 
+	private boolean canShutDown = false;
+
 	/** To signal a message is ready for processing in the queue. */
 	private final EJavaSignal signal = new EJavaSignal();
 
 	/**
-	 * Captures incoming messages to the API client and places them into a queue.
+	 * Captures incoming messages to the API client and places them into a
+	 * queue.
 	 */
 	private final EReader reader;
 
@@ -102,7 +106,7 @@ public class RealTimeData extends BaseEWrapper {
 
 				// TODO really DU228380? what does that mean?
 				// TODO move to reqXXX method below
-				requester.reqAccountUpdates(true, "DU229339");
+//				requester.reqAccountUpdates(true, "DU228378");
 				requester.reqManagedAccts();
 				requester.reqOpenOrders();
 				requester.reqAccountSummary(111111, "All", AccountSummaryTag.TotalCashValue.name() + ","
@@ -145,6 +149,10 @@ public class RealTimeData extends BaseEWrapper {
 
 	}
 
+	public boolean isCanShutDown() {
+		return canShutDown;
+	}
+
 	public static void main(String args[]) {
 		try {
 			RealTimeData realTimeData = new RealTimeData();
@@ -152,7 +160,20 @@ public class RealTimeData extends BaseEWrapper {
 					.totalQuantity(1000).lmtPrice(56).build();
 			realTimeData.requester.placeOrder(realTimeData.marketRequestMap.get(0), order);
 			Runtime.getRuntime()
-					.addShutdownHook(new Thread(() -> realTimeData.requester.cancelAllOrders(), "Shutdown-thread"));
+					.addShutdownHook(new Thread(() ->  {
+						realTimeData.requester.cancelAllOrders();
+						realTimeData.requester.eDisconnect();
+						int i = 0;
+						while (!realTimeData.isCanShutDown() && i < 120) {
+							System.out.println(LocalDateTime.now() + " Waiting for shutdown..." + i);
+							i++;
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+					}, "Shutdown-thread"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -228,9 +249,8 @@ public class RealTimeData extends BaseEWrapper {
 
 	@Override
 	public void updateAccountValue(String key, String value, String currency, String accountName) {
-		// System.out.println("UpdateAccountValue. Key: " + key + ", Value: " + value +
-		// ", Currency: " + currency
-		// + ", AccountName: " + accountName);
+		logger.info("UpdateAccountValue. Key: " + key + ", Value: " + value + ", Currency: " + currency
+				+ ", AccountName: " + accountName);
 	}
 
 	private String getContractId(Contract contract) {
@@ -262,18 +282,10 @@ public class RealTimeData extends BaseEWrapper {
 	@Override
 	public void updatePortfolio(Contract contract, double position, double marketPrice, double marketValue,
 			double averageCost, double unrealizedPNL, double realizedPNL, String accountName) {
-		/*
-		 * logger.info(new Date() + " : UpdatePortfolio. " + contract.symbol() + ", " +
-		 * contract.secType() + " @ " + contract.exchange() + ": Position: " + position
-		 * + ", MarketPrice: " + marketPrice + ", MarketValue: " + marketValue +
-		 * ", AverageCost: " + averageCost + ", UnrealizedPNL: " + unrealizedPNL +
-		 * ", RealizedPNL: " + realizedPNL + ", AccountName: " + accountName);
-		 */
-		System.out.println(new Date() + " : UpdatePortfolio. " + contract.symbol() + ", " + contract.secType() + " @ "
+		logger.info(new Date() + " : UpdatePortfolio. " + contract.symbol() + ", " + contract.secType() + " @ "
 				+ contract.exchange() + ": Position: " + position + ", MarketPrice: " + marketPrice + ", MarketValue: "
 				+ marketValue + ", AverageCost: " + averageCost + ", UnrealizedPNL: " + unrealizedPNL
 				+ ", RealizedPNL: " + realizedPNL + ", AccountName: " + accountName);
-
 		// placeOrder(contract);
 	}
 
@@ -326,6 +338,38 @@ public class RealTimeData extends BaseEWrapper {
 		for (HistoricalTick tick : ticks) {
 			logger.info(EWrapperMsgGenerator.historicalTick(reqId, tick.time(), tick.price(), tick.size()));
 		}
+	}
+
+	/**
+	 * provides the portfolio's open positions.
+	 *
+	 * @param account
+	 *            the account holding the position.
+	 * @param contract
+	 *            the position's Contract
+	 * @param pos
+	 *            the number of positions held.
+	 * @param avgCost
+	 *            the average cost of the position.
+	 */
+	@Override
+	public void position(String account, Contract contract, double pos, double avgCost) {
+		logger.info("Position: account=" + account + ", contract=" + contract + ", pos=" + pos + ", avgCost=" + avgCost);
+	}
+
+	/**
+	 * Indicates all the positions have been transmitted.
+	 */
+	@Override
+	public void positionEnd() {
+		logger.info("Position end");
+	}
+
+
+	@Override
+	public void connectionClosed() {
+		logger.info("connectionClosed");
+		canShutDown = true;
 	}
 
 }

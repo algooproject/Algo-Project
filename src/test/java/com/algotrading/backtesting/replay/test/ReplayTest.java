@@ -6,14 +6,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.algotrading.backtesting.replay.*;
 import org.junit.Test;
 
 import com.algotrading.backtesting.pattern.MustTrueSignal;
 import com.algotrading.backtesting.pattern.StockSignal;
-import com.algotrading.backtesting.replay.AvailableStocks;
-import com.algotrading.backtesting.replay.AvailableStocksWithYearChange;
-import com.algotrading.backtesting.replay.Replay;
-import com.algotrading.backtesting.replay.TradingDate;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
@@ -33,7 +30,7 @@ public class ReplayTest {
 	private Strategies strategies;
 	private TradingDate tradingDate;
 	private AvailableStocks availableStocks;
-	private AvailableStocksWithYearChange availableStocksWithYearChange;
+	private DynamicAvailableStocks dynamicAvailableStocks;
 
 	private StockHistory stockHistory1382StartDate;
 	private StockHistory stockHistory1382MiddleDate;
@@ -85,20 +82,14 @@ public class ReplayTest {
 		availableStocks = new AvailableStocks();
 		availableStocks.add(stock1382);
 		availableStocks.add(stock0281);
-		try {
-			availableStocksWithYearChange = new AvailableStocksWithYearChange(
-					Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		dynamicAvailableStocks = new FixedAvailableStocks(availableStocks);
 	}
 
 	@Test
 	public void test1_test() throws ParseException {
 		PortfolioHistory history = new PortfolioHistory();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				30000, new Print_Console());
+		Replay replay = new Replay(startDate, endDate, history, strategies, dynamicAvailableStocks, tradingDate, 30000,
+				new Print_Console());
 
 		replay.simulate();
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();

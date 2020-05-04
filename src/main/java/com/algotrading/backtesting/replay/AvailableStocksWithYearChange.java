@@ -18,7 +18,7 @@ import java.util.TreeMap;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.util.Constants;
 
-public class AvailableStocksWithYearChange {
+public class AvailableStocksWithYearChange implements DynamicAvailableStocks {
 
 	private Map<String, AvailableStocks> map;
 
@@ -43,6 +43,7 @@ public class AvailableStocksWithYearChange {
 		}
 	}
 
+	@Override
 	public AvailableStocks get(Date date) {
 		String dateStr = new SimpleDateFormat("yyyyMMdd").format(date);
 		List<String> list = new ArrayList<>(map.keySet());
@@ -56,6 +57,7 @@ public class AvailableStocksWithYearChange {
 		return null;
 	}
 
+	@Override
 	public Map<String, Stock> getAllAvailableStocks() {
 		return allStocks;
 	}

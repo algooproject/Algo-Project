@@ -8,15 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.algotrading.backtesting.replay.*;
 import org.junit.Test;
 
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
-import com.algotrading.backtesting.replay.AvailableStocks;
-import com.algotrading.backtesting.replay.AvailableStocksWithYearChange;
-import com.algotrading.backtesting.replay.LotSize;
-import com.algotrading.backtesting.replay.Replay;
-import com.algotrading.backtesting.replay.TradingDate;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.strategy.Strategies;
@@ -54,12 +50,10 @@ public class Print_KPITest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+		DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				300000, new Print_KPI(RESOURCE_PATH_NAME + "KPI1/"));
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
+				new Print_KPI(RESOURCE_PATH_NAME + "KPI1/"));
 		replay.simulate();
 		replay.print();
 		List<String> KPILines = readFileToArray(RESOURCE_PATH_NAME + "KPI1/KPISummary.txt");
@@ -101,12 +95,10 @@ public class Print_KPITest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
-				Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
+		DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
-				0, new Print_KPI(RESOURCE_PATH_NAME + "KPI2/"));
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0,
+				new Print_KPI(RESOURCE_PATH_NAME + "KPI2/"));
 		replay.simulate();
 
 		replay.print();
