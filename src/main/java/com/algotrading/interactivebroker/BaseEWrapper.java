@@ -240,6 +240,7 @@ public abstract class BaseEWrapper implements EWrapper {
 	 */
 	@Override
 	public void position(String account, Contract contract, double pos, double avgCost) {
+
 	}
 
 	/**
@@ -504,10 +505,6 @@ public abstract class BaseEWrapper implements EWrapper {
 
 	@Override
 	public void tickSnapshotEnd(int tickerId) {
-	}
-
-	@Override
-	public void connectionClosed() {
 	}
 
 	// Add connectAck for API version 9.72

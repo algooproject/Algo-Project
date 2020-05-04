@@ -719,7 +719,8 @@ public class Requester {
 	 */
 
 	void reqPositions() {
-
+		System.out.println("calling reqPositions");
+		clientSocket.reqPositions();
 	}
 
 	/**
@@ -883,6 +884,11 @@ public class Requester {
 
 	public void cancelAllOrders() {
 		clientSocket.reqGlobalCancel();
+	}
+
+	public void eDisconnect() {
+		System.out.println("calling eDisconnect");
+		clientSocket.eDisconnect();
 	}
 
 }
