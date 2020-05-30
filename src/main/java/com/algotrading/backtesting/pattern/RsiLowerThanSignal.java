@@ -11,7 +11,8 @@ public class RsiLowerThanSignal extends RsiSignal {
 
 	@Override
 	protected boolean determine(double value) {
-
+		if (value < 0)
+			return false;
 		if (value < testValue * multiplier) {
 			return true;
 		} else {

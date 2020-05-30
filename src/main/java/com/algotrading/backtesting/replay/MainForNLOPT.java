@@ -46,13 +46,13 @@ public class MainForNLOPT {
 		System.out.println("start init: " + formattedDate);
 		try {
 			ranNo = Math.random();
-			startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-04");
+			startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2020-01-01");
 			// System.out.println("init: " + startDate);
-			endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-03-25");
+			endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2020-04-24");
 			// Date endDate =
 			// Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-10");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
-			availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks4.txt");
+			availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks5.txt");
 			availableStocksWithYearChange = new AvailableStocksWithYearChange(
 					Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availablestocksdate.txt");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
@@ -270,9 +270,12 @@ public class MainForNLOPT {
 		System.out.println(Calendar.getInstance().getTime());
 		System.out.println(startTime);
 		MainForNLOPT mainForNLOPT = MainForNLOPT.getInstance();
-		System.out.println("Print from Main: "
-				+ mainForNLOPT.execute(random(9, 250), random(2000, 4000) / 100, random(30, 90), random(120, 200) / 100,
-						random(9, 300), random(2000, 5000) / 100, random(105, 135) / 100, random(75, 95) / 100));
+//		System.out.println("Print from Main: "
+//				+ mainForNLOPT.execute(random(9, 250), random(2000, 4000) / 100, random(30, 90), random(120, 200) / 100,
+//						random(9, 300), random(2000, 5000) / 100, random(105, 135) / 100, random(75, 95) / 100));
+		System.out.println("Print from Main: " + mainForNLOPT.execute(14, random(2000, 4000) / 100, random(30, 90),
+				random(120, 200) / 100, 14, random(2000, 5000) / 100, random(105, 135) / 100, random(75, 95) / 100));
+
 		Long endTime = System.nanoTime();
 		System.out.println(endTime);
 		System.out.println(Calendar.getInstance().getTime());

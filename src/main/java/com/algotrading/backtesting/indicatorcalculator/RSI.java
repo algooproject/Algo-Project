@@ -103,6 +103,7 @@ public class RSI implements IRsiCalculator {
 			this.recent = recent;
 			this.value = this.line.get(recent);
 		} else {
+			this.value = -1;
 			// System.out.println("rsi recent: " + recent);
 			// System.out.println("RSI No such date ("+recent+") in record");
 		}
@@ -278,8 +279,8 @@ public class RSI implements IRsiCalculator {
 				double test = 100 - 100 / (1 + plus.get(date) / minus.get(date));
 				// System.out.println("100 - 100 / (1 + plus.get(date) /
 				// minus.get(date)):" + test);
-				// System.out.println(date.toString() + "RSI: " + test + ".
-				// magnitude: " + magnitude);
+				// System.out.println(date.toString() + "RSI: " + test + ".magnitude: " +
+				// magnitude);
 			}
 		}
 		// this.value = line.get(this.recent);
@@ -313,6 +314,13 @@ public class RSI implements IRsiCalculator {
 		// EMA ema_minus = new EMA(minus, recent, magnitude, sma_magnitude);
 		// line = calLine(ema_plus.getLine(), ema_minus.getLine());
 		line = calLine(sumPlusOrMinus(plus, magnitude), sumPlusOrMinus(minus, magnitude));
+		// System.out.println(line);
+
+		// SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
+		// String dateInString = "20000224";
+		// Date date = formatter.parse(dateInString);
+
+		// System.out.println(line.get(date));
 		return line;
 	}
 }

@@ -20,7 +20,7 @@ public class Main {
 		// Constants.SRC_MAIN_RESOURCE_FILEPATH);
 		TradingDate tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_FILEPATH + "tradingDate.txt");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-04");
-		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2020-03-25");
+		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-03-25");
 		endDate = tradingDate.rollBackCurrentDate(endDate, endDate);
 		// startDate = tradingDate.rollToCurrentDate(startDate, endDate);
 		int initialCash = 300000;
@@ -32,14 +32,15 @@ public class Main {
 		System.out.println("RunTime after strategies= " + startTime.until(midTime1, MILLIS));
 		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH,
 				"availableStocks4.txt");
-		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(Constants.SRC_MAIN_RESOURCE_FILEPATH, "availablestockdate.txt");
+		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
+				Constants.SRC_MAIN_RESOURCE_FILEPATH, "availablestocksdate.txt");
 
 		LocalTime midTime2 = LocalTime.now();
 		System.out.println("RunTime after availableStocks= " + startTime.until(midTime2, MILLIS));
 		// new Print_KPI(Constants.SRC_MAIN_RESOURCE_FILEPATH + "KPI/");
 		// new Print_Console();
-		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate, initialCash,
-				new Print_Console());
+		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocksWithYearChange, tradingDate,
+				initialCash, new Print_Console());
 		LocalTime midTime3 = LocalTime.now();
 		System.out.println("RunTime after replay construct = " + startTime.until(midTime3, MILLIS));
 		replay.setRecordSwitch(true);
