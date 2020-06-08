@@ -1,20 +1,26 @@
 package com.algotrading.backtesting.replay;
 
-import static java.time.temporal.ChronoUnit.MILLIS;
+import com.algotrading.backtesting.config.AlgoConfiguration;
+import com.algotrading.backtesting.stock.PortfolioHistory;
+import com.algotrading.backtesting.strategy.Strategies;
+import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.Print_Console;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalTime;
 import java.util.Date;
 
-import com.algotrading.backtesting.stock.PortfolioHistory;
-import com.algotrading.backtesting.strategy.Strategies;
-import com.algotrading.backtesting.util.Constants;
-import com.algotrading.backtesting.util.Print_Console;
+import static java.time.temporal.ChronoUnit.MILLIS;
 
 public class Main {
 
 	public static void main(String[] args) throws IOException, ParseException {
+
+		// Init config
+		AlgoConfiguration.setReadStockFrom(AlgoConfiguration.READ_STOCK_FROM_FILE);
+
+
 		LocalTime startTime = LocalTime.now();
 		// System.out.println("Constants.SRC_MAIN_RESOURCE_FILEPATH: " +
 		// Constants.SRC_MAIN_RESOURCE_FILEPATH);

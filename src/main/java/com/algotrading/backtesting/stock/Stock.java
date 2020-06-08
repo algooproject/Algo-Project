@@ -1,26 +1,26 @@
 package com.algotrading.backtesting.stock;
 
+import com.algotrading.backtesting.util.Constants;
+import com.algotrading.tickerservice.Ticker;
+import com.algotrading.tickerservice.TickerServiceClient;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.algotrading.backtesting.util.Constants;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Stock {
 
 	// private static String FILEPATH = "src/main/resources/";
 	private final String ticker;
-	private Map<Date, StockHistory> history;
+	private final Map<Date, StockHistory> history;
 	private int lotSize; // default to be 1 if not specified when instantiated;
 	private Boolean status = true;
 
-	Map<Integer, Date> pointerDate = new HashMap<Integer, Date>();
-	Map<Date, Integer> datePointer = new HashMap<Date, Integer>();
+	Map<Integer, Date> pointerDate = new HashMap<>();
+	Map<Date, Integer> datePointer = new HashMap<>();
 
 	public void initialDate() {
 		int i = 1;
@@ -32,6 +32,7 @@ public class Stock {
 
 	}
 
+	@Deprecated
 	public Stock(String ticker, Map<Date, StockHistory> history) {
 		this(ticker, history, 1);
 	}
@@ -60,6 +61,25 @@ public class Stock {
 
 	public void readLotSize() {
 		// TODO
+	}
+
+	/** return if has stock record in mongodb */
+	public boolean readFromMongoDB() {
+		List<Ticker> tickers = new TickerServiceClient().findTickerByCode(this.ticker);
+		if (tickers.size() == 0) {
+			return false;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		for (Ticker ticker : tickers) {
+			try {
+				Date date = sdf.parse(ticker.date);
+				history.put(date, new StockHistory(date, ticker.open, ticker.close, ticker.high, ticker.low, ticker.adjClose, ticker.volume));
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		initialDate();
+		return true;
 	}
 
 	public void read(String filePath) {

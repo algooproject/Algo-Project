@@ -1,5 +1,8 @@
 package com.algotrading.backtesting.replay;
 
+import com.algotrading.backtesting.config.AlgoConfiguration;
+import com.algotrading.backtesting.stock.Stock;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -10,8 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.algotrading.backtesting.stock.Stock;
 
 public class AvailableStocks {
 
@@ -45,17 +46,26 @@ public class AvailableStocks {
 		List<String> stringList = Files.readAllLines(file, charset);
 		stocks = new HashMap<>();
 		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
+		boolean isUsingMongoDb = AlgoConfiguration.READ_STOCK_FROM_MONGODB.equals(AlgoConfiguration.getReadStockFrom());
 		for (String line : stringList) {
 			// System.out.println(line);
 			Stock stock = new Stock(line, lotSize.getLotSize(line));
 			// System.out.println("Reading " + stock.getTicker());
-			File tempFile = new File(filePath + stock.getTicker() + ".csv");
-			boolean exists = tempFile.exists();
-			// System.out.println(filePath + stock.getTicker() + ".csv");
-			// System.out.println(exists);
-			if (exists) {
-				stock.read(filePath);
-				add(stock);
+
+			if (isUsingMongoDb) {
+				boolean hasTickerHistory = stock.readFromMongoDB();
+			 	if (hasTickerHistory) {
+			 		add(stock);
+				}
+			} else {
+				File tempFile = new File(filePath + stock.getTicker() + ".csv");
+				boolean exists = tempFile.exists();
+				// System.out.println(filePath + stock.getTicker() + ".csv");
+				// System.out.println(exists);
+				if (exists) {
+					stock.read(filePath);
+					add(stock);
+				}
 			}
 		}
 	}
