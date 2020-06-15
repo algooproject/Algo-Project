@@ -43,6 +43,22 @@ public class TickerServiceClient {
         }
     }
 
+    public void importAvailableStock(String code, String status, String group, String date) {
+        try {
+            httpClient.sendGet(URL + "/availablestock/import/" + code + "/" + status + "/" + group + "/" + date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeAllAvailableStock() {
+        try {
+            httpClient.sendGet(URL + "/availablestock/deleteall");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         TickerServiceClient obj = new TickerServiceClient();
         System.out.println(obj.getAllRSIEntries("2800.HK,2821.HK"));
