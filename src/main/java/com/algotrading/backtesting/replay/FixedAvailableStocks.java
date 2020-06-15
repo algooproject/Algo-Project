@@ -12,7 +12,7 @@ public class FixedAvailableStocks implements DynamicAvailableStocks {
     private AvailableStocks availableStocks;
 
     public FixedAvailableStocks(String filePath, String fileName) throws IOException, ParseException {
-        this.availableStocks = new AvailableStocks(filePath, fileName);
+        this.availableStocks = new AvailableStocks(filePath, fileName, false);
     }
 
     public FixedAvailableStocks(AvailableStocks availableStocks) {

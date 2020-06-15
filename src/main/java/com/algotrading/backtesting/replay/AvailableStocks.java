@@ -20,7 +20,10 @@ public class AvailableStocks {
 
 	private Map<String, Stock> stocks;
 
-	public AvailableStocks(String filePath, String fileName) throws IOException, ParseException {
+	private boolean fileNameIsDate;
+
+	public AvailableStocks(String filePath, String fileName, boolean fileNameIsDate) throws IOException, ParseException {
+		this.fileNameIsDate = fileNameIsDate;
 		read(filePath, fileName);
 	}
 
@@ -32,7 +35,7 @@ public class AvailableStocks {
 		Path file = new File(filePath + fileName).toPath();
 		Charset charset = Charset.defaultCharset();
 		List<String> stringList = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
-				? new TickerServiceClient().findAvailableStockByGroupAndDate(AlgoConfiguration.getAvailableStockGroup(), DateUtil.yyyymmddToYYYY_MM_DD(fileName.replace(".txt", "")))
+				? getAvailableStockFromMongoDb(fileName)
 				: Files.readAllLines(file, charset);
 		stocks = new HashMap<>();
 		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
@@ -58,6 +61,13 @@ public class AvailableStocks {
 				}
 			}
 		}
+	}
+
+	private List<String> getAvailableStockFromMongoDb(String fileName) {
+		TickerServiceClient client = new TickerServiceClient();
+		return fileNameIsDate
+		? client.findAvailableStockByGroupAndDate(AlgoConfiguration.getAvailableStockGroup(), DateUtil.yyyymmddToYYYY_MM_DD(fileName.replace(".txt", "")))
+		: client.findAvailableStockByGroup(fileName.replace(".txt", ""));
 	}
 
 	public List<Stock> get() {

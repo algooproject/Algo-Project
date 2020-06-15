@@ -35,7 +35,7 @@ public class AvailableStocksWithYearChange implements DynamicAvailableStocks {
 		map = new TreeMap<>();
 		for (String line : stringList) {
 			// System.out.println("###" + line);
-			AvailableStocks availableStocks = new AvailableStocks(filePath, line + ".txt");
+			AvailableStocks availableStocks = new AvailableStocks(filePath, line + ".txt", true);
 			map.put(line, availableStocks);
 			for (Stock s : availableStocks.get()) {
 				allStocks.put(s.getTicker(), s);

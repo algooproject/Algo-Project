@@ -1,12 +1,11 @@
 package com.algotrading.backtesting.replay.test;
 
-import java.io.IOException;
-import java.text.ParseException;
-
-import org.junit.Test;
-
 import com.algotrading.backtesting.replay.AvailableStocks;
 import com.algotrading.backtesting.util.Constants;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,7 +16,7 @@ public class AvailableStocksTest {
 	@Test
 	public void testRead() throws IOException, ParseException {
 		// String inputFile = RESOURCE_PATH_NAME + "availableStocks.txt";
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks.txt");
+		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks.txt", false);
 		assertEquals(8, availableStocks.get()
 				.size());
 	}

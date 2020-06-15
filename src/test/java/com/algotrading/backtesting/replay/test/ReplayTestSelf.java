@@ -1,22 +1,21 @@
 package com.algotrading.backtesting.replay.test;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.algotrading.backtesting.replay.*;
-import org.junit.Test;
-
 import com.algotrading.backtesting.pattern.SmaCrossHigherThanSignal;
 import com.algotrading.backtesting.pattern.SmaCrossLowerThanSignal;
 import com.algotrading.backtesting.pattern.StockSignal;
+import com.algotrading.backtesting.replay.*;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.strategy.Strategy;
 import com.algotrading.backtesting.util.Constants;
 import com.algotrading.backtesting.util.Print_Console;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReplayTestSelf {
 
@@ -53,7 +52,7 @@ public class ReplayTestSelf {
 		tradingDate = new TradingDate(Constants.SRC_TEST_RESOURCE_FILEPATH + "smacross/" + "tradingDate.txt");
 
 		availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH + "smacross/",
-				"availableStocks.txt");
+				"availableStocks.txt", false);
 
 		availableStocks.get().forEach(stock -> stock.setLotSize(lotSizes.get(stock.getTicker())));
 		dynamicAvailableStocks = new FixedAvailableStocks(availableStocks);

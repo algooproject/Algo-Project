@@ -79,6 +79,16 @@ public class TickerServiceClient {
         }
     }
 
+    public List<String> findAvailableStockByGroup(String group) {
+        try {
+            String jsonString = httpClient.sendGet(URL + "/availablestock/getdatesbygroup/" + group);
+            return JsonMapper.toStringList(jsonString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         TickerServiceClient obj = new TickerServiceClient();
         System.out.println(obj.getAllRSIEntries("2800.HK,2821.HK"));
