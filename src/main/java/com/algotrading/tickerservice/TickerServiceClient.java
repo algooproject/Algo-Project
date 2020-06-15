@@ -59,10 +59,32 @@ public class TickerServiceClient {
         }
     }
 
+    public List<String> findAvailableStockDateByGroup(String group) {
+        try {
+            String jsonString = httpClient.sendGet(URL + "/availablestock/getdatesbygroup/" + group);
+            return JsonMapper.toStringList(jsonString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<String> findAvailableStockByGroupAndDate(String group, String date) {
+        try {
+            String jsonString = httpClient.sendGet(URL + "/availablestock/gettickerbydateandgroup/" + group + "/" + date);
+            return JsonMapper.toStringList(jsonString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         TickerServiceClient obj = new TickerServiceClient();
         System.out.println(obj.getAllRSIEntries("2800.HK,2821.HK"));
         System.out.println(obj.findRSIEntryByCode("2800.HK"));
         System.out.println(obj.findTickerByCode("2800.HK"));
+        System.out.println(obj.findAvailableStockDateByGroup("BACKTESTING"));
+        System.out.println(obj.findAvailableStockByGroupAndDate("BACKTESTING", "1999-12-06"));
     }
 }

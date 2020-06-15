@@ -1,5 +1,11 @@
 package com.algotrading.backtesting.replay;
 
+import com.algotrading.DateUtil;
+import com.algotrading.backtesting.config.AlgoConfiguration;
+import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.util.Constants;
+import com.algotrading.tickerservice.TickerServiceClient;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -7,16 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.algotrading.backtesting.stock.Stock;
-import com.algotrading.backtesting.util.Constants;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AvailableStocksWithYearChange implements DynamicAvailableStocks {
 
@@ -31,7 +29,9 @@ public class AvailableStocksWithYearChange implements DynamicAvailableStocks {
 	public void read(String filePath, String fileName) throws IOException, ParseException {
 		Path file = new File(filePath + fileName).toPath();
 		Charset charset = Charset.defaultCharset();
-		List<String> stringList = Files.readAllLines(file, charset);
+		List<String> stringList = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
+				? new TickerServiceClient().findAvailableStockDateByGroup(AlgoConfiguration.getAvailableStockGroup()).stream().map(date -> DateUtil.yyyy_mm_ddToYYYYMMDD(date)).collect(Collectors.toList())
+				: Files.readAllLines(file, charset);
 		map = new TreeMap<>();
 		for (String line : stringList) {
 			// System.out.println("###" + line);

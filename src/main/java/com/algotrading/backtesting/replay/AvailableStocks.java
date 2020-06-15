@@ -1,7 +1,9 @@
 package com.algotrading.backtesting.replay;
 
+import com.algotrading.DateUtil;
 import com.algotrading.backtesting.config.AlgoConfiguration;
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.tickerservice.TickerServiceClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,27 +28,15 @@ public class AvailableStocks {
 		stocks = new HashMap<>();
 	}
 
-	public void read(String filePath) throws IOException, ParseException {
-		Path file = new File(filePath).toPath();
-		Charset charset = Charset.defaultCharset();
-		List<String> stringList = Files.readAllLines(file, charset);
-		stocks = new HashMap<>();
-		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
-		for (String line : stringList) {
-			Stock stock = new Stock(line, lotSize.getLotSize(line));
-			System.out.println("Reading " + stock.getTicker());
-			stock.read();
-			add(stock);
-		}
-	}
-
 	public void read(String filePath, String fileName) throws IOException, ParseException {
 		Path file = new File(filePath + fileName).toPath();
 		Charset charset = Charset.defaultCharset();
-		List<String> stringList = Files.readAllLines(file, charset);
+		List<String> stringList = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
+				? new TickerServiceClient().findAvailableStockByGroupAndDate(AlgoConfiguration.getAvailableStockGroup(), DateUtil.yyyymmddToYYYY_MM_DD(fileName.replace(".txt", "")))
+				: Files.readAllLines(file, charset);
 		stocks = new HashMap<>();
 		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
-		boolean isUsingMongoDb = AlgoConfiguration.READ_STOCK_FROM_MONGODB.equals(AlgoConfiguration.getReadStockFrom());
+		boolean isUsingMongoDb = AlgoConfiguration.FROM_MONGODB.equals(AlgoConfiguration.getReadStockFrom());
 		for (String line : stringList) {
 			// System.out.println(line);
 			Stock stock = new Stock(line, lotSize.getLotSize(line));

@@ -18,7 +18,8 @@ public class Main {
 	public static void main(String[] args) throws IOException, ParseException {
 
 		// Init config
-		AlgoConfiguration.setReadStockFrom(AlgoConfiguration.READ_STOCK_FROM_FILE);
+		AlgoConfiguration.setReadStockFrom(AlgoConfiguration.FROM_FILE);
+		AlgoConfiguration.setReadAvailableStockFrom(AlgoConfiguration.FROM_FILE);
 
 
 		LocalTime startTime = LocalTime.now();
@@ -36,9 +37,7 @@ public class Main {
 				Constants.SRC_MAIN_RESOURCE_FILEPATH + "sellStrategies1.txt");
 		LocalTime midTime1 = LocalTime.now();
 		System.out.println("RunTime after strategies= " + startTime.until(midTime1, MILLIS));
-		AvailableStocks availableStocks = new AvailableStocks(Constants.SRC_MAIN_RESOURCE_FILEPATH,
-				"availableStocks4.txt");
-		DynamicAvailableStocks availableStocksWithYearChange = new AvailableStocksWithYearChange(Constants.SRC_MAIN_RESOURCE_FILEPATH, "availablestockdate.txt");
+		DynamicAvailableStocks availableStocksWithYearChange = new AvailableStocksWithYearChange(Constants.SRC_MAIN_RESOURCE_FILEPATH, "availablestocksdate.txt");
 
 		LocalTime midTime2 = LocalTime.now();
 		System.out.println("RunTime after availableStocks= " + startTime.until(midTime2, MILLIS));

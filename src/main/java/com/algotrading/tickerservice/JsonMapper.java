@@ -40,6 +40,10 @@ public class JsonMapper {
         return result;
     }
 
+    public static List<String> toStringList(String jsonArrayStr) throws Exception {
+        return objectMapper.readValue(jsonArrayStr, new TypeReference<List<String>>() {});
+    }
+
     /**
      * map convert to javaBean
      */
