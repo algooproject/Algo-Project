@@ -79,6 +79,15 @@ public class TickerServiceClient {
         }
     }
 
+    public void importTicker(String ticker) {
+        try {
+            httpClient.sendGet(URL + "/yahooimportall/" + ticker);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return;
+    }
+
     public List<String> findAvailableStockByGroup(String group) {
         try {
             String jsonString = httpClient.sendGet(URL + "/availablestock/getdatesbygroup/" + group);
