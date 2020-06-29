@@ -27,10 +27,8 @@
 		</dependency>
 		<dependency>
 		    <groupId>com.interactivebrokers</groupId>
-		    <artifactId>tws-api</artifactId>
+		    <artifactId>tws-api-debug</artifactId>
 		    <version>9.73.01-SNAPSHOT</version>
-		    <scope>system</scope>
-		    <systemPath>${project.basedir}/libs/macOS/TwsApi_debug.jar</systemPath>
 		</dependency>
 		<dependency>
 		    <groupId>org.xerial</groupId>
