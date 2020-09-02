@@ -1,10 +1,12 @@
 package com.algotrading.backtesting.stock;
 
+import com.algotrading.backtesting.config.AlgoConfiguration;
 import com.algotrading.backtesting.util.Constants;
 import com.algotrading.tickerservice.Ticker;
 import com.algotrading.tickerservice.TickerServiceClient;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -41,8 +43,36 @@ public class Stock {
 		this(ticker, new TreeMap<Date, StockHistory>(), 1);
 	}
 
+	// called by available stocks
 	public Stock(String ticker, int lotSize) {
-		this(ticker, new TreeMap<Date, StockHistory>(), lotSize);
+		this(ticker, new TreeMap<>(), lotSize);
+	}
+
+	public static Stock createStockWithData(String ticker, int lotSize) {
+		Stock stock = new Stock(ticker, lotSize);
+		boolean isUsingMongoDb = AlgoConfiguration.FROM_MONGODB.equals(AlgoConfiguration.getReadStockFrom());
+		if (isUsingMongoDb) {
+			boolean hasTickerHistory = stock.readFromMongoDB();
+			if (!hasTickerHistory) {
+				return null;
+			}
+//			if (hasTickerHistory) {
+//				add(stock);
+//			}
+		} else {
+			File tempFile = new File(AlgoConfiguration.STOCK_READ_PATH_IF_READ_FROM_FILE + stock.getTicker() + ".csv");
+			boolean exists = tempFile.exists();
+			// System.out.println(filePath + stock.getTicker() + ".csv");
+			// System.out.println(exists);
+//			if (exists) {
+//				stock.read(filePath);
+//				add(stock);
+//			}
+			if (!exists) {
+				return null;
+			}
+		}
+		return stock;
 	}
 
 	public Stock(String ticker, Map<Date, StockHistory> history, int lotSize) {
@@ -62,6 +92,17 @@ public class Stock {
 	public void readLotSize() {
 		// TODO
 	}
+
+//	Stock stock = new MockStock();
+//
+//	class MockStock() {
+//
+//		@Override
+//		public boolean readFromMongoDB() {
+//
+//			// non db code for testing
+//		}
+//	}
 
 	/** return if has stock record in mongodb */
 	public boolean readFromMongoDB() {

@@ -39,27 +39,31 @@ public class AvailableStocks {
 				: Files.readAllLines(file, charset);
 		stocks = new HashMap<>();
 		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
-		boolean isUsingMongoDb = AlgoConfiguration.FROM_MONGODB.equals(AlgoConfiguration.getReadStockFrom());
+//		boolean isUsingMongoDb = AlgoConfiguration.FROM_MONGODB.equals(AlgoConfiguration.getReadStockFrom());
 		for (String line : stringList) {
 			// System.out.println(line);
-			Stock stock = new Stock(line, lotSize.getLotSize(line));
+//			Stock stock = new Stock(line, lotSize.getLotSize(line));
 			// System.out.println("Reading " + stock.getTicker());
 
-			if (isUsingMongoDb) {
-				boolean hasTickerHistory = stock.readFromMongoDB();
-			 	if (hasTickerHistory) {
-			 		add(stock);
-				}
-			} else {
-				File tempFile = new File(filePath + stock.getTicker() + ".csv");
-				boolean exists = tempFile.exists();
-				// System.out.println(filePath + stock.getTicker() + ".csv");
-				// System.out.println(exists);
-				if (exists) {
-					stock.read(filePath);
-					add(stock);
-				}
+			Stock stock = Stock.createStockWithData(line, lotSize.getLotSize(line));
+			if (stock != null) {
+				add(stock);
 			}
+//			if (isUsingMongoDb) {
+//				boolean hasTickerHistory = stock.readFromMongoDB();
+//			 	if (hasTickerHistory) {
+//			 		add(stock);
+//				}
+//			} else {
+//				File tempFile = new File(filePath + stock.getTicker() + ".csv");
+//				boolean exists = tempFile.exists();
+//				// System.out.println(filePath + stock.getTicker() + ".csv");
+//				// System.out.println(exists);
+//				if (exists) {
+//					stock.read(filePath);
+//					add(stock);
+//				}
+//			}
 		}
 	}
 

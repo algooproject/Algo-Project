@@ -1,5 +1,7 @@
 package com.algotrading.backtesting.config;
 
+import com.algotrading.backtesting.util.Constants;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,10 @@ public class AlgoConfiguration {
 
     public static final String FROM_FILE = "file";
     public static final String FROM_MONGODB = "mongodb";
+
+
+    // TODO modifiable
+    public static final String STOCK_READ_PATH_IF_READ_FROM_FILE = Constants.SRC_MAIN_RESOURCE_FILEPATH;
 
     private static Map<String, String> data = new HashMap<>();
 
