@@ -35,7 +35,7 @@ public class TickerServiceClient {
 
     public List<Ticker> findTickerByCode(String code) {
         try {
-            String jsonString = httpClient.sendGet(URL + "/ticker/findTickerByCode/" + code);
+            String jsonString = httpClient.sendGet(URL + "/ticker/findtickerbycode/" + code);
             return JsonMapper.toList(jsonString, Ticker.class);
         } catch (Exception e) {
             e.printStackTrace();
