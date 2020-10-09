@@ -1,14 +1,10 @@
 package com.algotrading.backtesting.replay;
 
-import com.algotrading.DateUtil;
 import com.algotrading.backtesting.config.AlgoConfiguration;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.util.Constants;
 import com.algotrading.tickerservice.TickerServiceClient;
 import com.sun.tools.internal.ws.processor.generator.GeneratorException;
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
-
-import java.util.Comparator;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -17,38 +13,30 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
-class DecendingValueComparator implements Comparator {
-	Map map;
-	public DecendingValueComparator(Map map) {
-		this.map = map;
-	}
-	public int compare(Object keyA, Object keyB) {
-		Comparable valueA = (Comparable) map.get(keyA);
-		Comparable valueB = (Comparable) map.get(keyB);
-		return valueA.compareTo(valueB); // want orders with decending values
-	}
-}
 
+/**
+ * TODO put description here
+ * e.g. cached value reading from files
+ */
 public class ActivelyTradedStocks implements DynamicAvailableStocks {
 
 	private static Map<String, Stock> allStocks = new LinkedHashMap<>();
-	private static Map<String, Map<String, Double>> date_ticker_vol; // should keep it static?
+
 	private static Map<String, List<String>> yearToTickerList;
 	private static Boolean isYearToTickerListGenerated = false;
 	private static String classFilePath = Constants.SRC_MAIN_RESOURCE_FILEPATH + "/ActivelyTradedStocksData/";
 	private static Date defaultStartDate = new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime();
 
 	private Map<String, AvailableStocks> map;
-	private double threshold;
-	private Boolean isAbsoluteTop;
+	private final double threshold;
+	private final Boolean isAbsoluteTop;
 
 	// constructors
 	public ActivelyTradedStocks(){
 		this(50, true);
 	}
-	public ActivelyTradedStocks(double threshold, Boolean isAbsoluteTop){
+	public ActivelyTradedStocks(double threshold, Boolean isAbsoluteTop) {
 		this.threshold = threshold;
 		this.isAbsoluteTop = isAbsoluteTop;
 	}
@@ -83,16 +71,19 @@ public class ActivelyTradedStocks implements DynamicAvailableStocks {
 	}
 
 	private static TreeMap<String, Double> sortMapByValue(TreeMap<String, Double> map){
-		Comparator<String> comparator = new DecendingValueComparator(map);
 		//TreeMap is a map sorted by its keys.classFilePath
 		//The comparator is used to sort the TreeMap by keys.
-		TreeMap<String, Double> result = new TreeMap<String, Double>(comparator);
+		TreeMap<String, Double> result = new TreeMap<>((keyA, keyB) ->  {
+			Double valueA = map.get(keyA);
+			Double valueB = map.get(keyB);
+			return valueA.compareTo(valueB); // want orders with decending values
+		});
 		result.putAll(map);
 		return result;
 	}
 
-	private void dumpDate_Ticker_VolumeToFiles() throws IOException {
-		for( Map.Entry< String, Map< String, Double>> entry: date_ticker_vol.entrySet() ){
+	private void dumpDateTickerVolumeToFiles(Map<String, Map<String, Double>> dateTickerVol) throws IOException {
+		for( Map.Entry< String, Map< String, Double>> entry: dateTickerVol.entrySet() ){
 			String filename = classFilePath + entry.getKey() + ".txt";
 			Set<String> stockList = entry.getValue().keySet(); // in the same order as the sorted map?
 			BufferedWriter out = new BufferedWriter( new FileWriter( filename) ); // overwriting?
@@ -104,19 +95,14 @@ public class ActivelyTradedStocks implements DynamicAvailableStocks {
 		}
 	}
 
-	private List<Path> getStockFilePathList(){
+	private List<Path> getStockFilePathList() {
 		List<Path> fileList = new ArrayList<>();
 		File dir = new File(".");
-		File[] files = dir.listFiles( new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name){
-				return name.matches ( "\\d\\d\\d\\d\\d\\d\\d\\d\\.txt" );
-			}
-		});
+		File[] files = dir.listFiles((dir1, name) -> name.matches("\\d\\d\\d\\d\\d\\d\\d\\d\\.txt"));
 
-		for( File file : files )
-			fileList.add( file.toPath() );
-
+		for (File file : files) {
+			fileList.add(file.toPath());
+	    }
 		return fileList;
 	}
 
@@ -132,62 +118,66 @@ public class ActivelyTradedStocks implements DynamicAvailableStocks {
 			Stock stock = constructStockFromTickerString(ticker);
 			allStocks.put(ticker, stock );
 			Date comparingDate = stock.getEarliestDate();
-			if( !comparingDate.equals( null ) && earliestDate.compareTo( comparingDate) > 0 )
+			if( !comparingDate.equals( null ) && earliestDate.compareTo( comparingDate) > 0 ) {
 				earliestDate = comparingDate;
+			}
 
-			if( !comparingDate.equals( null ) && latestDate.compareTo( comparingDate) < 0 )
+			if( !comparingDate.equals( null ) && latestDate.compareTo( comparingDate) < 0 ) {
 				latestDate = comparingDate;
+			}
 		}
 		Calendar current = Calendar.getInstance();
 		current.setTime( earliestDate );
 		Calendar latest = Calendar.getInstance();
 		latest.setTime( latestDate );
 
-		String yearString = getNextYearInString( current ) + "0101";
+		String yearString = getNextYearInString( current ) + "0101"; // Jan 01
 		String lastYearString;
-		date_ticker_vol = new TreeMap<String, Map<String, Double>>();
-		yearToTickerList = new HashMap<String, List<String>>();
-		TreeMap<String, Double> ticker_vol = new TreeMap<String, Double>();
+		Map<String, Map<String, Double>> dateTickerVol = new TreeMap<>();
+		yearToTickerList = new HashMap<>();
+		TreeMap<String, Double> tickerVol = new TreeMap<>();
 		while( current.compareTo( latest ) <= 0 ){
 			lastYearString = yearString;
 			for(Map.Entry<String, Stock> entry : allStocks.entrySet()){
-				if( !ticker_vol.containsKey( entry.getKey() ) )
-					ticker_vol.put( entry.getKey(), entry.getValue().getHistory().get(current.getTime()).getVolume() );
+				if( !tickerVol.containsKey( entry.getKey() ) )
+					tickerVol.put( entry.getKey(), entry.getValue().getHistory().get(current.getTime()).getVolume() );
 				else {
-					Double currentVol = ticker_vol.get(entry.getKey());
-					ticker_vol.replace(entry.getKey(),
+					Double currentVol = tickerVol.get(entry.getKey());
+					tickerVol.replace(entry.getKey(),
 							currentVol + entry.getValue().getHistory().get(current.getTime()).getVolume());
 				}
 			}
 			current.roll( Calendar.DAY_OF_MONTH, true );
-			yearString = getNextYearInString( current ) + "0101";
+			yearString = getNextYearInString( current ) + "0101"; // TODO doc for reading yyyyMMdd.txt
 			if( lastYearString.equals( yearString ) ){
-				date_ticker_vol.put( lastYearString, sortMapByValue( ticker_vol ) );
+				dateTickerVol.put( lastYearString, sortMapByValue( tickerVol ) );
 				yearToTickerList.put( lastYearString,
-						new ArrayList<>( date_ticker_vol.get(lastYearString).keySet()) ); // order maintained?
-				ticker_vol = new TreeMap<String, Double>();
+						new ArrayList<>( dateTickerVol.get(lastYearString).keySet()) ); // order maintained?
+				tickerVol = new TreeMap<>();
 			}
 		}
-		dumpDate_Ticker_VolumeToFiles();
+		dumpDateTickerVolumeToFiles(dateTickerVol);
 		isYearToTickerListGenerated = true;
 	}
 
 	private int getNumberOfStocks( int total ){
-		if( isAbsoluteTop )
-			return Math.min( (int) threshold, total );
-		else
+		if( isAbsoluteTop ) {
+			return Math.min((int) threshold, total);
+		} else {
 			return (int) (total * threshold / 100);
+		}
 	}
 
 	private void constructYearToTickerListFromFiles() throws IOException, ParseException {
-		if( isYearToTickerListGenerated )
+		if( isYearToTickerListGenerated ) {
 			return;
+		}
 		List<Path> fileList = getStockFilePathList();
 		Charset charset = Charset.defaultCharset();
-		yearToTickerList = new HashMap<String, List<String>>();
+		yearToTickerList = new HashMap<>();
 		for( Path file : fileList )
 			yearToTickerList.put( file.toFile().getName().substring(0,7),
-					Files.readAllLines(file, charset) );
+					Files.readAllLines(file, charset) );  // should use regex?
 		isYearToTickerListGenerated = true;
 	}
 
@@ -196,23 +186,24 @@ public class ActivelyTradedStocks implements DynamicAvailableStocks {
 		map = new TreeMap<>();
 		for( Map.Entry<String, List<String>> entry : yearToTickerList.entrySet() ){
 			int numberOfStocks = getNumberOfStocks( entry.getValue().size() );
-			if( numberOfStocks == 0 )
-				throw new GeneratorException( "Generating available stock error: " +
+			if( numberOfStocks == 0 ) {
+				throw new GeneratorException("Generating available stock error: " +
 						entry.getKey() +
-						".txt does not provide sufficient number of stocks" ); // what exception is appropriate?
+						".txt does not provide sufficient number of stocks"); // what exception is appropriate? maybe a custom exception
+			}
 			AvailableStocks stocks = new AvailableStocks();
 			for( int i=0; i < numberOfStocks; i++ ) {
 				Stock stock = new Stock(entry.getValue().get(i));
 				stocks.add( stock );
 				allStocks.put( entry.getValue().get(i), stock );
 			}
-			map.put( entry.getKey(), stocks ); // should use regex?
+			map.put( entry.getKey(), stocks );
 		}
 	}
 
 	@Override
 	public AvailableStocks get(Date date) {
-		String dateStr = new SimpleDateFormat("yyyyMMdd").format(date);
+		String dateStr = Constants.DATE_FORMAT_YYYYMMDD.format(date);
 		List<String> list = new ArrayList<>(map.keySet());
 		Collections.reverse(list);
 		for (String d : list) {
@@ -240,11 +231,11 @@ public class ActivelyTradedStocks implements DynamicAvailableStocks {
 		ActivelyTradedStocks a = new ActivelyTradedStocks();
 		// System.out.println(a.toString());
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		Date date = sdf.parse("20200321");
+		SimpleDateFormat sdf = Constants.DATE_FORMAT_YYYYMMDD;
+		Date date = sdf.parse("2020-03-21");
 		// System.out.println(a.get(date));
 
-		Date date2 = sdf.parse("20190101");
+		Date date2 = sdf.parse("2019-01-01");
 		// System.out.println(a.get(date2));
 	}
 

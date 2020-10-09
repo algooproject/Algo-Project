@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Stock {
@@ -70,17 +69,19 @@ public class Stock {
 	/** return if has stock record in mongodb */
 	public boolean readFromMongoDB() {
 		List<Ticker> tickers = new TickerServiceClient().findTickerByCode(this.ticker);
+//		tickers.sort(Comparator.comparing(tickersA -> tickersA.date)); // TODO to sort ascending or desending?
 		if (tickers.size() == 0) {
 			return false;
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		for (Ticker ticker : tickers) {
 			try {
-				Date date = sdf.parse(ticker.date);
-				if( earliestDate.equals( null ) || earliestDate.compareTo( date ) > 0 )
+				Date date = Constants.DATE_FORMAT_YYYYMMDD.parse(ticker.date);
+				if( earliestDate.equals( null ) || earliestDate.compareTo( date ) > 0 ) {
 					earliestDate = date;
-				if( latestDate.equals( null ) || latestDate.compareTo( date ) < 0 )
+				}
+				if( latestDate.equals( null ) || latestDate.compareTo( date ) < 0 ) {
 					latestDate = date;
+				}
 				history.put(date, new StockHistory(date, ticker.open, ticker.close, ticker.high, ticker.low, ticker.adjClose, ticker.volume));
 			} catch(Exception e) {
 				e.printStackTrace();
