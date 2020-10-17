@@ -69,6 +69,7 @@ public class Stock {
 	/** return if has stock record in mongodb */
 	public boolean readFromMongoDB() {
 		List<Ticker> tickers = new TickerServiceClient().findTickerByCode(this.ticker);
+		tickers.sort(Comparator.comparing(ticker -> ticker.date));
 //		tickers.sort(Comparator.comparing(tickersA -> tickersA.date)); // TODO to sort ascending or desending?
 		if (tickers.size() == 0) {
 			return false;
