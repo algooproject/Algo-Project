@@ -1,16 +1,8 @@
 package com.algotrading.backtesting.replay.test;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.algotrading.backtesting.replay.*;
-import org.junit.Test;
-
 import com.algotrading.backtesting.pattern.MustTrueSignal;
 import com.algotrading.backtesting.pattern.StockSignal;
+import com.algotrading.backtesting.replay.*;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
@@ -18,6 +10,12 @@ import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.strategy.Strategy;
 import com.algotrading.backtesting.util.Constants;
 import com.algotrading.backtesting.util.Print_Console;
+import org.junit.Test;
+
+import java.text.ParseException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReplayTest {
 
@@ -86,7 +84,7 @@ public class ReplayTest {
 	}
 
 	@Test
-	public void test1_test() throws ParseException {
+	public void test1_test() throws Exception {
 		PortfolioHistory history = new PortfolioHistory();
 		Replay replay = new Replay(startDate, endDate, history, strategies, dynamicAvailableStocks, tradingDate, 30000,
 				new Print_Console());

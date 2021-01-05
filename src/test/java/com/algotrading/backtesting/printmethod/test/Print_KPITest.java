@@ -1,5 +1,15 @@
 package com.algotrading.backtesting.printmethod.test;
 
+import com.algotrading.backtesting.portfolio.Portfolio;
+import com.algotrading.backtesting.portfolio.PortfolioComponent;
+import com.algotrading.backtesting.replay.*;
+import com.algotrading.backtesting.stock.PortfolioHistory;
+import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.strategy.Strategies;
+import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.Print_KPI;
+import org.junit.Test;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,17 +17,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.algotrading.backtesting.replay.*;
-import org.junit.Test;
-
-import com.algotrading.backtesting.portfolio.Portfolio;
-import com.algotrading.backtesting.portfolio.PortfolioComponent;
-import com.algotrading.backtesting.stock.PortfolioHistory;
-import com.algotrading.backtesting.stock.Stock;
-import com.algotrading.backtesting.strategy.Strategies;
-import com.algotrading.backtesting.util.Constants;
-import com.algotrading.backtesting.util.Print_KPI;
 
 public class Print_KPITest {
 
@@ -50,7 +49,8 @@ public class Print_KPITest {
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
+		FixedAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
+		availableStocks.customizedStockFilePath();
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 300000,
 				new Print_KPI(RESOURCE_PATH_NAME + "KPI1/"));
@@ -95,7 +95,8 @@ public class Print_KPITest {
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-		DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
+		FixedAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
+		availableStocks.customizedStockFilePath();
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0,
 				new Print_KPI(RESOURCE_PATH_NAME + "KPI2/"));

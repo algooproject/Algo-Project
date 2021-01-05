@@ -18,11 +18,26 @@ import java.util.stream.Collectors;
 
 public class AvailableStocksWithYearChange implements DynamicAvailableStocks {
 
+	/** true = set to read specific path when reading stock, but not from resourceAsStream */
+	private boolean isCustomizedStockFilePath = false;
+
 	private Map<String, AvailableStocks> map;
 
 	private Map<String, Stock> allStocks = new LinkedHashMap<>();
 
+	private String filePath;
+
+	private String fileName;
+
 	public AvailableStocksWithYearChange(String filePath, String fileName) throws IOException, ParseException {
+		this.filePath = filePath;
+		this.fileName = fileName;
+//		read(filePath, fileName);
+	}
+
+	@Override
+	public void load() throws IOException, ParseException
+	{
 		read(filePath, fileName);
 	}
 
@@ -36,6 +51,10 @@ public class AvailableStocksWithYearChange implements DynamicAvailableStocks {
 		for (String line : stringList) {
 			// System.out.println("###" + line);
 			AvailableStocks availableStocks = new AvailableStocks(filePath, line + ".txt", true);
+			if (isCustomizedStockFilePath) {
+				availableStocks.customizedStockFilePath();
+			}
+			availableStocks.load();
 			map.put(line, availableStocks);
 			for (Stock s : availableStocks.get()) {
 				allStocks.put(s.getTicker(), s);
@@ -82,6 +101,11 @@ public class AvailableStocksWithYearChange implements DynamicAvailableStocks {
 
 		Date date2 = sdf.parse("20190101");
 		// System.out.println(a.get(date2));
+	}
+
+	@Override
+	public void customizedStockFilePath() {
+		isCustomizedStockFilePath = true;
 	}
 
 }
