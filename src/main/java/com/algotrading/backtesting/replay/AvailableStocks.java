@@ -22,9 +22,25 @@ public class AvailableStocks {
 
 	private boolean fileNameIsDate;
 
-	public AvailableStocks(String filePath, String fileName, boolean fileNameIsDate) throws IOException, ParseException {
+	private String filePath;
+
+	private String fileName;
+
+	/** true = set to read specific path when reading stock, but not from resourceAsStream */
+	private boolean isCustomizedStockFilePath = false;
+
+	public AvailableStocks(String filePath, String fileName, boolean fileNameIsDate) {
 		this.fileNameIsDate = fileNameIsDate;
-		read(filePath, fileName);
+		this.filePath = filePath;
+		this.fileName = fileName;
+//		read(filePath, fileName);
+	}
+
+	public void load() throws IOException, ParseException {
+		if (filePath != null && fileName != null)
+		{
+			read(filePath, fileName);
+		}
 	}
 
 	public AvailableStocks() {
@@ -51,13 +67,20 @@ public class AvailableStocks {
 			 		add(stock);
 				}
 			} else {
-				File tempFile = new File(filePath + stock.getTicker() + ".csv");
-				boolean exists = tempFile.exists();
-				// System.out.println(filePath + stock.getTicker() + ".csv");
-				// System.out.println(exists);
-				if (exists) {
-					stock.read(filePath);
-					add(stock);
+				if (isCustomizedStockFilePath) {
+					File tempFile = new File(filePath + stock.getTicker() + ".csv");
+					boolean exists = tempFile.exists();
+//					System.out.println("=== reading: " + filePath + stock.getTicker() + ".csv");
+//					System.out.println("=== exists: " + exists);
+					if (exists) {
+						stock.read(filePath);
+						add(stock);
+					}
+				} else {
+					if (stock.resourcesExist()) {
+						stock.read();
+						add(stock);
+					}
 				}
 			}
 		}
@@ -84,6 +107,10 @@ public class AvailableStocks {
 
 	public Map<String, Stock> getAllAvailableStocks() {
 		return stocks;
+	}
+
+	public void customizedStockFilePath() {
+		isCustomizedStockFilePath = true;
 	}
 
 	@Override

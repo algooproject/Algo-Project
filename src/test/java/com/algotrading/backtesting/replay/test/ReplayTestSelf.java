@@ -59,7 +59,7 @@ public class ReplayTestSelf {
 	}
 
 	@Test
-	public void test1_test() throws ParseException {
+	public void test1_test() throws Exception {
 		double initialCash = unitBuyCost * availableStocks.get().size();
 		PortfolioHistory history = new PortfolioHistory();
 		Replay replay = new Replay(startDate, endDate, history, strategies, dynamicAvailableStocks, tradingDate, initialCash,
