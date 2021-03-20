@@ -1,10 +1,10 @@
 package com.algotrading.backtesting.util;
 
-import com.algotrading.backtesting.config.AlgoConfiguration;
 import com.algotrading.backtesting.stock.Stock;
-import com.algotrading.tickerservice.TickerServiceClient;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -16,79 +16,25 @@ import java.util.*;
  */
 public class CreateActiveStockFiles {
     // can be made local in generateStockListsByDate()
-    private static Map<String, Stock> allStocks = new LinkedHashMap<>();
-    private static Map<String, List<String>> yearToTickerList;
-    private static String classFilePath = Constants.SRC_MAIN_RESOURCE_FILEPATH + "/ActivelyTradedStocksData/";
+    private Map<String, Stock> allStocks = new LinkedHashMap<>();
+    private Map<String, List<String>> yearToTickerList;
     private static Date defaultStartDate = new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime();
 
-    // functions to get ticker list
-    private List<String> getListOfAllTickersFromFile() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(Constants.SRC_MAIN_RESOURCE_FILEPATH + "allStock.txt"));
-        String line;
-        List<String> tickerList = new ArrayList<>();
-        while ((line = br.readLine()) != null)
-        {
-            if( !line.trim().isEmpty() && !line.startsWith( "#" ) ) {
-                tickerList.add(line);
-            }
-        }
-        return tickerList;
-    }
-    private List<String> getListOfAllTickersFromMongoDB(){
-        return new TickerServiceClient().getAllTickerStrings();
-    }
-    private List<String> getListOfAllTickers() throws IOException{
-        return AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB) ?
-                getListOfAllTickersFromMongoDB() : getListOfAllTickersFromFile();
+    private final TickerProvider tickerProvider;
+
+    public CreateActiveStockFiles(TickerProvider tickerProvider) {
+        this.tickerProvider = tickerProvider;
     }
 
-    private Stock constructStockFromTickerString( String ticker ){
-        Stock stock = new Stock( ticker );
-        if( AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB) ) {
-            stock.readFromMongoDB();
-        }
-        else {
-            stock.read(Constants.SRC_MAIN_RESOURCE_FILEPATH);
-        }
-        return stock;
+    public void generateStockListsByDate(String outputFolderPath) throws IOException {
+        generateStockListsByDate(tickerProvider.getAllTickers(), outputFolderPath);
     }
 
-    private String getNextYearInString( Calendar date ){
-        return Integer.toString( date.get( Calendar.YEAR ) + 1 );
-    }
-
-    private static TreeMap<String, Double> sortMapByValue(TreeMap<String, Double> map){
-        //TreeMap is a map sorted by its keys.classFilePath
-        //The comparator is used to sort the TreeMap by keys.
-        TreeMap<String, Double> result = new TreeMap<>((keyA, keyB) ->  {
-            Double valueA = map.get(keyA);
-            Double valueB = map.get(keyB);
-            return valueA.compareTo(valueB); // want orders with descending values
-        });
-        result.putAll(map);
-        return result;
-    }
-
-    private void dumpDateTickerVolumeToFiles(Map<String, Map<String, Double>> dateTickerVol) throws IOException {
-        for( Map.Entry< String, Map< String, Double>> entry: dateTickerVol.entrySet() ){
-            String filename = classFilePath + entry.getKey() + ".txt";
-            Set<String> stockList = entry.getValue().keySet();
-            BufferedWriter out = new BufferedWriter( new FileWriter( filename) );
-            for(String stock : stockList){
-                out.write( stock );
-                out.newLine();
-            }
-            out.close();
-        }
-    }
-
-
-    public void generateStockListsByDate() throws IOException {
-        List<String> tickers = getListOfAllTickers();
+    public void generateStockListsByDate(List<String> tickers, String outputFolderPath) throws IOException {
         Date earliestDate = defaultStartDate;
         Date latestDate = new Date(); // present time
         for( String ticker : tickers ) {
-            Stock stock = constructStockFromTickerString(ticker);
+            Stock stock = tickerProvider.constructStockFromTickerString(ticker);
             allStocks.put(ticker, stock );
             Date comparingDate = stock.getEarliestDate();
             if( earliestDate.compareTo( comparingDate) > 0 ) {
@@ -133,7 +79,43 @@ public class CreateActiveStockFiles {
                 tickerVol = new TreeMap<>();
             }
         }
-        dumpDateTickerVolumeToFiles(dateTickerVol);
+        dumpDateTickerVolumeToFiles(dateTickerVol, outputFolderPath);
+    }
+
+    private String getNextYearInString( Calendar date ){
+        return Integer.toString( date.get( Calendar.YEAR ) + 1 );
+    }
+
+    private static TreeMap<String, Double> sortMapByValue(TreeMap<String, Double> map){
+        //TreeMap is a map sorted by its keys.classFilePath
+        //The comparator is used to sort the TreeMap by keys.
+        TreeMap<String, Double> result = new TreeMap<>((keyA, keyB) ->  {
+            Double valueA = map.get(keyA);
+            Double valueB = map.get(keyB);
+            return valueA.compareTo(valueB); // want orders with descending values
+        });
+        result.putAll(map);
+        return result;
+    }
+
+    private void dumpDateTickerVolumeToFiles(Map<String, Map<String, Double>> dateTickerVol, String outputFolderPath) throws IOException {
+        for( Map.Entry< String, Map< String, Double>> entry: dateTickerVol.entrySet() ){
+            String filename = outputFolderPath + entry.getKey() + ".txt";
+            Set<String> stockList = entry.getValue().keySet();
+            BufferedWriter out = new BufferedWriter( new FileWriter( filename) );
+            for(String stock : stockList){
+                out.write( stock );
+                out.newLine();
+            }
+            out.close();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        TickerProvider tickerProvider = TickerProviderFactory.ofTickerProvider();
+
+        CreateActiveStockFiles createActiveStockFiles = new CreateActiveStockFiles(tickerProvider);
+        createActiveStockFiles.generateStockListsByDate(Constants.SRC_MAIN_RESOURCE_FILEPATH + "/ActivelyTradedStocksData/");
     }
 
 }
