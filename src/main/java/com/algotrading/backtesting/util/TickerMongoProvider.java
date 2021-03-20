@@ -16,7 +16,7 @@ public class TickerMongoProvider implements TickerProvider {
 
     @Override
     public List<String> getAllTickers() throws IOException {
-        return getAllTickersFromMongo();
+        return tickerServiceClient.getAllTickerStrings();
     }
 
     @Override
@@ -24,9 +24,5 @@ public class TickerMongoProvider implements TickerProvider {
         Stock stock = new Stock( ticker );
         stock.readFromMongoDB();
         return stock;
-    }
-
-    private List<String> getAllTickersFromMongo() {
-        return tickerServiceClient.getAllTickerStrings();
     }
 }

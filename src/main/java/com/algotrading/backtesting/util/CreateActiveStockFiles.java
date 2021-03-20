@@ -27,10 +27,7 @@ public class CreateActiveStockFiles {
     }
 
     public void generateStockListsByDate(String outputFolderPath) throws IOException {
-        generateStockListsByDate(tickerProvider.getAllTickers(), outputFolderPath);
-    }
-
-    public void generateStockListsByDate(List<String> tickers, String outputFolderPath) throws IOException {
+        List<String> tickers = tickerProvider.getAllTickers();
         Date earliestDate = defaultStartDate;
         Date latestDate = new Date(); // present time
         for( String ticker : tickers ) {
