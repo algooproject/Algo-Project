@@ -58,20 +58,24 @@ public class ActiveTradedStocksTest {
         Assert.assertEquals(HK_0011, allAvailableStocks.get(HK_0011).getTicker());
 
         AvailableStocks availableStocks2013 = activelyTradedStocks.get(DATE_20130101);
-        Assert.assertNull(availableStocks2013); // I am not sure is it intented, in implementation only "dateStr.compareTo(d) > 0"
+        Map<String, Stock> allAvailableStocks2013 = availableStocks2013.getAllAvailableStocks();
+        Assert.assertEquals(3, allAvailableStocks2013.size());
+        Assert.assertEquals(HK_0001, allAvailableStocks2013.get(HK_0001).getTicker());
+        Assert.assertEquals(HK_0002, allAvailableStocks2013.get(HK_0002).getTicker());
+        Assert.assertEquals(HK_0003, allAvailableStocks2013.get(HK_0003).getTicker());
 
         AvailableStocks availableStocks2014 = activelyTradedStocks.get(DATE_20140101);
         Map<String, Stock> allAvailableStocks2014 = availableStocks2014.getAllAvailableStocks();
         Assert.assertEquals(3, allAvailableStocks2014.size());
-        Assert.assertEquals(HK_0001, allAvailableStocks2014.get(HK_0001).getTicker());
-        Assert.assertEquals(HK_0002, allAvailableStocks2014.get(HK_0002).getTicker());
-        Assert.assertEquals(HK_0003, allAvailableStocks2014.get(HK_0003).getTicker());
+        Assert.assertEquals(HK_0006, allAvailableStocks2014.get(HK_0006).getTicker());
+        Assert.assertEquals(HK_0007, allAvailableStocks2014.get(HK_0007).getTicker());
+        Assert.assertEquals(HK_0008, allAvailableStocks2014.get(HK_0008).getTicker());
 
         AvailableStocks availableStocks2015 = activelyTradedStocks.get(DATE_20150101);
         Map<String, Stock> allAvailableStocks2015 = availableStocks2015.getAllAvailableStocks();
         Assert.assertEquals(3, allAvailableStocks2015.size());
-        Assert.assertEquals(HK_0006, allAvailableStocks2015.get(HK_0006).getTicker());
-        Assert.assertEquals(HK_0007, allAvailableStocks2015.get(HK_0007).getTicker());
-        Assert.assertEquals(HK_0008, allAvailableStocks2015.get(HK_0008).getTicker());
+        Assert.assertEquals(HK_0009, allAvailableStocks2015.get(HK_0009).getTicker());
+        Assert.assertEquals(HK_0010, allAvailableStocks2015.get(HK_0010).getTicker());
+        Assert.assertEquals(HK_0011, allAvailableStocks2015.get(HK_0011).getTicker());
     }
 }

@@ -25,7 +25,6 @@ import java.util.*;
 public class ActivelyTradedStocks implements DynamicAvailableStocks {
 
 	private final Map<String, Stock> allStocks = new LinkedHashMap<>();
-//	private static String classFilePath = Constants.SRC_MAIN_RESOURCE_FILEPATH + "/ActivelyTradedStocksData/";
 
 	private final ActiveTradedStocksReader activeTradedStocksReader;
 	private Map<String, AvailableStocks> map;
@@ -86,12 +85,10 @@ public class ActivelyTradedStocks implements DynamicAvailableStocks {
 	@Override
 	public AvailableStocks get(Date date) {
 		String dateStr = new SimpleDateFormat("yyyyMMdd").format(date);
-		System.out.println("dateStr " + dateStr);
-		System.out.println("map " + map);
 		List<String> list = new ArrayList<>(map.keySet());
 		Collections.reverse(list);
 		for (String d : list) {
-			if (dateStr.compareTo(d) > 0)
+			if (dateStr.compareTo(d) >= 0)
 				return map.get(d);
 		}
 		return null;

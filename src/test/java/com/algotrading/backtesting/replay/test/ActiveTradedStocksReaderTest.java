@@ -26,14 +26,17 @@ public class ActiveTradedStocksReaderTest {
     public void setup() throws IOException {
         Path folderPath = Files.createTempDirectory("folder");
         folderPathStr = folderPath.toString();
-
-        Path file1Path1 = folderPath.resolve("20130101.txt");
+        Path file1Path = folderPath.resolve("20130101.txt");
         List<String> lines1 = Arrays.asList(HK_0001, HK_0002, HK_0003);
-        Files.write(file1Path1, lines1, StandardCharsets.UTF_8);
+        Files.write(file1Path, lines1, StandardCharsets.UTF_8);
 
         Path file2Path = folderPath.resolve("20140101.txt");
         List<String> lines2 = Arrays.asList(HK_0004, HK_0005, HK_0006);
         Files.write(file2Path, lines2, StandardCharsets.UTF_8);
+
+        folderPath.toFile().deleteOnExit();
+        file1Path.toFile().deleteOnExit();
+        file2Path.toFile().deleteOnExit();
     }
 
     @Test
