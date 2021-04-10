@@ -37,7 +37,7 @@ public class ActiveTradedStocksTest {
 
     @Before
     public void setup() throws IOException {
-        Map<String, List<String>> map = new HashMap<>();
+        Map<String, List<String>> map = new LinkedHashMap<>(); // Ordered for stable testing
         map.put(sdf.format(DATE_20130101), Arrays.asList(HK_0001, HK_0002, HK_0003,
                 HK_0004, HK_0005, HK_0006,
                 HK_0007, HK_0008, HK_0009,
@@ -307,8 +307,7 @@ public class ActiveTradedStocksTest {
     @Test
     public void testNoSufficientNumberOfStocks() throws IOException{
 
-        // Question: Why not 20130101? Seems not depending on the order of putting to the map
-        thrown.expectMessage("Generating available stock error: 20150101.txt does not provide sufficient number of stocks");
+        thrown.expectMessage("Generating available stock error: 20130101.txt does not provide sufficient number of stocks");
         ActivelyTradedStocks activelyTradedStocks = new ActivelyTradedStocks(activeTradedStocksReader, 1, false );
     }
 }
