@@ -18,7 +18,7 @@ public class CreateActiveStockFiles {
     // can be made local in generateStockListsByDate()
     private Map<String, Stock> allStocks = new LinkedHashMap<>();
     private Map<String, List<String>> yearToTickerList;
-    private static Date defaultStartDate = new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime();
+    private static Date defaultStartDate = new GregorianCalendar(4000, Calendar.JANUARY, 1).getTime();
 
     private final TickerProvider tickerProvider;
 
@@ -56,17 +56,18 @@ public class CreateActiveStockFiles {
         TreeMap<String, Double> tickerVol = new TreeMap<>();
         while( current.compareTo( latest ) <= 0 ){
             lastYearString = yearString;
-            for(Map.Entry<String, Stock> entry : allStocks.entrySet()){
-                if( !tickerVol.containsKey( entry.getKey() ) ) {
-                    tickerVol.put(entry.getKey(), entry.getValue().getHistory().get(current.getTime()).getVolume());
-                }
-                else {
-                    Double currentVol = tickerVol.get(entry.getKey());
-                    tickerVol.replace(entry.getKey(),
-                            currentVol + entry.getValue().getHistory().get(current.getTime()).getVolume());
+            for(Map.Entry<String, Stock> entry : allStocks.entrySet()) {
+                if (entry.getValue().getHistory().containsKey(current.getTime())) {
+                    if (!tickerVol.containsKey(entry.getKey())) {
+                        tickerVol.put(entry.getKey(), entry.getValue().getHistory().get(current.getTime()).getVolume());
+                    } else {
+                        Double currentVol = tickerVol.get(entry.getKey());
+                        tickerVol.replace(entry.getKey(),
+                                currentVol + entry.getValue().getHistory().get(current.getTime()).getVolume());
+                    }
                 }
             }
-            current.roll( Calendar.DAY_OF_MONTH, true );
+            current.add( Calendar.DAY_OF_MONTH, 1 );
             // The active stocks this year are the available stocks since 1 Jan next year
             yearString = getNextYearInString( current ) + "0101";
             if( !lastYearString.equals( yearString ) ){
@@ -89,7 +90,7 @@ public class CreateActiveStockFiles {
         TreeMap<String, Double> result = new TreeMap<>((keyA, keyB) ->  {
             Double valueA = map.get(keyA);
             Double valueB = map.get(keyB);
-            return valueA.compareTo(valueB); // want orders with descending values
+            return valueB.compareTo(valueA); // want orders with descending values
         });
         result.putAll(map);
         return result;
