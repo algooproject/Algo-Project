@@ -50,6 +50,20 @@ public class Stock {
 		this.ticker = ticker;
 		this.history = history;
 		this.lotSize = lotSize;
+
+		Boolean datesInit = false;
+		for( Date date: history.keySet() ){
+			if( datesInit ){
+				if( earliestDate.compareTo( date ) > 0 )
+					earliestDate = date;
+				if( latestDate.compareTo( date ) < 0 )
+					latestDate = date;
+			}else{
+				datesInit = true;
+				earliestDate = date;
+				latestDate = date;
+			}
+		}
 	}
 
 	public Date getEarliestDate(){ return earliestDate; }
