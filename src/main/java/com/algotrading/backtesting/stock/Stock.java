@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Stock {
@@ -18,6 +17,8 @@ public class Stock {
 	private final Map<Date, StockHistory> history;
 	private int lotSize; // default to be 1 if not specified when instantiated;
 	private Boolean status = true;
+	private Date earliestDate = new Date();
+	private Date latestDate = new Date();
 
 	Map<Integer, Date> pointerDate = new HashMap<>();
 	Map<Date, Integer> datePointer = new HashMap<>();
@@ -49,8 +50,24 @@ public class Stock {
 		this.ticker = ticker;
 		this.history = history;
 		this.lotSize = lotSize;
+
+		Boolean datesInit = false;
+		for( Date date: history.keySet() ){
+			if( datesInit ){
+				if( earliestDate.compareTo( date ) > 0 )
+					earliestDate = date;
+				if( latestDate.compareTo( date ) < 0 )
+					latestDate = date;
+			}else{
+				datesInit = true;
+				earliestDate = date;
+				latestDate = date;
+			}
+		}
 	}
 
+	public Date getEarliestDate(){ return earliestDate; }
+	public Date getLatestestDate(){ return latestDate; }
 	public Boolean getStatus() {
 		return status;
 	}
@@ -66,13 +83,20 @@ public class Stock {
 	/** return if has stock record in mongodb */
 	public boolean readFromMongoDB() {
 		List<Ticker> tickers = new TickerServiceClient().findTickerByCode(this.ticker);
+		tickers.sort(Comparator.comparing(ticker -> ticker.date));
+//		tickers.sort(Comparator.comparing(tickersA -> tickersA.date)); // TODO to sort ascending or desending?
 		if (tickers.size() == 0) {
 			return false;
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		for (Ticker ticker : tickers) {
 			try {
-				Date date = sdf.parse(ticker.date);
+				Date date = Constants.DATE_FORMAT_YYYYMMDD.parse(ticker.date);
+				if( earliestDate.equals( null ) || earliestDate.compareTo( date ) > 0 ) {
+					earliestDate = date;
+				}
+				if( latestDate.equals( null ) || latestDate.compareTo( date ) < 0 ) {
+					latestDate = date;
+				}
 				history.put(date, new StockHistory(date, ticker.open, ticker.close, ticker.high, ticker.low, ticker.adjClose, ticker.volume));
 			} catch(Exception e) {
 				e.printStackTrace();
