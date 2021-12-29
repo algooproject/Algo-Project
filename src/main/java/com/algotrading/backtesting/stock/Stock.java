@@ -41,11 +41,11 @@ public class Stock {
 	}
 
 	public Stock(String ticker) {
-		this(ticker, new TreeMap<Date, StockHistory>(), 1);
+		this(ticker, new TreeMap<>(), 1);
 	}
 
 	public Stock(String ticker, int lotSize) {
-		this(ticker, new TreeMap<Date, StockHistory>(), lotSize);
+		this(ticker, new TreeMap<>(), lotSize);
 	}
 
 	public Stock(String ticker, Map<Date, StockHistory> history, int lotSize) {
@@ -100,15 +100,6 @@ public class Stock {
 	public void read(String filePath) {
 		// read(filePath, false);
 		read(filePath, true);
-	}
-
-	public void read() {
-		// read(false);
-		read(true);
-	}
-
-	public void read(boolean withHeader) {
-		read(Constants.SRC_MAIN_RESOURCE_FILEPATH, withHeader);
 	}
 
 	public void read(String filePath, boolean withHeader) {
