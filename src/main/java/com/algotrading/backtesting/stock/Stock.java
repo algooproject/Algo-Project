@@ -1,14 +1,16 @@
 package com.algotrading.backtesting.stock;
 
+import com.algotrading.backtesting.stock.io.StockMongoDBGateway;
 import com.algotrading.backtesting.util.Constants;
-import com.algotrading.tickerservice.Ticker;
-import com.algotrading.tickerservice.TickerServiceClient;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Stock {
 
@@ -68,6 +70,15 @@ public class Stock {
 
 	public Date getEarliestDate(){ return earliestDate; }
 	public Date getLatestestDate(){ return latestDate; }
+
+	public void setEarliestDate(Date earliestDate) {
+		this.earliestDate = earliestDate;
+	}
+
+	public void setLatestestDate(Date latestDate) {
+		this.latestDate = latestDate;
+	}
+
 	public Boolean getStatus() {
 		return status;
 	}
@@ -82,28 +93,8 @@ public class Stock {
 
 	/** return if has stock record in mongodb */
 	public boolean readFromMongoDB() {
-		List<Ticker> tickers = new TickerServiceClient().findTickerByCode(this.ticker);
-		tickers.sort(Comparator.comparing(ticker -> ticker.date));
-//		tickers.sort(Comparator.comparing(tickersA -> tickersA.date)); // TODO to sort ascending or desending?
-		if (tickers.size() == 0) {
-			return false;
-		}
-		for (Ticker ticker : tickers) {
-			try {
-				Date date = Constants.DATE_FORMAT_YYYYMMDD.parse(ticker.date);
-				if( earliestDate.equals( null ) || earliestDate.compareTo( date ) > 0 ) {
-					earliestDate = date;
-				}
-				if( latestDate.equals( null ) || latestDate.compareTo( date ) < 0 ) {
-					latestDate = date;
-				}
-				history.put(date, new StockHistory(date, ticker.open, ticker.close, ticker.high, ticker.low, ticker.adjClose, ticker.volume));
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-		initialDate();
-		return true;
+		// TODO further refactor and extract to this enrichment method outside stock class
+		return new StockMongoDBGateway().fillData(this);
 	}
 
 	public void read(String filePath) {
