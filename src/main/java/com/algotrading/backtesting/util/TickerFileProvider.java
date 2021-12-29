@@ -24,7 +24,7 @@ public class TickerFileProvider implements TickerProvider {
     @Override
     public Stock constructStockFromTickerString(String ticker){
         Stock stock = new Stock( ticker );
-        stock.read(Constants.SRC_MAIN_RESOURCE_FILEPATH);
+        stock.readFromFile(Constants.SRC_MAIN_RESOURCE_FILEPATH);
         return stock;
     }
 

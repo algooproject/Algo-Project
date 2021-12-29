@@ -35,7 +35,7 @@ public class RsiLowerThanSignalTest {
 		expectedValue = "25.1";
 		Stock stockSEHK_TC0001 = new Stock("SEHK_TC0001");
 		// rely on Stock.read();
-		stockSEHK_TC0001.read(RESOURCE_PATH_NAME);	
+		stockSEHK_TC0001.readFromFile(RESOURCE_PATH_NAME);
 		RsiSignal testSignal = new RsiLowerThanSignal(magnitude, sma_magnitude, expectedValueType, expectedValue, multiplier);
 		assertTrue(testSignal.signal(stockSEHK_TC0001, date, portfolio, 10000));
 		expectedValue = "24.9";
@@ -51,9 +51,9 @@ public class RsiLowerThanSignalTest {
 		expectedValue = "15.1";
 		Stock stockSEHK_TC0001 = new Stock("SEHK_TC0001");
 		// rely on Stock.read();
-		stockSEHK_TC0001.read(RESOURCE_PATH_NAME);
+		stockSEHK_TC0001.readFromFile(RESOURCE_PATH_NAME);
 		Stock stockSEHK_TC0002 = new Stock("SEHK_TC0002");
-		stockSEHK_TC0002.read(RESOURCE_PATH_NAME);
+		stockSEHK_TC0002.readFromFile(RESOURCE_PATH_NAME);
 		RsiSignal testSignal = new RsiLowerThanSignal(magnitude, sma_magnitude, expectedValueType, expectedValue, multiplier);
 		// get stockSEHK_TC0001 first
 		assertEquals(false, testSignal.signal(stockSEHK_TC0001, date, portfolio, 10000));

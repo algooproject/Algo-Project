@@ -56,7 +56,7 @@ public class AvailableStocks {
 				// System.out.println(filePath + stock.getTicker() + ".csv");
 				// System.out.println(exists);
 				if (exists) {
-					stock.read(filePath);
+					stock.readFromFile(filePath);
 					add(stock);
 				}
 			}

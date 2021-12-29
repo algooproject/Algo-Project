@@ -4,7 +4,6 @@ import java.text.ParseException;
 
 import org.junit.Test;
 
-import com.algotrading.backtesting.signal.test.SmaHigherThanSignalTest;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.util.Constants;
 
@@ -70,7 +69,7 @@ public class StockReadTest {
 
 	private double getStockHistory(String ticker, String strDate, String strInformation) throws ParseException {
 		Stock SEHK_0001_HK = new Stock(ticker);
-		SEHK_0001_HK.read(RESOURCE_PATH_NAME);
+		SEHK_0001_HK.readFromFile(RESOURCE_PATH_NAME);
 		if (strInformation.equals("open")) {
 			return SEHK_0001_HK.getHistory()
 					.get(Constants.DATE_FORMAT_YYYYMMDD.parse(strDate))

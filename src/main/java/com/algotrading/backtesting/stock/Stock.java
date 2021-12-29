@@ -97,12 +97,12 @@ public class Stock {
 		return new StockMongoDBGateway().fillData(this);
 	}
 
-	public void read(String filePath) {
+	public void readFromFile(String filePath) {
 		// read(filePath, false);
-		read(filePath, true);
+		readFromFile(filePath, true);
 	}
 
-	public void read(String filePath, boolean withHeader) {
+	public void readFromFile(String filePath, boolean withHeader) {
 		// TODO read files from ticker
 		String strCsvFile = filePath + this.ticker + ".csv";
 		String strLine = "";

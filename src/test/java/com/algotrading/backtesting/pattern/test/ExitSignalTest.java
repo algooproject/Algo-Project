@@ -32,7 +32,7 @@ public class ExitSignalTest {
 		portfolio2 = new Portfolio(date2, 0);
 
 		stockExit = new Stock("SEHK_Exit");
-		stockExit.read(RESOURCE_PATH_NAME);
+		stockExit.readFromFile(RESOURCE_PATH_NAME);
 
 		portfolio1.put(new PortfolioComponent(stockExit, 1000, 3, date1));
 		portfolio2.put(new PortfolioComponent(stockExit, 1000, 3, date2));
@@ -53,7 +53,7 @@ public class ExitSignalTest {
 		portfolio2 = new Portfolio(date2, 0);
 
 		stockExit = new Stock("SEHK_Exit");
-		stockExit.read(RESOURCE_PATH_NAME);
+		stockExit.readFromFile(RESOURCE_PATH_NAME);
 		stockExit.setStatus(false);
 
 		portfolio1.put(new PortfolioComponent(stockExit, 1000, 3, date1));
