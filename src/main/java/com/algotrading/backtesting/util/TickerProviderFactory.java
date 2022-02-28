@@ -8,6 +8,6 @@ public class TickerProviderFactory {
     public static TickerProvider ofTickerProvider() {
         return AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
                 ? new TickerMongoProvider(new TickerServiceClient())
-                : new TickerFileProvider(Constants.SRC_MAIN_RESOURCE_FILEPATH + "allStock.txt");
+                : new TickerFileProvider(Constants.SRC_MAIN_RESOURCE_FILEPATH, "allStock.txt");
     }
 }

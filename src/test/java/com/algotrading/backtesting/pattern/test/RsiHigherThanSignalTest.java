@@ -1,19 +1,19 @@
 package com.algotrading.backtesting.pattern.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.text.ParseException;
-import java.util.Date;
-
-import org.junit.Test;
-
 import com.algotrading.backtesting.pattern.RsiHigherThanSignal;
 import com.algotrading.backtesting.pattern.RsiSignal;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.replay.test.MainTest;
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.stock.io.StockFileGateway;
 import com.algotrading.backtesting.util.Constants;
+import org.junit.Test;
+
+import java.text.ParseException;
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RsiHigherThanSignalTest {
 	protected static String RESOURCE_PATH_NAME = Constants.SRC_TEST_RESOURCE_FILEPATH
@@ -35,7 +35,7 @@ public class RsiHigherThanSignalTest {
 		expectedValue = "25.1";
 		Stock stockSEHK_TC0001 = new Stock("SEHK_TC0001");
 		// rely on Stock.read();
-		stockSEHK_TC0001.readFromFile(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockSEHK_TC0001);
 		RsiSignal testSignal = new RsiHigherThanSignal(magnitude, sma_magnitude, expectedValueType, expectedValue,
 				multiplier);
 		assertTrue(!testSignal.signal(stockSEHK_TC0001, date, portfolio, 10000));
@@ -52,9 +52,9 @@ public class RsiHigherThanSignalTest {
 		expectedValue = "15.1";
 		Stock stockSEHK_TC0001 = new Stock("SEHK_TC0001");
 		// rely on Stock.read();
-		stockSEHK_TC0001.readFromFile(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockSEHK_TC0001);
 		Stock stockSEHK_TC0002 = new Stock("SEHK_TC0002");
-		stockSEHK_TC0002.readFromFile(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockSEHK_TC0002);
 		RsiSignal testSignal = new RsiHigherThanSignal(magnitude, sma_magnitude, expectedValueType, expectedValue,
 				multiplier);
 		// get stockSEHK_TC0001 first

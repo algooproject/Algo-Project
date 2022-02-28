@@ -1,11 +1,11 @@
 package com.algotrading.backtesting.stockread.test;
 
-import java.text.ParseException;
-
+import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.stock.io.StockFileGateway;
+import com.algotrading.backtesting.util.Constants;
 import org.junit.Test;
 
-import com.algotrading.backtesting.stock.Stock;
-import com.algotrading.backtesting.util.Constants;
+import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -69,7 +69,7 @@ public class StockReadTest {
 
 	private double getStockHistory(String ticker, String strDate, String strInformation) throws ParseException {
 		Stock SEHK_0001_HK = new Stock(ticker);
-		SEHK_0001_HK.readFromFile(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillData(SEHK_0001_HK);
 		if (strInformation.equals("open")) {
 			return SEHK_0001_HK.getHistory()
 					.get(Constants.DATE_FORMAT_YYYYMMDD.parse(strDate))

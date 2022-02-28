@@ -1,11 +1,9 @@
 package com.algotrading.backtesting.util.test;
 
-import com.algotrading.backtesting.stock.StockHistory;
 import com.algotrading.backtesting.stock.Stock;
-import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.stock.StockHistory;
 import com.algotrading.backtesting.util.CreateActiveStockFiles;
 import com.algotrading.backtesting.util.TickerProvider;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,16 +12,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-
-import static com.algotrading.constants.TestConstants.*;
-import static com.algotrading.constants.TestConstants.HK_0006;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateActiveStockFilesTest {
@@ -124,8 +118,8 @@ public class CreateActiveStockFilesTest {
             String fullFilename = file.toPath().toString();
             String filename = fullFilename.substring( fullFilename.length() - 12 );
             Boolean correctFile = filename.equals("20190101.txt") || filename.equals("20200101.txt")
-                || filename.equals("20210101.txt");
-            assert( correctFile );
+                || filename.equals("20210101.txt") || filename.equals("20220101.txt");
+            Assert.assertTrue(filename, correctFile);
             yearToTickerList.put( filename , Files.readAllLines(file.toPath(), Charset.defaultCharset()) );
         }
         Assert.assertEquals("Stock2", yearToTickerList.get("20190101.txt").get(0));

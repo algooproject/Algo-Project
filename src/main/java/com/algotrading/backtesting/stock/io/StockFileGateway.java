@@ -5,6 +5,7 @@ import com.algotrading.backtesting.stock.StockHistory;
 import com.algotrading.backtesting.util.Constants;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -31,6 +32,12 @@ public class StockFileGateway implements StockGateway {
         boolean isFirstLine = withHeader; // will skip header if true
         Double dbLastClose = null;
         Double dbLastAdjClose = null;
+
+        File tempFile = new File(filePath + stock.getTicker() + ".csv");
+        boolean exists = tempFile.exists();
+        if (!exists) {
+            return false;
+        }
 
         try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
             while ((strLine = br.readLine()) != null) {

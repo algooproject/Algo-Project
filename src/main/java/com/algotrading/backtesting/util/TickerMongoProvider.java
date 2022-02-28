@@ -1,6 +1,7 @@
 package com.algotrading.backtesting.util;
 
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.stock.io.StockMongoDBGateway;
 import com.algotrading.tickerservice.TickerServiceClient;
 
 import java.io.IOException;
@@ -22,7 +23,12 @@ public class TickerMongoProvider implements TickerProvider {
     @Override
     public Stock constructStockFromTickerString(String ticker){
         Stock stock = new Stock( ticker );
-        stock.readFromMongoDB();
+        fillStockHistory(stock);
         return stock;
+    }
+
+    @Override
+    public boolean fillStockHistory(Stock stock) {
+        return new StockMongoDBGateway().fillData(stock);
     }
 }

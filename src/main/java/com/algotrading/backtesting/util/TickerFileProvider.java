@@ -1,6 +1,7 @@
 package com.algotrading.backtesting.util;
 
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.stock.io.StockFileGateway;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,10 +11,12 @@ import java.util.List;
 
 public class TickerFileProvider implements TickerProvider {
 
-    private final String allStockListPath;
+    private final String resourcePath;
+    private final String allStockListFilename;
 
-    public TickerFileProvider(String allStockListPath) {
-         this.allStockListPath = allStockListPath;
+    public TickerFileProvider(String resourcePath, String allStockListFilename) {
+        this.resourcePath = resourcePath;
+        this.allStockListFilename = allStockListFilename;
     }
 
     @Override
@@ -24,13 +27,18 @@ public class TickerFileProvider implements TickerProvider {
     @Override
     public Stock constructStockFromTickerString(String ticker){
         Stock stock = new Stock( ticker );
-        stock.readFromFile(Constants.SRC_MAIN_RESOURCE_FILEPATH);
+        fillStockHistory(stock);
         return stock;
+    }
+
+    @Override
+    public boolean fillStockHistory(Stock stock){
+        return new StockFileGateway(resourcePath).fillData(stock);
     }
 
     // allStockListPath: Constants.SRC_MAIN_RESOURCE_FILEPATH + "allStock.txt"
     private List<String> getAllTickersFromFile() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(allStockListPath));
+        BufferedReader br = new BufferedReader(new FileReader(resourcePath + allStockListFilename));
         String line;
         List<String> tickerList = new ArrayList<>();
         while ((line = br.readLine()) != null)

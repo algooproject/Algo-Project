@@ -3,13 +3,12 @@ package com.algotrading.backtesting.replay;
 import com.algotrading.DateUtil;
 import com.algotrading.backtesting.config.AlgoConfiguration;
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.util.TickerFileProvider;
+import com.algotrading.backtesting.util.TickerMongoProvider;
+import com.algotrading.backtesting.util.TickerProvider;
 import com.algotrading.tickerservice.TickerServiceClient;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,33 +31,29 @@ public class AvailableStocks {
 	}
 
 	public void read(String filePath, String fileName) throws IOException, ParseException {
-		Path file = new File(filePath + fileName).toPath();
-		Charset charset = Charset.defaultCharset();
+
+		TickerProvider tickerProvider = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
+				? new TickerMongoProvider(new TickerServiceClient())
+				: new TickerFileProvider(filePath, fileName);
+
+		// cannot use ist<String> stringList = tickerProvider.getAllTickers(); yet, as the api is different in mongo db
+		// mongodb need to call tickerServiceClient.findAvailableStockByGroup or tickerServiceClient.findAvailableStockByGroupAndDate
+		// where tickerProvider.getAllTickers() is calling tickerServiceClient.getAllTickerStrings()
+		// TODO maybe need to pass some custom function in MongoTickerProvider to query a collection of stocks
+		// maybe even change the ticker service api implementation to fulfill this
 		List<String> stringList = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
 				? getAvailableStockFromMongoDb(fileName)
-				: Files.readAllLines(file, charset);
+				: tickerProvider.getAllTickers();
+
 		stocks = new HashMap<>();
 		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
-		boolean isUsingMongoDb = AlgoConfiguration.FROM_MONGODB.equals(AlgoConfiguration.getReadStockFrom());
-		for (String line : stringList) {
-			// System.out.println(line);
-			Stock stock = new Stock(line, lotSize.getLotSize(line));
-			// System.out.println("Reading " + stock.getTicker());
 
-			if (isUsingMongoDb) {
-				boolean hasTickerHistory = stock.readFromMongoDB();
-			 	if (hasTickerHistory) {
-			 		add(stock);
-				}
-			} else {
-				File tempFile = new File(filePath + stock.getTicker() + ".csv");
-				boolean exists = tempFile.exists();
-				// System.out.println(filePath + stock.getTicker() + ".csv");
-				// System.out.println(exists);
-				if (exists) {
-					stock.readFromFile(filePath);
-					add(stock);
-				}
+		for (String line : stringList) {
+			Stock stock = new Stock(line, lotSize.getLotSize(line));
+
+			boolean hasTickerHistory = tickerProvider.fillStockHistory(stock);
+			if (hasTickerHistory) {
+				add(stock);
 			}
 		}
 	}
@@ -71,7 +66,7 @@ public class AvailableStocks {
 	}
 
 	public List<Stock> get() {
-		return new ArrayList<Stock>(stocks.values());
+		return new ArrayList<>(stocks.values());
 	}
 
 	public Stock get(String ticker) {

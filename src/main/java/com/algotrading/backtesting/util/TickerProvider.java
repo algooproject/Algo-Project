@@ -11,4 +11,7 @@ public interface TickerProvider {
 
     Stock constructStockFromTickerString(String ticker);
 
+    /** return true if the source of read file exist */
+    boolean fillStockHistory(Stock stock);
+
 }

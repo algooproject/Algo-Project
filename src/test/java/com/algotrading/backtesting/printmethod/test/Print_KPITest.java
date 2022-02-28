@@ -1,5 +1,16 @@
 package com.algotrading.backtesting.printmethod.test;
 
+import com.algotrading.backtesting.portfolio.Portfolio;
+import com.algotrading.backtesting.portfolio.PortfolioComponent;
+import com.algotrading.backtesting.replay.*;
+import com.algotrading.backtesting.stock.PortfolioHistory;
+import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.stock.io.StockFileGateway;
+import com.algotrading.backtesting.strategy.Strategies;
+import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.Print_KPI;
+import org.junit.Test;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,17 +18,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.algotrading.backtesting.replay.*;
-import org.junit.Test;
-
-import com.algotrading.backtesting.portfolio.Portfolio;
-import com.algotrading.backtesting.portfolio.PortfolioComponent;
-import com.algotrading.backtesting.stock.PortfolioHistory;
-import com.algotrading.backtesting.stock.Stock;
-import com.algotrading.backtesting.strategy.Strategies;
-import com.algotrading.backtesting.util.Constants;
-import com.algotrading.backtesting.util.Print_KPI;
 
 public class Print_KPITest {
 
@@ -89,7 +89,7 @@ public class Print_KPITest {
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0002 = new Stock("SEHK_TC0002", lotSize.getLotSize("SEHK_TC0002"));
-		stockTC0002.readFromFile(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0002);
 		PortfolioComponent TC0002pc = new PortfolioComponent(stockTC0002, 3333, 3, startDate);
 		portfolio.put(TC0002pc);
 		history.put(startDate, portfolio);

@@ -1,8 +1,5 @@
 package com.algotrading.backtesting.stock;
 
-import com.algotrading.backtesting.stock.io.StockFileGateway;
-import com.algotrading.backtesting.stock.io.StockMongoDBGateway;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,17 +84,6 @@ public class Stock {
 		// TODO
 	}
 
-	/** return if has stock record in mongodb */
-	public boolean readFromMongoDB() {
-		// TODO further refactor and extract to this enrichment method outside stock class
-		return new StockMongoDBGateway().fillData(this);
-	}
-
-	public void readFromFile(String filePath) {
-		// TODO further refactor and extract to this enrichment method outside stock class
-		new StockFileGateway(filePath).fillData(this);
-	}
-
 	public Map<Integer, Date> getPointerDate() {
 		return pointerDate;
 	}
@@ -125,6 +111,10 @@ public class Stock {
 	@Override
 	public String toString() {
 		return ticker;
+	}
+
+	public boolean hasHistory() {
+		return !getHistory().isEmpty();
 	}
 
 }
