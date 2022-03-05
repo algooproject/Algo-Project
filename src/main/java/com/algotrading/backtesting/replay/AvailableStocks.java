@@ -1,10 +1,9 @@
 package com.algotrading.backtesting.replay;
 
-import com.algotrading.DateUtil;
 import com.algotrading.backtesting.config.AlgoConfiguration;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.util.TickerFileProvider;
-import com.algotrading.backtesting.util.TickerMongoProvider;
+import com.algotrading.backtesting.util.TickerMongoAvailableStocksProvider;
 import com.algotrading.backtesting.util.TickerProvider;
 import com.algotrading.tickerservice.TickerServiceClient;
 
@@ -21,29 +20,22 @@ public class AvailableStocks {
 
 	private boolean fileNameIsDate;
 
-	public AvailableStocks(String filePath, String fileName, boolean fileNameIsDate) throws IOException, ParseException {
+	public AvailableStocks(String filePath, String stockListName, boolean fileNameIsDate) throws IOException, ParseException {
 		this.fileNameIsDate = fileNameIsDate;
-		read(filePath, fileName);
+		read(filePath, stockListName);
 	}
 
 	public AvailableStocks() {
 		stocks = new HashMap<>();
 	}
 
-	public void read(String filePath, String fileName) throws IOException, ParseException {
+	public void read(String filePath, String stockListFileName) throws IOException, ParseException {
 
 		TickerProvider tickerProvider = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
-				? new TickerMongoProvider(new TickerServiceClient())
-				: new TickerFileProvider(filePath, fileName);
+				? new TickerMongoAvailableStocksProvider(stockListFileName, fileNameIsDate, new TickerServiceClient()) // mongodb need to call tickerServiceClient.findAvailableStockByGroup or tickerServiceClient.findAvailableStockByGroupAndDate
+				: new TickerFileProvider(filePath, stockListFileName + ".txt");
 
-		// cannot use ist<String> stringList = tickerProvider.getAllTickers(); yet, as the api is different in mongo db
-		// mongodb need to call tickerServiceClient.findAvailableStockByGroup or tickerServiceClient.findAvailableStockByGroupAndDate
-		// where tickerProvider.getAllTickers() is calling tickerServiceClient.getAllTickerStrings()
-		// TODO maybe need to pass some custom function in MongoTickerProvider to query a collection of stocks
-		// maybe even change the ticker service api implementation to fulfill this
-		List<String> stringList = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
-				? getAvailableStockFromMongoDb(fileName)
-				: tickerProvider.getAllTickers();
+		List<String> stringList = tickerProvider.getAllTickers();
 
 		stocks = new HashMap<>();
 		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
@@ -56,13 +48,6 @@ public class AvailableStocks {
 				add(stock);
 			}
 		}
-	}
-
-	private List<String> getAvailableStockFromMongoDb(String fileName) {
-		TickerServiceClient client = new TickerServiceClient();
-		return fileNameIsDate
-		? client.findAvailableStockByGroupAndDate(AlgoConfiguration.getAvailableStockGroup(), DateUtil.yyyymmddToYYYY_MM_DD(fileName.replace(".txt", "")))
-		: client.findAvailableStockByGroup(fileName.replace(".txt", ""));
 	}
 
 	public List<Stock> get() {

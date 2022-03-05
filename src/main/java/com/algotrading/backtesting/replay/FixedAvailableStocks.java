@@ -11,8 +11,8 @@ public class FixedAvailableStocks implements DynamicAvailableStocks {
 
     private AvailableStocks availableStocks;
 
-    public FixedAvailableStocks(String filePath, String fileName) throws IOException, ParseException {
-        this.availableStocks = new AvailableStocks(filePath, fileName, false);
+    public FixedAvailableStocks(String filePath, String stockListName) throws IOException, ParseException {
+        this.availableStocks = new AvailableStocks(filePath, stockListName, false);
     }
 
     public FixedAvailableStocks(AvailableStocks availableStocks) {

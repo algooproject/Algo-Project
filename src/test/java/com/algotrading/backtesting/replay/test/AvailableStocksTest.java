@@ -16,7 +16,7 @@ public class AvailableStocksTest {
 	@Test
 	public void testRead() throws IOException, ParseException {
 		// String inputFile = RESOURCE_PATH_NAME + "availableStocks.txt";
-		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks.txt", false);
+		AvailableStocks availableStocks = new AvailableStocks(RESOURCE_PATH_NAME, "availableStocks", false);
 		assertEquals(8, availableStocks.get()
 				.size());
 	}

@@ -52,7 +52,7 @@ public class ReplayTestSelf {
 		tradingDate = new TradingDate(Constants.SRC_TEST_RESOURCE_FILEPATH + "smacross/" + "tradingDate.txt");
 
 		availableStocks = new AvailableStocks(Constants.SRC_TEST_RESOURCE_FILEPATH + "smacross/",
-				"availableStocks.txt", false);
+				"availableStocks", false);
 
 		availableStocks.get().forEach(stock -> stock.setLotSize(lotSizes.get(stock.getTicker())));
 		dynamicAvailableStocks = new FixedAvailableStocks(availableStocks);

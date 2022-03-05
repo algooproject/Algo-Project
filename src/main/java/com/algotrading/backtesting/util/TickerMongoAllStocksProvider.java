@@ -7,11 +7,11 @@ import com.algotrading.tickerservice.TickerServiceClient;
 import java.io.IOException;
 import java.util.List;
 
-public class TickerMongoProvider implements TickerProvider {
+public class TickerMongoAllStocksProvider implements TickerProvider {
 
     private final TickerServiceClient tickerServiceClient;
 
-    public TickerMongoProvider(TickerServiceClient tickerServiceClient) {
+    public TickerMongoAllStocksProvider(TickerServiceClient tickerServiceClient) {
         this.tickerServiceClient = tickerServiceClient;
     }
 
