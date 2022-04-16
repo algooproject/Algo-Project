@@ -14,4 +14,12 @@ public interface TickerProvider {
     /** return true if the source of read file exist */
     boolean fillStockHistory(Stock stock);
 
+    int getLotSizeByTickerString(String ticker);
+
+    default Stock constructStockWithLotSizeFromTickerString(String ticker) {
+        Stock stock = new Stock(ticker, getLotSizeByTickerString(ticker));
+        fillStockHistory(stock);
+        return stock;
+    }
+
 }

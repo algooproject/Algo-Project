@@ -2,7 +2,9 @@ package com.algotrading.backtesting.util;
 
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.io.StockMongoDBGateway;
+import com.algotrading.backtesting.stock.lotsize.LotSizeMongoDBGateway;
 import com.algotrading.tickerservice.TickerServiceClient;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -39,5 +41,10 @@ public class TickerMongoAvailableStocksProvider implements TickerProvider {
     @Override
     public boolean fillStockHistory(Stock stock) {
         return new StockMongoDBGateway().fillData(stock);
+    }
+
+    @Override
+    public int getLotSizeByTickerString(String ticker) {
+        return new LotSizeMongoDBGateway().getLotSize(ticker);
     }
 }

@@ -35,13 +35,12 @@ public class AvailableStocks {
 				? new TickerMongoAvailableStocksProvider(stockListFileName, fileNameIsDate, new TickerServiceClient()) // mongodb need to call tickerServiceClient.findAvailableStockByGroup or tickerServiceClient.findAvailableStockByGroupAndDate
 				: new TickerFileProvider(filePath, stockListFileName + ".txt");
 
-		List<String> stringList = tickerProvider.getAllTickers();
+		List<String> allStockCodes = tickerProvider.getAllTickers();
 
 		stocks = new HashMap<>();
-		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
 
-		for (String line : stringList) {
-			Stock stock = new Stock(line, lotSize.getLotSize(line));
+		for (String stockCode : allStockCodes) {
+			Stock stock = new Stock(stockCode, tickerProvider.getLotSizeByTickerString(stockCode));
 
 			boolean hasTickerHistory = tickerProvider.fillStockHistory(stock);
 			if (hasTickerHistory) {

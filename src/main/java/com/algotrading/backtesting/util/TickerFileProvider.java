@@ -2,6 +2,7 @@ package com.algotrading.backtesting.util;
 
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.io.StockFileGateway;
+import com.algotrading.backtesting.stock.lotsize.LotSizeFileGateway;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -34,6 +35,11 @@ public class TickerFileProvider implements TickerProvider {
     @Override
     public boolean fillStockHistory(Stock stock){
         return new StockFileGateway(resourcePath).fillData(stock);
+    }
+
+    @Override
+    public int getLotSizeByTickerString(String ticker) {
+        return new LotSizeFileGateway(resourcePath).getLotSize(ticker);
     }
 
     // allStockListPath: Constants.SRC_MAIN_RESOURCE_FILEPATH + "allStock.txt"
