@@ -98,6 +98,25 @@ public class TickerServiceClient {
         return;
     }
 
+    public void importLotSize(String ticker, String lotSize) {
+        try {
+            httpClient.sendGet(URL + "/ticker/createlotsize/" + ticker + "/" + lotSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return;
+    }
+
+    public int getLotSizeByCode(String code) {
+        try {
+            String lotSize = httpClient.sendGet(URL + "/ticker/findlotsizebycode/" + code);
+            return Integer.parseInt(lotSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     public List<String> findAvailableStockByGroup(String group) {
         try {
             String jsonString = httpClient.sendGet(URL + "/availablestock/getdatesbygroup/" + group);
@@ -110,6 +129,7 @@ public class TickerServiceClient {
 
     public static void main(String[] args) throws Exception {
         TickerServiceClient obj = new TickerServiceClient();
+        System.out.println(obj.getLotSizeByCode("6858.HK"));
         System.out.println(obj.getAllRSIEntries("2800.HK,2821.HK"));
         System.out.println(obj.findRSIEntryByCode("2800.HK"));
         System.out.println(obj.findTickerByCode("2800.HK"));

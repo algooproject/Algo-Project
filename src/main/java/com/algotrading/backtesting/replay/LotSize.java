@@ -26,7 +26,7 @@ public class LotSize {
 		if (lotSizes.containsKey(strStockCode)) {
 			return lotSizes.get(strStockCode);
 		} else {
-			return 0;
+			return -1;
 		}
 	}
 
