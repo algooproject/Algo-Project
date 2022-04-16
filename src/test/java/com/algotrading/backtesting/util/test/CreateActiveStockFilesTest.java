@@ -13,7 +13,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,7 +34,7 @@ public class CreateActiveStockFilesTest {
     private TickerProvider tickerProvider;
 
     @Before
-    public void setup() throws IOException {
+    public void setup() throws Exception {
         // all tickers are Stock1, Stock2 and Stock3
         List<String> tickers = new ArrayList<>();
         tickers.add( "Stock1" );
@@ -105,7 +104,7 @@ public class CreateActiveStockFilesTest {
     }
 
     @Test
-    public void testCreateFiles() throws IOException{
+    public void testCreateFiles() throws Exception{
         CreateActiveStockFiles createActiveStockFiles = new CreateActiveStockFiles(tickerProvider);
         createActiveStockFiles.generateStockListsByDate(folderPath.toString() + "/" );
         List<Path> fileList = new ArrayList<>();

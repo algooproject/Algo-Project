@@ -21,20 +21,20 @@ public class TickerFileProvider implements TickerProvider {
     }
 
     @Override
-    public List<String> getAllTickers() throws IOException {
+    public List<String> getAllTickers() throws StockCreationException {
         return getAllTickersFromFile();
     }
 
     @Override
-    public Stock constructStockFromTickerString(String ticker){
+    public Stock constructStockFromTickerString(String ticker) throws StockCreationException {
         Stock stock = new Stock( ticker );
         fillStockHistory(stock);
         return stock;
     }
 
     @Override
-    public boolean fillStockHistory(Stock stock){
-        return new StockFileGateway(resourcePath).fillData(stock);
+    public void fillStockHistory(Stock stock) throws StockCreationException {
+        new StockFileGateway(resourcePath).fillData(stock);
     }
 
     @Override
@@ -43,17 +43,20 @@ public class TickerFileProvider implements TickerProvider {
     }
 
     // allStockListPath: Constants.SRC_MAIN_RESOURCE_FILEPATH + "allStock.txt"
-    private List<String> getAllTickersFromFile() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(resourcePath + allStockListFilename));
-        String line;
-        List<String> tickerList = new ArrayList<>();
-        while ((line = br.readLine()) != null)
-        {
-            if( !line.trim().isEmpty() && !line.startsWith( "#" ) ) {
-                tickerList.add(line);
+    private List<String> getAllTickersFromFile() throws StockCreationException {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(resourcePath + allStockListFilename));
+            String line;
+            List<String> tickerList = new ArrayList<>();
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty() && !line.startsWith("#")) {
+                    tickerList.add(line);
+                }
             }
+            return tickerList;
+        } catch (IOException e) {
+            throw new StockCreationException("Cannot get all tickers", e);
         }
-        return tickerList;
     }
 
 }

@@ -8,7 +8,6 @@ import com.algotrading.backtesting.stock.io.StockFileGateway;
 import com.algotrading.backtesting.util.Constants;
 import org.junit.Test;
 
-import java.text.ParseException;
 import java.util.Date;
 
 import static org.junit.Assert.assertTrue;
@@ -23,7 +22,7 @@ public class ReentrySignalTest {
 			+ ReentrySignalTest.class.getPackage().getName().replace('.', '/') + "/";
 
 	@Test
-	public void test001_reentryTriggered() throws ParseException {
+	public void test001_reentryTriggered() throws Exception {
 		date1 = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		date2 = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-20");
 		portfolio = new Portfolio(date1, 0);
@@ -39,7 +38,7 @@ public class ReentrySignalTest {
 	}
 
 	@Test
-	public void test002_reentryNotTriggeredAsStockHasBeenEnabled() throws ParseException {
+	public void test002_reentryNotTriggeredAsStockHasBeenEnabled() throws Exception {
 		date1 = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		date2 = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-20");
 		portfolio = new Portfolio(date1, 0);

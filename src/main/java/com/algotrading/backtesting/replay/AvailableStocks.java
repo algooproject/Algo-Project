@@ -2,13 +2,12 @@ package com.algotrading.backtesting.replay;
 
 import com.algotrading.backtesting.config.AlgoConfiguration;
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.util.StockCreationException;
 import com.algotrading.backtesting.util.TickerFileProvider;
 import com.algotrading.backtesting.util.TickerMongoAvailableStocksProvider;
 import com.algotrading.backtesting.util.TickerProvider;
 import com.algotrading.tickerservice.TickerServiceClient;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +19,7 @@ public class AvailableStocks {
 
 	private boolean fileNameIsDate;
 
-	public AvailableStocks(String filePath, String stockListName, boolean fileNameIsDate) throws IOException, ParseException {
+	public AvailableStocks(String filePath, String stockListName, boolean fileNameIsDate) throws Exception {
 		this.fileNameIsDate = fileNameIsDate;
 		read(filePath, stockListName);
 	}
@@ -29,7 +28,7 @@ public class AvailableStocks {
 		stocks = new HashMap<>();
 	}
 
-	public void read(String filePath, String stockListFileName) throws IOException, ParseException {
+	public void read(String filePath, String stockListFileName) throws Exception {
 
 		TickerProvider tickerProvider = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
 				? new TickerMongoAvailableStocksProvider(stockListFileName, fileNameIsDate, new TickerServiceClient()) // mongodb need to call tickerServiceClient.findAvailableStockByGroup or tickerServiceClient.findAvailableStockByGroupAndDate
@@ -40,12 +39,14 @@ public class AvailableStocks {
 		stocks = new HashMap<>();
 
 		for (String stockCode : allStockCodes) {
-			Stock stock = new Stock(stockCode, tickerProvider.getLotSizeByTickerString(stockCode));
-
-			boolean hasTickerHistory = tickerProvider.fillStockHistory(stock);
-			if (hasTickerHistory) {
+			try {
+				Stock stock = tickerProvider.constructStockWithLotSizeFromTickerString(stockCode);
 				add(stock);
+			} catch (StockCreationException e) {
+				System.err.println("Cannot add " + stockCode + " to available stock");
+				e.printStackTrace();
 			}
+
 		}
 	}
 

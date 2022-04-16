@@ -5,8 +5,6 @@ import com.algotrading.backtesting.replay.AvailableStocksWithYearChange;
 import com.algotrading.backtesting.util.Constants;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +15,7 @@ public class DynamicStockListTest {
 			+ DynamicStockListTest.class.getPackage().getName().replace('.', '/') + "/";
 
 	@Test
-	public void test001() throws ParseException, IOException {
+	public void test001() throws Exception {
 		AvailableStocksWithYearChange availableStocksWithYearChange = new AvailableStocksWithYearChange(
 				RESOURCE_PATH_NAME, "availablestocksdate.txt");
 		Date dateB4 = Constants.DATE_FORMAT_YYYYMMDD.parse("2000-08-02");

@@ -7,11 +7,9 @@ import com.algotrading.backtesting.util.Constants;
 import com.algotrading.tickerservice.TickerServiceClient;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,11 +20,11 @@ public class AvailableStocksWithYearChange implements DynamicAvailableStocks {
 
 	private Map<String, Stock> allStocks = new LinkedHashMap<>();
 
-	public AvailableStocksWithYearChange(String filePath, String fileName) throws IOException, ParseException {
+	public AvailableStocksWithYearChange(String filePath, String fileName) throws Exception {
 		read(filePath, fileName);
 	}
 
-	public void read(String filePath, String fileName) throws IOException, ParseException {
+	public void read(String filePath, String fileName) throws Exception {
 		Path file = new File(filePath + fileName).toPath();
 		Charset charset = Charset.defaultCharset();
 		List<String> stringList = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
@@ -71,7 +69,7 @@ public class AvailableStocksWithYearChange implements DynamicAvailableStocks {
 		return sb.toString();
 	}
 
-	public static void main(String[] args) throws IOException, ParseException {
+	public static void main(String[] args) throws Exception {
 		AvailableStocksWithYearChange a = new AvailableStocksWithYearChange(Constants.SRC_MAIN_RESOURCE_FILEPATH,
 				"availablestocksdate.txt");
 		// System.out.println(a.toString());

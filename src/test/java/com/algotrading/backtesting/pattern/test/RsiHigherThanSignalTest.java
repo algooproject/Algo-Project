@@ -9,7 +9,6 @@ import com.algotrading.backtesting.stock.io.StockFileGateway;
 import com.algotrading.backtesting.util.Constants;
 import org.junit.Test;
 
-import java.text.ParseException;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +27,7 @@ public class RsiHigherThanSignalTest {
 	private double multiplier = 1;
 
 	@Test
-	public void test001_NotRsiHigherThan25() throws ParseException {
+	public void test001_NotRsiHigherThan25() throws Exception {
 		date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-29");
 		portfolio = new Portfolio(date, 25000);
 		expectedValueType = "number";
@@ -45,7 +44,7 @@ public class RsiHigherThanSignalTest {
 	}
 
 	@Test
-	public void test002_RsiHigherThanWith2Stocks() throws ParseException {
+	public void test002_RsiHigherThanWith2Stocks() throws Exception {
 		date = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-29");
 		portfolio = new Portfolio(date, 25000);
 		expectedValueType = "number";

@@ -3,6 +3,7 @@ package com.algotrading.backtesting.stock.io;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
 import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.StockCreationException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,11 +21,11 @@ public class StockFileGateway implements StockGateway {
     }
 
     @Override
-    public boolean fillData(Stock stock) {
-        return readFromFile(stock, filePath, true);
+    public void fillData(Stock stock)  throws StockCreationException {
+        readFromFile(stock, filePath, true);
     }
 
-    public boolean readFromFile(Stock stock, String filePath, boolean withHeader) {
+    public void readFromFile(Stock stock, String filePath, boolean withHeader) throws StockCreationException {
         // TODO read files from ticker
         String strCsvFile = filePath + stock.getTicker() + ".csv";
         String strLine = "";
@@ -36,7 +37,7 @@ public class StockFileGateway implements StockGateway {
         File tempFile = new File(filePath + stock.getTicker() + ".csv");
         boolean exists = tempFile.exists();
         if (!exists) {
-            return false;
+            throw new StockCreationException("Stock " + stock.getTicker() + " not exist" );
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
@@ -80,10 +81,8 @@ public class StockFileGateway implements StockGateway {
                 }
             }
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
-            return false;
+            throw new StockCreationException("Error when reading stock file", e);
         }
         stock.initialDate();
-        return true;
     }
 }

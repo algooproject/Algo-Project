@@ -5,8 +5,6 @@ import com.algotrading.backtesting.stock.io.StockFileGateway;
 import com.algotrading.backtesting.util.Constants;
 import org.junit.Test;
 
-import java.text.ParseException;
-
 import static org.junit.Assert.assertEquals;
 
 public class StockReadTest {
@@ -14,7 +12,7 @@ public class StockReadTest {
 	protected static String RESOURCE_PATH_NAME = Constants.SRC_TEST_RESOURCE_FILEPATH + StockReadTest.class.getPackage().getName().replace('.', '/') + "/";
 	
 	@Test
-	public void test001_OpenPrice() throws ParseException {
+	public void test001_OpenPrice() throws Exception {
 		double expected = 98.5;
 		String ticker = "SEHK_0001";
 		String strDate = "2016-09-30";
@@ -23,7 +21,7 @@ public class StockReadTest {
 	}
 
 	@Test
-	public void test002_ClosePrice() throws ParseException {
+	public void test002_ClosePrice() throws Exception {
 		double expected = 100;
 		String ticker = "SEHK_0001";
 		String strDate = "2016-09-30";
@@ -32,7 +30,7 @@ public class StockReadTest {
 	}
 
 	@Test
-	public void test003_HighPrice() throws ParseException {
+	public void test003_HighPrice() throws Exception {
 		double expected = 100;
 		String ticker = "SEHK_0001";
 		String strDate = "2016-09-30";
@@ -41,7 +39,7 @@ public class StockReadTest {
 	}
 
 	@Test
-	public void test004_LowPrice() throws ParseException {
+	public void test004_LowPrice() throws Exception {
 		double expected = 98.05;
 		String ticker = "SEHK_0001";
 		String strDate = "2016-09-30";
@@ -50,7 +48,7 @@ public class StockReadTest {
 	}
 
 	@Test
-	public void test005_AdjClosePrice() throws ParseException {
+	public void test005_AdjClosePrice() throws Exception {
 		double expected = 98.6;
 		String ticker = "SEHK_0001";
 		String strDate = "2016-09-30";
@@ -59,7 +57,7 @@ public class StockReadTest {
 	}
 
 	@Test
-	public void test006_Volume() throws ParseException {
+	public void test006_Volume() throws Exception {
 		double expected = 10000;
 		String ticker = "SEHK_0001";
 		String strDate = "2016-09-30";
@@ -67,7 +65,7 @@ public class StockReadTest {
 		assertEquals(expected, getStockHistory(ticker, strDate, strInformation), 0.01);
 	}
 
-	private double getStockHistory(String ticker, String strDate, String strInformation) throws ParseException {
+	private double getStockHistory(String ticker, String strDate, String strInformation) throws Exception {
 		Stock SEHK_0001_HK = new Stock(ticker);
 		new StockFileGateway(RESOURCE_PATH_NAME).fillData(SEHK_0001_HK);
 		if (strInformation.equals("open")) {

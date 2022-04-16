@@ -12,8 +12,6 @@ import com.algotrading.backtesting.util.PrintMethod;
 import com.algotrading.backtesting.util.Print_Console;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -25,7 +23,7 @@ public class MainTest {
 			+ MainTest.class.getPackage().getName().replace('.', '/') + "/";
 
 	@Test
-	public void test001_buyConditionsMet() throws ParseException, IOException {
+	public void test001_buyConditionsMet() throws Exception {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-28");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		PortfolioHistory history = new PortfolioHistory();
@@ -56,7 +54,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void test002_buyCondition2Failed() throws ParseException, IOException {
+	public void test002_buyCondition2Failed() throws Exception {
 
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
@@ -82,7 +80,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void test003_buyCondition1and2Failed() throws ParseException, IOException {
+	public void test003_buyCondition1and2Failed() throws Exception {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
@@ -107,7 +105,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void test004_buyCondition1Failed() throws ParseException, IOException {
+	public void test004_buyCondition1Failed() throws Exception {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
@@ -132,7 +130,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void test005_buyCondition3Failed() throws ParseException, IOException {
+	public void test005_buyCondition3Failed() throws Exception {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
@@ -157,7 +155,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void test006_takeProfit() throws ParseException, IOException {
+	public void test006_takeProfit() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
@@ -190,7 +188,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void test007_stopLoss() throws ParseException, IOException {
+	public void test007_stopLoss() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
@@ -223,7 +221,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void test008_sellConditionsNotMet() throws ParseException, IOException {
+	public void test008_sellConditionsNotMet() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
@@ -254,7 +252,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void test009_buyConditionsMetButStockDisabled() throws ParseException, IOException {
+	public void test009_buyConditionsMetButStockDisabled() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
@@ -292,7 +290,7 @@ public class MainTest {
 	}
 
 	@Test
-	public void test010_stockEnabledBuyConditionsMet() throws ParseException, IOException {
+	public void test010_stockEnabledBuyConditionsMet() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-21");

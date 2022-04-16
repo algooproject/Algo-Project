@@ -5,7 +5,6 @@ import com.algotrading.backtesting.stock.io.StockMongoDBGateway;
 import com.algotrading.backtesting.stock.lotsize.LotSizeMongoDBGateway;
 import com.algotrading.tickerservice.TickerServiceClient;
 
-import java.io.IOException;
 import java.util.List;
 
 public class TickerMongoAvailableStocksProvider implements TickerProvider {
@@ -25,22 +24,22 @@ public class TickerMongoAvailableStocksProvider implements TickerProvider {
     }
 
     @Override
-    public List<String> getAllTickers() throws IOException {
+    public List<String> getAllTickers() throws StockCreationException {
         return hasDate
                 ? tickerServiceClient.findAvailableStockByGroupAndDate(BACKTESTING_GROUP_NAME, stockListFileName)
                 : tickerServiceClient.findAvailableStockByGroup(BACKTESTING_GROUP_NAME);
     }
 
     @Override
-    public Stock constructStockFromTickerString(String ticker){
+    public Stock constructStockFromTickerString(String ticker) throws StockCreationException {
         Stock stock = new Stock( ticker );
         fillStockHistory(stock);
         return stock;
     }
 
     @Override
-    public boolean fillStockHistory(Stock stock) {
-        return new StockMongoDBGateway().fillData(stock);
+    public void fillStockHistory(Stock stock) throws StockCreationException {
+        new StockMongoDBGateway().fillData(stock);
     }
 
     @Override

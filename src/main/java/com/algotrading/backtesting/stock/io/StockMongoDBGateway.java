@@ -3,6 +3,7 @@ package com.algotrading.backtesting.stock.io;
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.stock.StockHistory;
 import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.StockCreationException;
 import com.algotrading.tickerservice.Ticker;
 import com.algotrading.tickerservice.TickerServiceClient;
 
@@ -13,12 +14,12 @@ import java.util.List;
 public class StockMongoDBGateway implements StockGateway {
 
     @Override
-    public boolean fillData(Stock stock) {
+    public void fillData(Stock stock)  throws StockCreationException {
         List<Ticker> tickers = new TickerServiceClient().findTickerByCode(stock.getTicker());
         tickers.sort(Comparator.comparing(ticker -> ticker.date));
 //		tickers.sort(Comparator.comparing(tickersA -> tickersA.date)); // TODO to sort ascending or desending?
         if (tickers.size() == 0) {
-            return false;
+            throw new StockCreationException("Stock " + stock.getTicker() + " not exist" );
         }
         Date earliestDate = stock.getEarliestDate();
         Date latestDate = stock.getLatestestDate();
@@ -34,12 +35,11 @@ public class StockMongoDBGateway implements StockGateway {
                 }
                 stock.getHistory().put(date, new StockHistory(date, ticker.open, ticker.close, ticker.high, ticker.low, ticker.adjClose, ticker.volume));
             } catch(Exception e) {
-                e.printStackTrace();
+                throw new StockCreationException("Error when reading stock file", e);
             }
         }
         stock.setEarliestDate(earliestDate);
         stock.setLatestestDate(latestDate);
         stock.initialDate();
-        return true;
     }
 }

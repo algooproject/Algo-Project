@@ -14,7 +14,6 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +43,7 @@ public class Print_KPITest {
 	}
 
 	@Test
-	public void test001_buyConditionsMet() throws ParseException, IOException {
+	public void test001_buyConditionsMet() throws Exception {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-28");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		PortfolioHistory history = new PortfolioHistory();
@@ -82,7 +81,7 @@ public class Print_KPITest {
 	}
 
 	@Test
-	public void test002_stopLoss() throws ParseException, IOException {
+	public void test002_stopLoss() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
