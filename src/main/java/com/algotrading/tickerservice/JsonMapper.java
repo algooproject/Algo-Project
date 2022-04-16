@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// https://codertw.com/伺服器/162737/
+// https://codertw.com/%E4%BC%BA%E6%9C%8D%E5%99%A8/162737/
 public class JsonMapper {
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
