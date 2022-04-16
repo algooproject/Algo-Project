@@ -88,7 +88,7 @@ public class Print_KPITest {
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0002 = new Stock("SEHK_TC0002", lotSize.getLotSize("SEHK_TC0002"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0002);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0002);
 		PortfolioComponent TC0002pc = new PortfolioComponent(stockTC0002, 3333, 3, startDate);
 		portfolio.put(TC0002pc);
 		history.put(startDate, portfolio);

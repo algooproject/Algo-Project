@@ -27,11 +27,11 @@ public class CreateActiveStockFiles {
     }
 
     public void generateStockListsByDate(String outputFolderPath) throws Exception {
-        List<String> tickers = tickerProvider.getAllTickers();
+        List<String> tickers = tickerProvider.getAllStockCodes();
         Date earliestDate = defaultStartDate;
         Date latestDate = new Date(); // present time
         for( String ticker : tickers ) {
-            Stock stock = tickerProvider.constructStockFromTickerString(ticker);
+            Stock stock = tickerProvider.constructStockFromStockCode(ticker);
             allStocks.put(ticker, stock );
             Date comparingDate = stock.getEarliestDate();
             if( earliestDate.compareTo( comparingDate) > 0 ) {

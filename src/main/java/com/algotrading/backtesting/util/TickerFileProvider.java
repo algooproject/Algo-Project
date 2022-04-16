@@ -21,12 +21,12 @@ public class TickerFileProvider implements TickerProvider {
     }
 
     @Override
-    public List<String> getAllTickers() throws StockCreationException {
+    public List<String> getAllStockCodes() throws StockCreationException {
         return getAllTickersFromFile();
     }
 
     @Override
-    public Stock constructStockFromTickerString(String ticker) throws StockCreationException {
+    public Stock constructStockFromStockCode(String ticker) throws StockCreationException {
         Stock stock = new Stock( ticker );
         fillStockHistory(stock);
         return stock;
@@ -34,11 +34,11 @@ public class TickerFileProvider implements TickerProvider {
 
     @Override
     public void fillStockHistory(Stock stock) throws StockCreationException {
-        new StockFileGateway(resourcePath).fillData(stock);
+        new StockFileGateway(resourcePath).fillTickerData(stock);
     }
 
     @Override
-    public int getLotSizeByTickerString(String ticker) {
+    public int getLotSizeByStockCode(String ticker) {
         return new LotSizeFileGateway(resourcePath).getLotSize(ticker);
     }
 

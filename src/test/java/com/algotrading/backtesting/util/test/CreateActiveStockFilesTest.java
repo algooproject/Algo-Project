@@ -40,7 +40,7 @@ public class CreateActiveStockFilesTest {
         tickers.add( "Stock1" );
         tickers.add( "Stock2" );
         tickers.add( "Stock3" );
-        Mockito.when(tickerProvider.getAllTickers()).thenReturn(tickers);
+        Mockito.when(tickerProvider.getAllStockCodes()).thenReturn(tickers);
 
         // Stock 1: 40k, 30k, 50k in 2018, 2019 and 2020 resp.
         Map<Date, StockHistory> history1 = new LinkedHashMap<>();
@@ -59,7 +59,7 @@ public class CreateActiveStockFilesTest {
         history1.put( date2_2020,
                 new StockHistory( date2_2020, 8, 9, 10, 7, 9, 32000 ) );
         Stock stock1 = new Stock( tickers.get(0), history1, 100);
-        Mockito.when(tickerProvider.constructStockFromTickerString(tickers.get(0))).thenReturn(stock1);
+        Mockito.when(tickerProvider.constructStockFromStockCode(tickers.get(0))).thenReturn(stock1);
 
         // Stock 2: 50k, 40k, 30k in 2018, 2019 and 2020 resp.
         Map<Date, StockHistory> history2 = new LinkedHashMap<>();
@@ -78,7 +78,7 @@ public class CreateActiveStockFilesTest {
         history2.put( date2_2020,
                 new StockHistory( date2_2020, 8, 9, 10, 7, 9, 22000 ) );
         Stock stock2 = new Stock( tickers.get(1), history2, 100);
-        Mockito.when(tickerProvider.constructStockFromTickerString(tickers.get(1))).thenReturn(stock2);
+        Mockito.when(tickerProvider.constructStockFromStockCode(tickers.get(1))).thenReturn(stock2);
 
         // Stock 3: 30k, 50k, 40k in 2018, 2019 and 2020 resp.
         Map<Date, StockHistory> history3 = new LinkedHashMap<>();
@@ -97,7 +97,7 @@ public class CreateActiveStockFilesTest {
         history3.put( date2_2020,
                 new StockHistory( date2_2020, 8, 9, 10, 7, 9, 22000 ) );
         Stock stock3 = new Stock( tickers.get(2), history3, 100);
-        Mockito.when(tickerProvider.constructStockFromTickerString(tickers.get(2))).thenReturn(stock3);
+        Mockito.when(tickerProvider.constructStockFromStockCode(tickers.get(2))).thenReturn(stock3);
 
         folderPath = Files.createTempDirectory("folder");
         folderPath.toFile().deleteOnExit();

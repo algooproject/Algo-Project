@@ -42,7 +42,7 @@ public class MainTest {
 		Portfolio portfolio20160929 = portfolioHistory.get(triggeredDate);
 		Portfolio portfolio20160928 = portfolioHistory.get(dayBeforeTriggeredDate);
 		Stock stockTC0001 = new Stock("SEHK_TC0001", lotSize.getLotSize("SEHK_TC0001"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0001);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0001);
 		assertEquals(false, portfolio20160928.containsStock(stockTC0001));
 		assertTrue(portfolio20160929.containsStock(stockTC0001));
 		assertEquals(3000, portfolio20160929.getPortfolioComponent("SEHK_TC0001").getQuantity());
@@ -71,7 +71,7 @@ public class MainTest {
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
 		Stock stockTC0002 = new Stock("SEHK_TC0002", lotSize.getLotSize("SEHK_TC0002"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0002);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0002);
 		assertEquals(false, portfolio20160930.containsStock(stockTC0002));
 		System.out.println("test002_buyCondition1Failed"); //
 		// System.out.println(portfolioHistory);
@@ -96,7 +96,7 @@ public class MainTest {
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
 		Stock stockTC0003 = new Stock("SEHK_TC0003", lotSize.getLotSize("SEHK_TC0003"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0003);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0003);
 		assertEquals(false, portfolio20160930.containsStock(stockTC0003));
 		System.out.println("test003_buyCondition1and2Failed");
 		// System.out.println(portfolioHistory);
@@ -121,7 +121,7 @@ public class MainTest {
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
 		Stock stockTC0004 = new Stock("SEHK_TC0004", lotSize.getLotSize("SEHK_TC0004"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0004);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0004);
 		assertEquals(false, portfolio20160930.containsStock(stockTC0004));
 		System.out.println("test004_buyCondition1Failed"); //
 		// System.out.println(portfolioHistory);
@@ -146,7 +146,7 @@ public class MainTest {
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
 		Stock stockTC0005 = new Stock("SEHK_TC0005", lotSize.getLotSize("SEHK_TC0005"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0005);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0005);
 		assertEquals(false, portfolio20160930.containsStock(stockTC0005));
 		System.out.println("test005_buyCondition3Failed");
 		// System.out.println(portfolioHistory);
@@ -162,7 +162,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0006 = new Stock("SEHK_TC0006", lotSize.getLotSize("SEHK_TC0006"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0006);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0006);
 		PortfolioComponent TC0006pc = new PortfolioComponent(stockTC0006, 3333, 3, startDate);
 		portfolio.put(TC0006pc);
 		history.put(startDate, portfolio);
@@ -195,7 +195,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0007 = new Stock("SEHK_TC0007", lotSize.getLotSize("SEHK_TC0007"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0007);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0007);
 		PortfolioComponent TC0007pc = new PortfolioComponent(stockTC0007, 3333, 3, startDate);
 		portfolio.put(TC0007pc);
 		history.put(startDate, portfolio);
@@ -228,7 +228,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0008 = new Stock("SEHK_TC0008", lotSize.getLotSize("SEHK_TC0008"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0008);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0008);
 		PortfolioComponent TC0008pc = new PortfolioComponent(stockTC0008, 3333, 3, startDate);
 		portfolio.put(TC0008pc);
 
@@ -259,7 +259,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0009 = new Stock("SEHK_TC0009", lotSize.getLotSize("SEHK_TC0009"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0009);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0009);
 		PortfolioComponent TC0009pc = new PortfolioComponent(stockTC0009, 2000, 3, startDate);
 		portfolio.put(TC0009pc);
 		history.put(startDate, portfolio);
@@ -297,7 +297,7 @@ public class MainTest {
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0010 = new Stock("SEHK_TC0010", lotSize.getLotSize("SEHK_TC0010"));
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockTC0010);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0010);
 		PortfolioComponent TC0010pc = new PortfolioComponent(stockTC0010, 2000, 3, startDate);
 		portfolio.put(TC0010pc);
 		history.put(startDate, portfolio);

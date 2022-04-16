@@ -14,8 +14,8 @@ import java.util.List;
 public class StockMongoDBGateway implements StockGateway {
 
     @Override
-    public void fillData(Stock stock)  throws StockCreationException {
-        List<Ticker> tickers = new TickerServiceClient().findTickerByCode(stock.getTicker());
+    public void fillTickerData(Stock stock)  throws StockCreationException {
+        List<Ticker> tickers = new TickerServiceClient().findTickerByStockCode(stock.getTicker());
         tickers.sort(Comparator.comparing(ticker -> ticker.date));
 //		tickers.sort(Comparator.comparing(tickersA -> tickersA.date)); // TODO to sort ascending or desending?
         if (tickers.size() == 0) {

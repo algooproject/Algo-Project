@@ -31,7 +31,7 @@ public class ExitSignalTest {
 		portfolio2 = new Portfolio(date2, 0);
 
 		stockExit = new Stock("SEHK_Exit");
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockExit);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockExit);
 
 		portfolio1.put(new PortfolioComponent(stockExit, 1000, 3, date1));
 		portfolio2.put(new PortfolioComponent(stockExit, 1000, 3, date2));
@@ -52,7 +52,7 @@ public class ExitSignalTest {
 		portfolio2 = new Portfolio(date2, 0);
 
 		stockExit = new Stock("SEHK_Exit");
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockExit);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockExit);
 		stockExit.setStatus(false);
 
 		portfolio1.put(new PortfolioComponent(stockExit, 1000, 3, date1));

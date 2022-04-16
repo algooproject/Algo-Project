@@ -27,7 +27,7 @@ public class ReentrySignalTest {
 		date2 = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-20");
 		portfolio = new Portfolio(date1, 0);
 		stockReentry = new Stock("SEHK_Reentry");
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockReentry);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockReentry);
 		stockReentry.setStatus(false);
 		ReentrySignal isht = new ReentrySignal(new RsiHigherThanSignal(10, 0, "number", "50", 1));
 		assertTrue(!isht.signal(stockReentry, date1, portfolio, 20000));
@@ -43,7 +43,7 @@ public class ReentrySignalTest {
 		date2 = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-20");
 		portfolio = new Portfolio(date1, 0);
 		stockReentry = new Stock("SEHK_Reentry");
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockReentry);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockReentry);
 		ReentrySignal isht = new ReentrySignal(new RsiHigherThanSignal(10, 0, "number", "50", 1));
 		assertTrue(!isht.signal(stockReentry, date1, portfolio, 20000));
 		assertTrue(!isht.signal(stockReentry, date2, portfolio, 20000));

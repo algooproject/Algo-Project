@@ -67,7 +67,7 @@ public class StockReadTest {
 
 	private double getStockHistory(String ticker, String strDate, String strInformation) throws Exception {
 		Stock SEHK_0001_HK = new Stock(ticker);
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(SEHK_0001_HK);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(SEHK_0001_HK);
 		if (strInformation.equals("open")) {
 			return SEHK_0001_HK.getHistory()
 					.get(Constants.DATE_FORMAT_YYYYMMDD.parse(strDate))

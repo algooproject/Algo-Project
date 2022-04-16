@@ -33,7 +33,7 @@ public class SmaHigherThanSignalTest {
 		expectedValue = "4.8";
 		Stock stockSEHK_TC0001 = new Stock("SEHK_TC0001");
 		// rely on Stock.read();
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockSEHK_TC0001);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockSEHK_TC0001);
 		SmaSignal testSignal = new SmaHigherThanSignal(magnitude, expectedValueType, expectedValue, multiplier);
 		assertTrue(testSignal.signal(stockSEHK_TC0001, date, portfolio, 10000));
 		expectedValue = "5";
@@ -49,9 +49,9 @@ public class SmaHigherThanSignalTest {
 		expectedValue = "8.7";
 		Stock stockSEHK_TC0001 = new Stock("SEHK_TC0001");
 		// rely on Stock.read();
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockSEHK_TC0001);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockSEHK_TC0001);
 		Stock stockSEHK_TC0002 = new Stock("SEHK_TC0002");
-		new StockFileGateway(RESOURCE_PATH_NAME).fillData(stockSEHK_TC0002);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockSEHK_TC0002);
 		SmaSignal testSignal = new SmaHigherThanSignal(magnitude, expectedValueType, expectedValue, multiplier);
 		// get stockSEHK_TC0001 first
 		assertEquals(false, testSignal.signal(stockSEHK_TC0001, date, portfolio, 10000));

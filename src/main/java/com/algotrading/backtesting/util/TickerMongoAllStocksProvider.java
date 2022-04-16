@@ -16,24 +16,24 @@ public class TickerMongoAllStocksProvider implements TickerProvider {
     }
 
     @Override
-    public List<String> getAllTickers() throws StockCreationException {
+    public List<String> getAllStockCodes() throws StockCreationException {
         return tickerServiceClient.getAllTickerStrings();
     }
 
     @Override
-    public Stock constructStockFromTickerString(String ticker) throws StockCreationException {
-        Stock stock = new Stock( ticker );
+    public Stock constructStockFromStockCode(String code) throws StockCreationException {
+        Stock stock = new Stock(code);
         fillStockHistory(stock);
         return stock;
     }
 
     @Override
     public void fillStockHistory(Stock stock) throws StockCreationException {
-        new StockMongoDBGateway().fillData(stock);
+        new StockMongoDBGateway().fillTickerData(stock);
     }
 
     @Override
-    public int getLotSizeByTickerString(String ticker) {
-        return new LotSizeMongoDBGateway().getLotSize(ticker);
+    public int getLotSizeByStockCode(String code) {
+        return new LotSizeMongoDBGateway().getLotSize(code);
     }
 }

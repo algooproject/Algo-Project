@@ -34,7 +34,7 @@ public class AvailableStocks {
 				? new TickerMongoAvailableStocksProvider(stockListFileName, fileNameIsDate, new TickerServiceClient()) // mongodb need to call tickerServiceClient.findAvailableStockByGroup or tickerServiceClient.findAvailableStockByGroupAndDate
 				: new TickerFileProvider(filePath, stockListFileName + ".txt");
 
-		List<String> allStockCodes = tickerProvider.getAllTickers();
+		List<String> allStockCodes = tickerProvider.getAllStockCodes();
 
 		stocks = new HashMap<>();
 

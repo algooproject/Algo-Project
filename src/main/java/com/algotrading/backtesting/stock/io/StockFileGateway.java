@@ -21,7 +21,7 @@ public class StockFileGateway implements StockGateway {
     }
 
     @Override
-    public void fillData(Stock stock)  throws StockCreationException {
+    public void fillTickerData(Stock stock)  throws StockCreationException {
         readFromFile(stock, filePath, true);
     }
 

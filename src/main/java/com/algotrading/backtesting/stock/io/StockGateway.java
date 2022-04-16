@@ -8,5 +8,5 @@ public interface StockGateway {
     /**
      * This method expect receive a empty stock only with ticker, and fill data by different IO e.g. file / db).
      */
-    void fillData(Stock stock) throws StockCreationException;
+    void fillTickerData(Stock stock) throws StockCreationException;
 }
