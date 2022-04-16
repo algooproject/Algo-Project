@@ -1,5 +1,7 @@
 package com.algotrading.backtesting.replay;
 
+import com.algotrading.backtesting.util.Constants;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -11,14 +13,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.algotrading.backtesting.util.Constants;
-
 public class TradingDate {
 
 	private String file;
 	private List<Date> tradingDates;
 	private int currentTradingDateIndex;
-	// private boolean isLastDay = false;
 
 	public TradingDate() {
 		tradingDates = new ArrayList<>();
@@ -35,13 +34,8 @@ public class TradingDate {
 	}
 
 	public void setCurrentDate(Date date) {
-		// System.out.println("tradingDates.size()" + tradingDates.size());
 		for (int i = 0; i < tradingDates.size(); i++) {
-			// System.out.println("date.toString(): " + date.toString());
-			// System.out.println("tradingDates.get(i): " + tradingDates.get(i));
 			if (date.compareTo(tradingDates.get(i)) <= 0) {
-				// System.out.println("date.toString(): " + date.toString());
-				// System.out.println("tradingDates.get(i): " + tradingDates.get(i));
 				currentTradingDateIndex = i;
 				break;
 			}
@@ -79,11 +73,9 @@ public class TradingDate {
 	}
 
 	public void read() throws IOException, ParseException {
-		// System.out.println(file);
 		Path filePath = new File(file).toPath();
 		Charset charset = Charset.defaultCharset();
 		List<String> stringList = Files.readAllLines(filePath, charset);
-		// System.out.println(stringList);
 		tradingDates = stringList.stream().map(dateStr -> parseDate(dateStr)).sorted().collect(Collectors.toList());
 	}
 

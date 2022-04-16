@@ -13,9 +13,9 @@ public class TickerServiceClient {
     private HttpClient httpClient = new HttpClient();
     private JsonMapper jsonMapper = new JsonMapper();
 
-    public Map<String, Double> getAllRSIEntries(String code) {
+    public Map<String, Double> getAllRSIEntries(String stockCode) {
         try {
-            String jsonString = httpClient.sendGet(URL + "/rsi/findrsientrymapbycode/" + code);
+            String jsonString = httpClient.sendGet(URL + "/rsi/findrsientrymapbycode/" + stockCode);
             return JsonMapper.toPrimitiveMap(jsonString, Double.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -23,9 +23,9 @@ public class TickerServiceClient {
         }
     }
 
-    public List<RSIEntry> findRSIEntryByCode(String code) {
+    public List<RSIEntry> findRSIEntryByStockCode(String stockCode) {
         try {
-            String jsonString = httpClient.sendGet(URL + "/rsi/findrsientrybycode/" + code);
+            String jsonString = httpClient.sendGet(URL + "/rsi/findrsientrybycode/" + stockCode);
             return JsonMapper.toList(jsonString, RSIEntry.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,9 +43,9 @@ public class TickerServiceClient {
         }
     }
 
-    public List<Ticker> findTickerByCode(String code) {
+    public List<Ticker> findTickerByStockCode(String stockCode) {
         try {
-            String jsonString = httpClient.sendGet(URL + "/ticker/findtickerbycode/" + code);
+            String jsonString = httpClient.sendGet(URL + "/ticker/findtickerbycode/" + stockCode);
             return JsonMapper.toList(jsonString, Ticker.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,13 +89,32 @@ public class TickerServiceClient {
         }
     }
 
-    public void importTicker(String ticker) {
+    public void importTickersByStockCode(String stockCode) {
         try {
-            httpClient.sendGet(URL + "/yahooimportall/" + ticker);
+            httpClient.sendGet(URL + "/yahooimportall/" + stockCode);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return;
+    }
+
+    public void importLotSize(String ticker, String lotSize) {
+        try {
+            httpClient.sendGet(URL + "/ticker/createlotsize/" + ticker + "/" + lotSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return;
+    }
+
+    public int getLotSizeByStockCode(String code) {
+        try {
+            String lotSize = httpClient.sendGet(URL + "/ticker/findlotsizebycode/" + code);
+            return Integer.parseInt(lotSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     public List<String> findAvailableStockByGroup(String group) {
@@ -110,9 +129,10 @@ public class TickerServiceClient {
 
     public static void main(String[] args) throws Exception {
         TickerServiceClient obj = new TickerServiceClient();
+        System.out.println(obj.getLotSizeByStockCode("6858.HK"));
         System.out.println(obj.getAllRSIEntries("2800.HK,2821.HK"));
-        System.out.println(obj.findRSIEntryByCode("2800.HK"));
-        System.out.println(obj.findTickerByCode("2800.HK"));
+        System.out.println(obj.findRSIEntryByStockCode("2800.HK"));
+        System.out.println(obj.findTickerByStockCode("2800.HK"));
         System.out.println(obj.findAvailableStockDateByGroup("BACKTESTING"));
         System.out.println(obj.findAvailableStockByGroupAndDate("BACKTESTING", "1999-12-06"));
     }

@@ -26,8 +26,7 @@ public class LotSize {
 		if (lotSizes.containsKey(strStockCode)) {
 			return lotSizes.get(strStockCode);
 		} else {
-			// System.out.println(strStockCode);
-			return 0;
+			return -1;
 		}
 	}
 
@@ -36,13 +35,10 @@ public class LotSize {
 		String strCvsSplitBy = ",";
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			while ((strLine = br.readLine()) != null) {
-				// System.out.println(strLine);
-				// use comma as separator
 				String[] strLotSize = strLine.split(strCvsSplitBy);
 				String strStockCode = strLotSize[0];
 				int intLotSize = Integer.parseInt(strLotSize[1]);
 				lotSizes.put(strStockCode, intLotSize);
-				// System.out.println(strStockCode + " " + intLotSize);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

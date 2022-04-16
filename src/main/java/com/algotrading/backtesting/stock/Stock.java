@@ -1,14 +1,9 @@
 package com.algotrading.backtesting.stock;
 
-import com.algotrading.backtesting.util.Constants;
-import com.algotrading.tickerservice.Ticker;
-import com.algotrading.tickerservice.TickerServiceClient;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Stock {
 
@@ -39,11 +34,11 @@ public class Stock {
 	}
 
 	public Stock(String ticker) {
-		this(ticker, new TreeMap<Date, StockHistory>(), 1);
+		this(ticker, new TreeMap<>(), 1);
 	}
 
 	public Stock(String ticker, int lotSize) {
-		this(ticker, new TreeMap<Date, StockHistory>(), lotSize);
+		this(ticker, new TreeMap<>(), lotSize);
 	}
 
 	public Stock(String ticker, Map<Date, StockHistory> history, int lotSize) {
@@ -68,6 +63,15 @@ public class Stock {
 
 	public Date getEarliestDate(){ return earliestDate; }
 	public Date getLatestestDate(){ return latestDate; }
+
+	public void setEarliestDate(Date earliestDate) {
+		this.earliestDate = earliestDate;
+	}
+
+	public void setLatestestDate(Date latestDate) {
+		this.latestDate = latestDate;
+	}
+
 	public Boolean getStatus() {
 		return status;
 	}
@@ -78,101 +82,6 @@ public class Stock {
 
 	public void readLotSize() {
 		// TODO
-	}
-
-	/** return if has stock record in mongodb */
-	public boolean readFromMongoDB() {
-		List<Ticker> tickers = new TickerServiceClient().findTickerByCode(this.ticker);
-		tickers.sort(Comparator.comparing(ticker -> ticker.date));
-//		tickers.sort(Comparator.comparing(tickersA -> tickersA.date)); // TODO to sort ascending or desending?
-		if (tickers.size() == 0) {
-			return false;
-		}
-		for (Ticker ticker : tickers) {
-			try {
-				Date date = Constants.DATE_FORMAT_YYYYMMDD.parse(ticker.date);
-				if( earliestDate.equals( null ) || earliestDate.compareTo( date ) > 0 ) {
-					earliestDate = date;
-				}
-				if( latestDate.equals( null ) || latestDate.compareTo( date ) < 0 ) {
-					latestDate = date;
-				}
-				history.put(date, new StockHistory(date, ticker.open, ticker.close, ticker.high, ticker.low, ticker.adjClose, ticker.volume));
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-		initialDate();
-		return true;
-	}
-
-	public void read(String filePath) {
-		// read(filePath, false);
-		read(filePath, true);
-	}
-
-	public void read() {
-		// read(false);
-		read(true);
-	}
-
-	public void read(boolean withHeader) {
-		read(Constants.SRC_MAIN_RESOURCE_FILEPATH, withHeader);
-	}
-
-	public void read(String filePath, boolean withHeader) {
-		// TODO read files from ticker
-		String strCsvFile = filePath + this.ticker + ".csv";
-		String strLine = "";
-		String strCvsSplitBy = ",";
-		boolean isFirstLine = withHeader; // will skip header if true
-		Double dbLastClose = null;
-		Double dbLastAdjClose = null;
-
-		try (BufferedReader br = new BufferedReader(new FileReader(strCsvFile))) {
-			while ((strLine = br.readLine()) != null) {
-				// System.out.println(strLine);
-				if (isFirstLine) {
-					isFirstLine = false;
-				} else {
-					// use comma as separator
-					String[] strStockHistory = strLine.split(strCvsSplitBy);
-					// System.out.println(strStockHistory[0] + '|' +
-					// strStockHistory[1] + '|' + strStockHistory[2] + '|' +
-					// strStockHistory[3] + '|' + strStockHistory[4] + '|' +
-					// strStockHistory[5] + '|' + strStockHistory[6]);
-					Date dtStockHistoryDate = Constants.DATE_FORMAT_YYYYMMDD.parse(strStockHistory[0]);
-					Double dbOpen = null;
-					Double dbClose = null;
-					Double dbHigh = null;
-					Double dbLow = null;
-					Double dbAdjClose = null;
-					Double dbVolume = null;
-					if (strStockHistory[1].equals("null")) {
-						dbOpen = dbLastClose;
-						dbClose = dbLastClose;
-						dbHigh = dbLastClose;
-						dbLow = dbLastClose;
-						dbAdjClose = dbLastAdjClose;
-						dbVolume = 0.0;
-					} else {
-						dbOpen = Double.parseDouble(strStockHistory[1]);
-						dbClose = Double.parseDouble(strStockHistory[4]);
-						dbHigh = Double.parseDouble(strStockHistory[2]);
-						dbLow = Double.parseDouble(strStockHistory[3]);
-						dbAdjClose = Double.parseDouble(strStockHistory[5]);
-						dbVolume = Double.parseDouble(strStockHistory[6]);
-						dbLastClose = dbClose;
-						dbLastAdjClose = dbAdjClose;
-					}
-					history.put(dtStockHistoryDate,
-							new StockHistory(dtStockHistoryDate, dbOpen, dbClose, dbHigh, dbLow, dbAdjClose, dbVolume));
-				}
-			}
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		}
-		initialDate();
 	}
 
 	public Map<Integer, Date> getPointerDate() {
@@ -202,6 +111,10 @@ public class Stock {
 	@Override
 	public String toString() {
 		return ticker;
+	}
+
+	public boolean hasHistory() {
+		return !getHistory().isEmpty();
 	}
 
 }

@@ -1,16 +1,13 @@
 package com.algotrading.backtesting.replay;
 
-import com.algotrading.DateUtil;
 import com.algotrading.backtesting.config.AlgoConfiguration;
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.util.StockCreationException;
+import com.algotrading.backtesting.util.TickerFileProvider;
+import com.algotrading.backtesting.util.TickerMongoAvailableStocksProvider;
+import com.algotrading.backtesting.util.TickerProvider;
 import com.algotrading.tickerservice.TickerServiceClient;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,56 +19,39 @@ public class AvailableStocks {
 
 	private boolean fileNameIsDate;
 
-	public AvailableStocks(String filePath, String fileName, boolean fileNameIsDate) throws IOException, ParseException {
+	public AvailableStocks(String filePath, String stockListName, boolean fileNameIsDate) throws Exception {
 		this.fileNameIsDate = fileNameIsDate;
-		read(filePath, fileName);
+		read(filePath, stockListName);
 	}
 
 	public AvailableStocks() {
 		stocks = new HashMap<>();
 	}
 
-	public void read(String filePath, String fileName) throws IOException, ParseException {
-		Path file = new File(filePath + fileName).toPath();
-		Charset charset = Charset.defaultCharset();
-		List<String> stringList = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
-				? getAvailableStockFromMongoDb(fileName)
-				: Files.readAllLines(file, charset);
-		stocks = new HashMap<>();
-		LotSize lotSize = new LotSize(filePath + "lotSize.csv");
-		boolean isUsingMongoDb = AlgoConfiguration.FROM_MONGODB.equals(AlgoConfiguration.getReadStockFrom());
-		for (String line : stringList) {
-			// System.out.println(line);
-			Stock stock = new Stock(line, lotSize.getLotSize(line));
-			// System.out.println("Reading " + stock.getTicker());
+	public void read(String filePath, String stockListFileName) throws Exception {
 
-			if (isUsingMongoDb) {
-				boolean hasTickerHistory = stock.readFromMongoDB();
-			 	if (hasTickerHistory) {
-			 		add(stock);
-				}
-			} else {
-				File tempFile = new File(filePath + stock.getTicker() + ".csv");
-				boolean exists = tempFile.exists();
-				// System.out.println(filePath + stock.getTicker() + ".csv");
-				// System.out.println(exists);
-				if (exists) {
-					stock.read(filePath);
-					add(stock);
-				}
+		TickerProvider tickerProvider = AlgoConfiguration.getReadAvailableStockFrom().equals(AlgoConfiguration.FROM_MONGODB)
+				? new TickerMongoAvailableStocksProvider(stockListFileName, fileNameIsDate, new TickerServiceClient()) // mongodb need to call tickerServiceClient.findAvailableStockByGroup or tickerServiceClient.findAvailableStockByGroupAndDate
+				: new TickerFileProvider(filePath, stockListFileName + ".txt");
+
+		List<String> allStockCodes = tickerProvider.getAllStockCodes();
+
+		stocks = new HashMap<>();
+
+		for (String stockCode : allStockCodes) {
+			try {
+				Stock stock = tickerProvider.constructStockWithLotSizeFromTickerString(stockCode);
+				add(stock);
+			} catch (StockCreationException e) {
+				System.err.println("Cannot add " + stockCode + " to available stock");
+				e.printStackTrace();
 			}
+
 		}
 	}
 
-	private List<String> getAvailableStockFromMongoDb(String fileName) {
-		TickerServiceClient client = new TickerServiceClient();
-		return fileNameIsDate
-		? client.findAvailableStockByGroupAndDate(AlgoConfiguration.getAvailableStockGroup(), DateUtil.yyyymmddToYYYY_MM_DD(fileName.replace(".txt", "")))
-		: client.findAvailableStockByGroup(fileName.replace(".txt", ""));
-	}
-
 	public List<Stock> get() {
-		return new ArrayList<Stock>(stocks.values());
+		return new ArrayList<>(stocks.values());
 	}
 
 	public Stock get(String ticker) {

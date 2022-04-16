@@ -2,13 +2,22 @@ package com.algotrading.backtesting.util;
 
 import com.algotrading.backtesting.stock.Stock;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface TickerProvider {
 
-    List<String> getAllTickers() throws IOException;
+    List<String> getAllStockCodes() throws StockCreationException;
 
-    Stock constructStockFromTickerString(String ticker);
+    Stock constructStockFromStockCode(String ticker) throws StockCreationException;
+
+    void fillStockHistory(Stock stock) throws StockCreationException;
+
+    int getLotSizeByStockCode(String ticker) throws StockCreationException;
+
+    default Stock constructStockWithLotSizeFromTickerString(String ticker) throws StockCreationException {
+        Stock stock = new Stock(ticker, getLotSizeByStockCode(ticker));
+        fillStockHistory(stock);
+        return stock;
+    }
 
 }

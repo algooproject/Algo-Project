@@ -1,5 +1,11 @@
 package com.algotrading.backtesting.replay;
 
+import com.algotrading.backtesting.stock.PortfolioHistory;
+import com.algotrading.backtesting.strategy.Strategies;
+import com.algotrading.backtesting.util.Constants;
+import com.algotrading.backtesting.util.Print_Console;
+import com.algotrading.backtesting.util.WriteToFile;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,12 +14,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
-
-import com.algotrading.backtesting.stock.PortfolioHistory;
-import com.algotrading.backtesting.strategy.Strategies;
-import com.algotrading.backtesting.util.Constants;
-import com.algotrading.backtesting.util.Print_Console;
-import com.algotrading.backtesting.util.WriteToFile;
 
 public class MainForNLOPT {
 	static int i = 1;
@@ -51,7 +51,7 @@ public class MainForNLOPT {
 			// Date endDate =
 			// Constants.DATE_FORMAT_YYYYMMDD.parse("2000-01-10");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
-			availableStocks = new FixedAvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks4.txt");
+			availableStocks = new FixedAvailableStocks(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH, "availableStocks4");
 			// System.out.println(Constants.SRC_MAIN_RESOURCE_FILEPATH);
 			tradingDate = new TradingDate(Constants.SRC_MAIN_RESOURCE_NLOPT_FILEPATH + "tradingDate.txt");
 		} catch (Exception e) {

@@ -1,9 +1,9 @@
 package com.algotrading.backtesting.portfolio;
 
-import java.util.Date;
-
 import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.util.Constants;
+
+import java.util.Date;
 
 /**
  * This class is date-independent class for component of Portfolio. A Portfolio
@@ -112,8 +112,6 @@ public class PortfolioComponent {
 
 	@Override
 	public String toString() {
-		// return stock + ":" + quantity + "@" + unitPrice + ", profit=" +
-		// profit;
 		return stock + ":" + quantity + "@" + unitPrice + "$" + stock.getHistory().get(date).getClose() + "#"
 				+ Constants.DATE_FORMAT_YYYYMMDD.format(date);
 	}

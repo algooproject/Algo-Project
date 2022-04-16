@@ -1,27 +1,21 @@
 package com.algotrading.backtesting.replay.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
-
-import com.algotrading.backtesting.replay.*;
-import org.junit.Test;
-
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
-import com.algotrading.backtesting.replay.AvailableStocks;
-import com.algotrading.backtesting.replay.LotSize;
-import com.algotrading.backtesting.replay.Replay;
-import com.algotrading.backtesting.replay.TradingDate;
+import com.algotrading.backtesting.replay.*;
 import com.algotrading.backtesting.stock.PortfolioHistory;
 import com.algotrading.backtesting.stock.Stock;
+import com.algotrading.backtesting.stock.io.StockFileGateway;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.util.Constants;
 import com.algotrading.backtesting.util.PrintMethod;
 import com.algotrading.backtesting.util.Print_Console;
+import org.junit.Test;
+
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MainTest {
 
@@ -29,13 +23,13 @@ public class MainTest {
 			+ MainTest.class.getPackage().getName().replace('.', '/') + "/";
 
 	@Test
-	public void test001_buyConditionsMet() throws ParseException, IOException {
+	public void test001_buyConditionsMet() throws Exception {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-28");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks1.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks1");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -48,7 +42,7 @@ public class MainTest {
 		Portfolio portfolio20160929 = portfolioHistory.get(triggeredDate);
 		Portfolio portfolio20160928 = portfolioHistory.get(dayBeforeTriggeredDate);
 		Stock stockTC0001 = new Stock("SEHK_TC0001", lotSize.getLotSize("SEHK_TC0001"));
-		stockTC0001.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0001);
 		assertEquals(false, portfolio20160928.containsStock(stockTC0001));
 		assertTrue(portfolio20160929.containsStock(stockTC0001));
 		assertEquals(3000, portfolio20160929.getPortfolioComponent("SEHK_TC0001").getQuantity());
@@ -60,14 +54,14 @@ public class MainTest {
 	}
 
 	@Test
-	public void test002_buyCondition2Failed() throws ParseException, IOException {
+	public void test002_buyCondition2Failed() throws Exception {
 
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks2.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks2");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -77,7 +71,7 @@ public class MainTest {
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
 		Stock stockTC0002 = new Stock("SEHK_TC0002", lotSize.getLotSize("SEHK_TC0002"));
-		stockTC0002.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0002);
 		assertEquals(false, portfolio20160930.containsStock(stockTC0002));
 		System.out.println("test002_buyCondition1Failed"); //
 		// System.out.println(portfolioHistory);
@@ -86,13 +80,13 @@ public class MainTest {
 	}
 
 	@Test
-	public void test003_buyCondition1and2Failed() throws ParseException, IOException {
+	public void test003_buyCondition1and2Failed() throws Exception {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks3.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks3");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -102,7 +96,7 @@ public class MainTest {
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
 		Stock stockTC0003 = new Stock("SEHK_TC0003", lotSize.getLotSize("SEHK_TC0003"));
-		stockTC0003.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0003);
 		assertEquals(false, portfolio20160930.containsStock(stockTC0003));
 		System.out.println("test003_buyCondition1and2Failed");
 		// System.out.println(portfolioHistory);
@@ -111,13 +105,13 @@ public class MainTest {
 	}
 
 	@Test
-	public void test004_buyCondition1Failed() throws ParseException, IOException {
+	public void test004_buyCondition1Failed() throws Exception {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks4.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks4");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -127,7 +121,7 @@ public class MainTest {
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
 		Stock stockTC0004 = new Stock("SEHK_TC0004", lotSize.getLotSize("SEHK_TC0004"));
-		stockTC0004.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0004);
 		assertEquals(false, portfolio20160930.containsStock(stockTC0004));
 		System.out.println("test004_buyCondition1Failed"); //
 		// System.out.println(portfolioHistory);
@@ -136,13 +130,13 @@ public class MainTest {
 	}
 
 	@Test
-	public void test005_buyCondition3Failed() throws ParseException, IOException {
+	public void test005_buyCondition3Failed() throws Exception {
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-14");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-09-30");
 		PortfolioHistory history = new PortfolioHistory();
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks5.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks5");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		PrintMethod print = new Print_Console();
@@ -152,7 +146,7 @@ public class MainTest {
 		PortfolioHistory portfolioHistory = replay.getPortfolioHistory();
 		Portfolio portfolio20160930 = portfolioHistory.get(endDate);
 		Stock stockTC0005 = new Stock("SEHK_TC0005", lotSize.getLotSize("SEHK_TC0005"));
-		stockTC0005.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0005);
 		assertEquals(false, portfolio20160930.containsStock(stockTC0005));
 		System.out.println("test005_buyCondition3Failed");
 		// System.out.println(portfolioHistory);
@@ -161,20 +155,20 @@ public class MainTest {
 	}
 
 	@Test
-	public void test006_takeProfit() throws ParseException, IOException {
+	public void test006_takeProfit() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0006 = new Stock("SEHK_TC0006", lotSize.getLotSize("SEHK_TC0006"));
-		stockTC0006.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0006);
 		PortfolioComponent TC0006pc = new PortfolioComponent(stockTC0006, 3333, 3, startDate);
 		portfolio.put(TC0006pc);
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks6.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks6");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
@@ -194,20 +188,20 @@ public class MainTest {
 	}
 
 	@Test
-	public void test007_stopLoss() throws ParseException, IOException {
+	public void test007_stopLoss() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0007 = new Stock("SEHK_TC0007", lotSize.getLotSize("SEHK_TC0007"));
-		stockTC0007.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0007);
 		PortfolioComponent TC0007pc = new PortfolioComponent(stockTC0007, 3333, 3, startDate);
 		portfolio.put(TC0007pc);
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks7.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks7");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
@@ -227,21 +221,21 @@ public class MainTest {
 	}
 
 	@Test
-	public void test008_sellConditionsNotMet() throws ParseException, IOException {
+	public void test008_sellConditionsNotMet() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0008 = new Stock("SEHK_TC0008", lotSize.getLotSize("SEHK_TC0008"));
-		stockTC0008.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0008);
 		PortfolioComponent TC0008pc = new PortfolioComponent(stockTC0008, 3333, 3, startDate);
 		portfolio.put(TC0008pc);
 
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies1.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks8.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks8");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
@@ -258,20 +252,20 @@ public class MainTest {
 	}
 
 	@Test
-	public void test009_buyConditionsMetButStockDisabled() throws ParseException, IOException {
+	public void test009_buyConditionsMetButStockDisabled() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-19");
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0009 = new Stock("SEHK_TC0009", lotSize.getLotSize("SEHK_TC0009"));
-		stockTC0009.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0009);
 		PortfolioComponent TC0009pc = new PortfolioComponent(stockTC0009, 2000, 3, startDate);
 		portfolio.put(TC0009pc);
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies9.txt",
 				RESOURCE_PATH_NAME + "sellStrategies1.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks9.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks9");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate.txt");
 		PrintMethod print = new Print_Console();
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0, print);
@@ -296,20 +290,20 @@ public class MainTest {
 	}
 
 	@Test
-	public void test010_stockEnabledBuyConditionsMet() throws ParseException, IOException {
+	public void test010_stockEnabledBuyConditionsMet() throws Exception {
 		LotSize lotSize = new LotSize(RESOURCE_PATH_NAME + "lotSize.csv");
 		Date startDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-03");
 		Date endDate = Constants.DATE_FORMAT_YYYYMMDD.parse("2016-10-21");
 		PortfolioHistory history = new PortfolioHistory();
 		Portfolio portfolio = new Portfolio(startDate, 0);
 		Stock stockTC0010 = new Stock("SEHK_TC0010", lotSize.getLotSize("SEHK_TC0010"));
-		stockTC0010.read(RESOURCE_PATH_NAME);
+		new StockFileGateway(RESOURCE_PATH_NAME).fillTickerData(stockTC0010);
 		PortfolioComponent TC0010pc = new PortfolioComponent(stockTC0010, 2000, 3, startDate);
 		portfolio.put(TC0010pc);
 		history.put(startDate, portfolio);
 		Strategies strategies = new Strategies(RESOURCE_PATH_NAME + "buyStrategies10.txt",
 				RESOURCE_PATH_NAME + "sellStrategies10.txt");
-        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks10.txt");
+        DynamicAvailableStocks availableStocks = new FixedAvailableStocks(RESOURCE_PATH_NAME, "availableStocks10");
 		TradingDate tradingDate = new TradingDate(RESOURCE_PATH_NAME + "tradingDate10.txt");
 		Replay replay = new Replay(startDate, endDate, history, strategies, availableStocks, tradingDate, 0,
 				new Print_Console());

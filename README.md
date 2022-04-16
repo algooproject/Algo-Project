@@ -1,3 +1,8 @@
+## How to build this project
+
+* Build project: `./mvnw clean package`
+* Build project without test: `./mvnw package -DskipTests`
+
 ## Install this artifact to local maven
 
 * `./mvnw clean install`

@@ -6,8 +6,6 @@ import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.util.Constants;
 import com.algotrading.backtesting.util.Print_Console;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -15,7 +13,7 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException, ParseException {
+	public static void main(String[] args) throws Exception {
 
 		// Init config
 		AlgoConfiguration.setReadStockFrom(AlgoConfiguration.FROM_FILE);

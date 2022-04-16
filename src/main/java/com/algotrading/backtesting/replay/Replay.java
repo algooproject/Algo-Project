@@ -1,16 +1,5 @@
 package com.algotrading.backtesting.replay;
 
-import static java.time.temporal.ChronoUnit.MILLIS;
-
-import java.text.ParseException;
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.algotrading.backtesting.portfolio.BuySellAmount;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
@@ -19,12 +8,18 @@ import com.algotrading.backtesting.stock.Stock;
 import com.algotrading.backtesting.strategy.Strategies;
 import com.algotrading.backtesting.util.PrintMethod;
 
+import java.text.ParseException;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.time.temporal.ChronoUnit.MILLIS;
+
 public class Replay {
 	private Date startDate;
 	private Date endDate;
 	private PortfolioHistory portfolioHistory;
 	public Strategies strategies;
-	// private AvailableStocks availableStocks;
 	private DynamicAvailableStocks dynamicAvailableStocks;
 	private TradingDate tradingDate;
 	private Boolean recordSwitch = true;

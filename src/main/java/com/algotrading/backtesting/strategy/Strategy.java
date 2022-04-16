@@ -1,16 +1,15 @@
 package com.algotrading.backtesting.strategy;
 
-import java.text.ParseException;
-import java.util.Date;
-
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.algotrading.backtesting.pattern.StockSignal;
 import com.algotrading.backtesting.portfolio.Portfolio;
 import com.algotrading.backtesting.portfolio.PortfolioComponent;
 import com.algotrading.backtesting.replay.Transaction;
 import com.algotrading.backtesting.stock.Stock;
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.text.ParseException;
+import java.util.Date;
 
 public class Strategy {
 	private StockSignal pattern;
@@ -23,19 +22,13 @@ public class Strategy {
 	}
 
 	public boolean shouldPutOrder(Stock stock, Date date, Portfolio portfolio) throws ParseException {
-		// System.out.println("shouldPutOrder: " + date);
 		return pattern.signal(stock, date, portfolio, buyCostIfMatch);
 	}
 
 	public PortfolioComponent buyAmount(Stock stock, Date date, Portfolio portfolio) {
 		double unitPrice = stock.getHistory().get(date).getClose();
 		double buyCost = buyCostIfMatch == 0 ? portfolio.getCash() : buyCostIfMatch;
-		// int buyVolume = getFinalVolume(stock, buyCost, unitPrice);
 		Pair<Integer, Double> volumeTransactionCost = getFinalVolume(stock, buyCost, unitPrice);
-		// System.out.println("stock.getTicker(): " + stock.getTicker());
-		// System.out.println("stock.getLotSize(): " + stock.getLotSize());
-		// System.out
-		// .println("buyVolumeBeforeLotSize / stock.getLotSize(): " +
 		return new PortfolioComponent(stock, volumeTransactionCost.getKey(), unitPrice, date,
 				volumeTransactionCost.getValue(), "Open");
 	}
@@ -50,15 +43,13 @@ public class Strategy {
 			buyTotal = buyVolumeAfterLotSize * unitPrice;
 			transactionCost = Transaction.getTranscationCost(stock, buyTotal);
 		}
-		return new MutablePair<Integer, Double>(buyVolumeAfterLotSize, transactionCost);
+		return new MutablePair<>(buyVolumeAfterLotSize, transactionCost);
 	}
 
 	public PortfolioComponent sellAmount(Stock stock, Date date, Portfolio portfolio) {
 		double unitPrice = stock.getHistory().get(date).getClose();
 		PortfolioComponent pc = portfolio.getPortfolioComponent(stock.getTicker());
 		int sellVolumeBeforeLotSize = Math.max((int) (buyCostIfMatch / unitPrice), pc.getQuantity());
-		// System.out.println("stock.getTicker(): " + stock.getTicker());
-		// System.out.println("stock.getLotSize(): " + stock.getLotSize());
 		String action = unitPrice > pc.getUnitPrice() ? "Profit" : "Exit";
 		int sellVolumeAfterLotSize = (sellVolumeBeforeLotSize / stock.getLotSize()) * stock.getLotSize();
 		int sellVolumeAfterPossibleSoldAll = buyCostIfMatch == 0
